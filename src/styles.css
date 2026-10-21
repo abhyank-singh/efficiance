@@ -100,3 +100,17 @@ button:disabled { cursor: not-allowed; }
 .card-hover { transform-style: preserve-3d; will-change: transform; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Sidebar: stay usable on short windows (13 items + Quick Add) */
+.nav-list { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.15) transparent; }
+.nav-list::-webkit-scrollbar { width: 4px; }
+@media (max-height: 860px) {
+  .nav-list { gap: 1px !important; }
+  .nav-item { padding: 7px 12px !important; }
+  .nav-divider { margin: 5px 8px !important; }
+}
+@media (max-height: 700px) {
+  .nav-item { padding: 3px 12px !important; font-size: 13px !important; }
+  .nav-divider { margin: 2px 8px !important; }
+  .glass-panel > div:first-child { padding-bottom: 8px !important; }
+}

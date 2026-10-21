@@ -21,7 +21,7 @@ const navDefs = [
   { id: 'recap', label: 'Life Recap', icon: '🎞' },
   { id: 'journal', label: 'Journal', icon: '📓' },
   { id: 'settings', label: 'Settings', icon: '⚙️' },
-  ...(IS_DEMO ? [{ id: 'about', label: 'About this project', icon: '💡' }] : []),
+  ...(IS_DEMO ? [{ id: 'about', label: 'About', icon: '💡' }] : []),
 ]
 
 const bnDefs = [
@@ -90,11 +90,11 @@ export default function Shell() {
             }}>
               <Logo />
               <div style={{ padding: '0 0 12px' }}><QuickBar compact /></div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 3, overflowY: 'auto', overflowX: 'hidden', minWidth: 0, flex: 1 }}>
+              <div className="nav-list" style={{ display: 'flex', flexDirection: 'column', gap: 3, overflowY: 'auto', overflowX: 'hidden', minWidth: 0, flex: 1 }}>
                 {navDefs.map((d, i) => d.divider ? (
-                  <div key={i} style={{ height: 1, background: 'rgba(0,0,0,0.07)', margin: '10px 8px' }} />
+                  <div key={i} className="nav-divider" style={{ height: 1, background: 'rgba(0,0,0,0.07)', margin: '10px 8px' }} />
                 ) : (
-                  <button key={d.id} onClick={() => go(d.id)} className={P(d.id) ? '' : 'nav-btn'} style={{
+                  <button key={d.id} onClick={() => go(d.id)} className={'nav-item ' + (P(d.id) ? '' : 'nav-btn')} style={{
                     display: 'flex', alignItems: 'center', gap: 11,
                     background: P(d.id) ? gradSoft : 'transparent',
                     border: 'none', borderRadius: 12, padding: '10px 12px',
