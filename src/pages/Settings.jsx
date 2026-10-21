@@ -2,6 +2,7 @@ import { useApp } from '../store.jsx'
 import { C, gradTab, label } from '../theme.js'
 import { focusAreas } from '../data/seed.js'
 import { IS_DEMO, resetDemo } from '../config.js'
+import { InstallCard } from '../components/Install.jsx'
 
 const comingSoon = [{ name: 'UPI notification auto-capture' }, { name: 'RBI Account Aggregator connect' }]
 
@@ -29,6 +30,8 @@ export default function Settings() {
   return (
     <div style={{ animation: 'rise 0.25s ease-out', maxWidth: 860, margin: '0 auto' }}>
       <h1 style={{ fontWeight: 800, fontSize: 'clamp(24px,3.4vw,32px)', letterSpacing: -1, margin: '0 0 22px' }}>Settings & Integrations</h1>
+
+      <InstallCard />
 
       <div style={{ ...label, color: C.sub, marginBottom: 12 }}>Integrations</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 12, marginBottom: 14 }}>

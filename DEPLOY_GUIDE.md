@@ -29,9 +29,13 @@ A single always-on free service fits Render's monthly free instance hours.
 ## 5. Profile links
 Edit `src/config.js` (`PROFILE`) with your GitHub/LinkedIn/email; empty values hide their buttons. Push to redeploy.
 
+## Optional: anonymous analytics
+Create a free site at goatcounter.com, then add an environment variable `VITE_GOATCOUNTER` (your site code) in Render and redeploy. It is read at build time. No cookies, no personal data, and Do-Not-Track is honored.
+
 ## Cost & abuse controls
 Defaults in demo mode: 4 live-AI calls per visitor per hour, 10 per day, 150 per day overall, 8 KB input, 1.5K output tokens.
-Override with `AI_LIMIT_PER_IP_HOUR`, `AI_LIMIT_PER_IP_DAY`, `AI_LIMIT_GLOBAL_DAY`. Beyond the limits visitors still see the saved insights.
+Quick Add AI parsing has its own, looser budget: 20 per visitor per hour, 60 per day, 400 per day overall (instant offline parsing is unlimited).
+Override with `AI_LIMIT_PER_IP_HOUR`, `AI_LIMIT_PER_IP_DAY`, `AI_LIMIT_GLOBAL_DAY` (insights) and `AI_PARSE_LIMIT_PER_IP_HOUR`, `AI_PARSE_LIMIT_PER_IP_DAY`, `AI_PARSE_LIMIT_GLOBAL_DAY` (Quick Add). Beyond the limits visitors still see the saved insights.
 
 ## Environment variables
 | Var | Notes |

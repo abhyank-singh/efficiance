@@ -4,6 +4,7 @@ import { useApp, useMobile } from '../store.jsx'
 import { C, grad, gradSoft, auroraBg } from '../theme.js'
 import Fab from './Fab.jsx'
 import { IS_DEMO, resetDemo } from '../config.js'
+import QuickAdd, { QuickBar } from './QuickAdd.jsx'
 
 const navDefs = [
   { id: 'today', label: 'Today', icon: '☀️' },
@@ -13,9 +14,11 @@ const navDefs = [
   { id: 'habits', label: 'Habits', icon: '✅' },
   { id: 'finance', label: 'Finance', icon: '₹' },
   { id: 'gym', label: 'Gym & Health', icon: '🏋️' },
+  { id: 'music', label: 'Music', icon: '🎸' },
   { divider: true },
   { id: 'insights', label: 'Insights', icon: '🧠' },
   { id: 'review', label: 'Weekly Review', icon: '🏁' },
+  { id: 'recap', label: 'Life Recap', icon: '🎞' },
   { id: 'journal', label: 'Journal', icon: '📓' },
   { id: 'settings', label: 'Settings', icon: '⚙️' },
   ...(IS_DEMO ? [{ id: 'about', label: 'About this project', icon: '💡' }] : []),
@@ -32,8 +35,10 @@ const bnDefs = [
 const moreDefs = [
   { id: 'goals', label: 'Goals', icon: '🎯' },
   { id: 'people', label: 'People', icon: '🌱' },
+  { id: 'music', label: 'Music', icon: '🎸' },
   { id: 'insights', label: 'Insights', icon: '🧠' },
   { id: 'review', label: 'Weekly Review', icon: '🏁' },
+  { id: 'recap', label: 'Life Recap', icon: '🎞' },
   { id: 'journal', label: 'Journal', icon: '📓' },
   { id: 'settings', label: 'Settings', icon: '⚙️' },
   ...(IS_DEMO ? [{ id: 'about', label: 'About', icon: '💡' }] : []),
@@ -83,6 +88,7 @@ export default function Shell() {
               height: '100%', display: 'flex', flexDirection: 'column', padding: '20px 12px',
             }}>
               <Logo />
+              <div style={{ padding: '0 0 12px' }}><QuickBar compact /></div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 3, overflowY: 'auto', overflowX: 'hidden', minWidth: 0, flex: 1 }}>
                 {navDefs.map((d, i) => d.divider ? (
                   <div key={i} style={{ height: 1, background: 'rgba(0,0,0,0.07)', margin: '10px 8px' }} />
@@ -119,7 +125,7 @@ export default function Shell() {
       {mobile && (
         <>
           <div style={{
-            position: 'fixed', bottom: 14, left: 14, right: 14, zIndex: 40,
+            position: 'fixed', bottom: 'calc(14px + env(safe-area-inset-bottom))', left: 14, right: 14, zIndex: 40,
             background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 20,
             boxShadow: '0 6px 28px rgba(16,24,40,0.16)', display: 'flex', justifyContent: 'space-around', padding: '8px 6px',
           }}>
@@ -143,7 +149,7 @@ export default function Shell() {
             <>
               <div onClick={() => setMoreOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 39, background: 'rgba(17,24,39,0.32)', backdropFilter: 'blur(4px)' }} />
               <div style={{
-                position: 'fixed', bottom: 86, left: 14, right: 14, zIndex: 41, background: '#FFFFFF',
+                position: 'fixed', bottom: 'calc(86px + env(safe-area-inset-bottom))', left: 14, right: 14, zIndex: 41, background: '#FFFFFF',
                 border: '1px solid rgba(0,0,0,0.09)', borderRadius: 20, padding: 12,
                 display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, animation: 'rise 0.2s ease-out',
               }}>
@@ -161,6 +167,7 @@ export default function Shell() {
         </>
       )}
 
+      <QuickAdd />
       <Fab mobile={mobile} />
     </div>
   )

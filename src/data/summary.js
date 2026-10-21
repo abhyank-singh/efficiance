@@ -1,6 +1,7 @@
 // Assembles a compact plain-text summary of the user's tracked data across all
 // modules. Sent to the backend → OpenAI so insights are grounded in real numbers.
 
+import { practiceSeed } from './music.js'
 import { habits as habitDefs, breakHabits, people, budgets, subs, sips, sleep, journal as seedJournal } from './seed.js'
 
 export function buildDataSummary(s) {
@@ -43,6 +44,11 @@ export function buildDataSummary(s) {
   // Journal moods
   const entries = s.journalEntries || seedJournal
   lines.push('\nRECENT MOODS (journal):\n' + entries.map((j) => `${j.date}: ${j.mood} "${j.text}"`).join('\n'))
+
+  // Music
+  const todayMin = (s.practice?.log || []).filter((e) => e.date === new Date().toISOString().slice(0, 10)).reduce((a, e) => a + e.min, 0)
+  lines.push(`\nGUITAR PRACTICE: goal 30 min/day; today ${todayMin} min; last 6 days: ${practiceSeed.join(', ')} min.`)
+  if (s.sleepToday) lines.push(`\nLast night's sleep (just logged): ${s.sleepToday}h.`)
 
   // Calendar context
   lines.push('\nCALENDAR: Today has 3 meetings + a 2h free block at 3PM. Gym completion is higher for morning sessions. Mom\'s birthday in 2 days.')

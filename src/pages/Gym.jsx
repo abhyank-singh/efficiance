@@ -13,16 +13,18 @@ const templates = [
 ]
 
 const sleepMax = 9
-const sleepBars = sleep.map((d) => ({
+const mkBars = (rows) => rows.map((d) => ({
   label: d.label,
   hLabel: d.h.toFixed(1) + 'h',
   barH: Math.round((d.h / sleepMax) * 120),
   col: d.h >= 7.5 ? 'linear-gradient(180deg,#2563EB,#12B981)' : d.h >= 6.5 ? 'rgba(59,130,246,0.55)' : 'rgba(148,163,184,0.4)',
 }))
-const sleepAvg = sleep.reduce((a, d) => a + d.h, 0) / 7
 
 export default function Gym() {
   const { s, patch } = useApp()
+  const sleepRows = s.sleepToday ? sleep.map((d, i) => (i === sleep.length - 1 ? { ...d, h: s.sleepToday } : d)) : sleep
+  const sleepBars = mkBars(sleepRows)
+  const sleepAvg = sleepRows.reduce((a, d) => a + d.h, 0) / 7
   const [tab, setTab] = useState('train')
   const [wIdx, setWIdx] = useState(0)
   const [kg, setKg] = useState(() => parseInt(legDay[0].target.split('@')[1], 10) || 60)

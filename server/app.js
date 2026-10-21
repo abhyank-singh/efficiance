@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import googleRouter from './google.js'
 import insightsRouter from './insights.js'
+import parseRouter from './parse.js'
 import { isDemo } from './limits.js'
 
 // The Express app, WITHOUT app.listen(); server/index.js starts it (Docker / Render / local).
@@ -34,6 +35,7 @@ if (isDemo()) {
   app.use('/api/google', googleRouter)
 }
 app.use('/api/ai', insightsRouter)
+app.use('/api/ai', parseRouter)
 
 // Serve the built SPA from dist/.
 const dist = path.resolve(__dirname, '..', 'dist')
@@ -45,7 +47,13 @@ const sendIndex = (req, res, next) => {
     res.type('html').send(indexHtml.replaceAll('%ORIGIN%', `${req.protocol}://${req.get('host')}`))
   } catch { next() }
 }
-app.use(express.static(dist, { index: false }))
+app.use(express.static(dist, {
+  index: false,
+  setHeaders: (res, file) => {
+    if (file.endsWith('sw.js')) res.setHeader('Cache-Control', 'no-cache') // always re-check the service worker
+    else if (file.includes(`${path.sep}assets${path.sep}`)) res.setHeader('Cache-Control', 'public, max-age=31536000, immutable') // hashed filenames
+  },
+}))
 app.get(/^\/(?!api\/).*/, sendIndex)
 
 export default app

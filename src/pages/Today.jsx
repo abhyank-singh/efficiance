@@ -5,6 +5,8 @@ import { habits as habitDefs, journal as seedJournal } from '../data/seed.js'
 import { getDayBlocks, getDueList, topGoals, MOODS } from '../data/derived.js'
 import { shortDay, longDay } from '../data/dates.js'
 import { DEFAULT_NAME } from '../config.js'
+import { QuickBar } from '../components/QuickAdd.jsx'
+import Checklist from '../components/Checklist.jsx'
 
 const summaryCard = { ...card, padding: 22 }
 
@@ -30,11 +32,13 @@ export default function Today() {
   const toggleHabit = (id) =>
     patch((st) => {
       const cur = st.habitState[id]
-      return { habitState: { ...st.habitState, [id]: { done: !cur.done, streak: cur.streak + (cur.done ? -1 : 1) } } }
+      return { habitState: { ...st.habitState, [id]: { done: !cur.done, streak: cur.streak + (cur.done ? -1 : 1) } }, activity: cur.done ? st.activity : [...(st.activity || []), { t: Date.now(), type: 'habit' }].slice(-500) }
     })
 
   const todayEvents = getDayBlocks(s.blockTaken).filter((b) => b.isEvent).map((b) => ({ time: b.time.split(' – ')[0], title: b.title, col: b.col, bg: b.bg }))
   const dueList = getDueList(s.peopleLogged)
+  const sleepHrs = s.sleepToday ?? 6 + 10 / 60
+  const sleepLabel = `${Math.floor(sleepHrs)}h ${String(Math.round((sleepHrs % 1) * 60)).padStart(2, '0')}m`.replace(' 00m', '')
   const todaySpent = fmtINR(s.txToday.reduce((a, t) => a + t.a, 0))
 
   const claimBlock = () => { patch({ blockTaken: true, workoutOn: true }); nav('/gym') }
@@ -67,11 +71,14 @@ export default function Today() {
         </button>
       </div>
 
+      <div style={{ marginBottom: 20 }}><QuickBar /></div>
+      <Checklist />
+
       {!evening && (
         <div style={{ ...card, borderRadius: 24, padding: 'clamp(22px,3vw,32px)', marginBottom: 20 }}>
           <div style={{ ...label, marginBottom: 12 }}>☀️ Morning Briefing</div>
           <div style={{ fontSize: 'clamp(17px,2.4vw,22px)', fontWeight: 600, lineHeight: 1.55 }}>
-            Good morning, {userName}. <span style={{ color: C.blue }}>3 meetings</span> today with a <span style={{ color: C.greenDeep }}>2-hour free block at 3 PM</span> — perfect for your scheduled Leg Day. Mom's birthday is <span style={{ color: C.greenDeep }}>in 2 days 🎂</span>. You're <span style={{ color: C.amber }}>₹800 over</span> your food budget this week. You slept <span style={{ color: C.sub }}>6h 10m</span> — consider an earlier night.
+            Good morning, {userName}. <span style={{ color: C.blue }}>3 meetings</span> today with a <span style={{ color: C.greenDeep }}>2-hour free block at 3 PM</span> — perfect for your scheduled Leg Day. Mom's birthday is <span style={{ color: C.greenDeep }}>in 2 days 🎂</span>. You're <span style={{ color: C.amber }}>₹800 over</span> your food budget this week. You slept <span style={{ color: C.sub }}>{sleepLabel}</span>{sleepHrs < 7 ? ' — consider an earlier night.' : ' — nicely rested.'}
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
             <button onClick={claimBlock} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '10px 18px', borderRadius: 999, fontWeight: 800, fontSize: 13 }}>

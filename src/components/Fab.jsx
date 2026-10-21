@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useApp } from '../store.jsx'
 import { C, grad, label } from '../theme.js'
 import { payees } from '../data/seed.js'
+import { openQuickAdd } from './QuickAdd.jsx'
 
 // Global quick-actions FAB + "Log a spend" modal (amount → payee → auto category → done).
 
@@ -18,6 +19,7 @@ export default function Fab({ mobile }) {
   const picked = payeeIdx >= 0 ? payees[payeeIdx] : null
 
   const items = [
+    { icon: '✨', label: 'Quick Add (type or speak)', go: () => { setOpen(false); openQuickAdd() } },
     { icon: '₹', label: 'Log expense', go: () => { setOpen(false); setQaOpen(true) } },
     { icon: '✅', label: 'Check a habit', go: () => { setOpen(false); nav('/habits') } },
     { icon: '🏋️', label: 'Log a set', go: () => { setOpen(false); patch({ workoutOn: true }); nav('/gym') } },
@@ -27,7 +29,7 @@ export default function Fab({ mobile }) {
 
   const addTx = () => {
     if (!amt || !picked) return
-    patch((s) => ({ txToday: s.txToday.concat([{ p: picked.name, i: picked.icon, c: picked.cat, a: parseInt(amt, 10) }]) }))
+    patch((s) => ({ txToday: s.txToday.concat([{ p: picked.name, i: picked.icon, c: picked.cat, a: parseInt(amt, 10) }]), activity: [...(s.activity || []), { t: Date.now(), type: 'spend' }].slice(-500) }))
     setQaOpen(false)
     setAmt('')
     setPayeeIdx(-1)
@@ -37,7 +39,7 @@ export default function Fab({ mobile }) {
   return (
     <>
       <button aria-label="Quick actions" aria-expanded={open} onClick={() => setOpen(!open)} className="scale-hover" style={{
-        position: 'fixed', bottom: mobile ? 92 : 24, right: 22, zIndex: 45, width: 58, height: 58,
+        position: 'fixed', bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 24, right: 22, zIndex: 45, width: 58, height: 58,
         borderRadius: '50%', background: grad, border: 'none', color: '#fff', fontSize: 26, fontWeight: 400,
         boxShadow: '0 8px 32px rgba(16,185,129,0.45)',
       }}>
@@ -45,7 +47,7 @@ export default function Fab({ mobile }) {
       </button>
 
       {open && (
-        <div style={{ position: 'fixed', bottom: mobile ? 160 : 92, right: 22, zIndex: 45, display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease-out' }}>
+        <div style={{ position: 'fixed', bottom: mobile ? 'calc(160px + env(safe-area-inset-bottom))' : 92, right: 22, zIndex: 45, display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease-out' }}>
           {items.map((f) => (
             <button key={f.label} onClick={f.go} className="bd-hover-teal" style={{
               background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 14, padding: '12px 16px',

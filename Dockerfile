@@ -9,7 +9,10 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
 COPY . .
+# Optional: free GoatCounter site code for anonymous product analytics (set as an env var on Render)
+ARG VITE_GOATCOUNTER
 ENV VITE_APP_MODE=$APP_MODE
+ENV VITE_GOATCOUNTER=$VITE_GOATCOUNTER
 RUN npm run build
 
 # ---- runtime stage ----
@@ -21,6 +24,7 @@ ENV APP_MODE=$APP_MODE
 COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev && npm cache clean --force
 COPY server ./server
+COPY shared ./shared
 COPY --from=build /app/dist ./dist
 # PaaS hosts inject PORT; the server honors it. 8080 is the default.
 ENV PORT=8080

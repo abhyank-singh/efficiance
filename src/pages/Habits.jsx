@@ -15,7 +15,7 @@ export default function Habits() {
   const toggleHabit = (id) =>
     patch((st) => {
       const cur = st.habitState[id]
-      return { habitState: { ...st.habitState, [id]: { done: !cur.done, streak: cur.streak + (cur.done ? -1 : 1) } } }
+      return { habitState: { ...st.habitState, [id]: { done: !cur.done, streak: cur.streak + (cur.done ? -1 : 1) } }, activity: cur.done ? st.activity : [...(st.activity || []), { t: Date.now(), type: 'habit' }].slice(-500) }
     })
 
   const logSlip = (id) => {

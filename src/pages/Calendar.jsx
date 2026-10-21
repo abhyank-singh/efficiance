@@ -4,6 +4,7 @@ import { useApp } from '../store.jsx'
 import { C, grad, gradTab, card, label } from '../theme.js'
 import { getDayBlocks } from '../data/derived.js'
 import { longDay, monthDay, dayNum } from '../data/dates.js'
+import { IS_DEMO } from '../config.js'
 
 const weekEvents = [
   [{ t: 'Sprint planning', c: '#2563EB' }, { t: 'Gym — Push', c: '#0EA478' }],
@@ -141,7 +142,7 @@ export default function Calendar() {
                 {google.connected && <span style={{ marginLeft: 8, color: C.greenDeep, fontSize: 12 }}>● Live</span>}
               </div>
               <div style={{ color: C.muted, fontSize: 12, fontWeight: 600 }}>
-                {google.connected ? 'Your real events, next 7 days' : google.configured ? 'Connect to pull your real events in live' : 'Needs a one-time Google setup — ask Claude for the steps'}
+                {google.connected ? 'Your real events, next 7 days' : google.configured ? 'Connect to pull your real events in live' : IS_DEMO ? 'Sample week shown. Live sync is switched off in the public demo so nobody’s real calendar is ever exposed.' : 'Needs a one-time Google setup (see README)'}
               </div>
             </div>
           </div>
@@ -152,7 +153,7 @@ export default function Calendar() {
                 color: google.configured ? '#fff' : C.muted, padding: '10px 20px', borderRadius: 12,
                 fontWeight: 800, fontSize: 13, cursor: google.configured ? 'pointer' : 'not-allowed',
               }}>
-                Connect Google Calendar
+                {IS_DEMO ? 'Live sync: personal version only' : 'Connect Google Calendar'}
               </button>
             </a>
           )}

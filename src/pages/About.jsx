@@ -1,14 +1,33 @@
 import { useNavigate } from 'react-router-dom'
 import { C, grad, card, label } from '../theme.js'
 import { PROFILE } from '../config.js'
+import { InstallCard } from '../components/Install.jsx'
+import { openQuickAdd } from '../components/QuickAdd.jsx'
 
 const tour = [
-  { to: '/today', icon: '☀️', title: 'Today', try: 'Read the Morning Briefing, then seal the day with the Day Close ritual at the bottom.', why: 'One screen that answers "what matters today?" by pulling from every module.' },
-  { to: '/habits', icon: '✅', title: 'Habits', try: 'Tick a habit and watch the streak. Switch to "Break" and log a slip.', why: 'Bad habits are tracked as a downward trend, not a fragile streak that one slip destroys.' },
-  { to: '/finance', icon: '₹', title: 'Finance', try: 'Hit the + button and log a ₹ spend — amount, payee, done.', why: 'Logging a chai should take as long as paying for it, or nobody keeps doing it.' },
-  { to: '/gym', icon: '🏋️', title: 'Gym & Health', try: 'Start the workout player, log a set, and beat a personal best.', why: 'A guided player with a rest timer beats a spreadsheet for real gym use.' },
-  { to: '/people', icon: '🌱', title: 'People', try: 'Log a check-in and watch that person\'s warmth bar refill.', why: 'Relationships fade quietly. Warmth shows it gently, without guilt badges.' },
-  { to: '/insights', icon: '🧠', title: 'Insights  ✨ live AI', try: 'Press "Regenerate with AI" to have a real language model read the sample data.', why: 'The core idea: modules that talk to each other, e.g. "you sleep less on meeting-heavy days".' },
+  { act: () => openQuickAdd('spent 450 on swiggy, slept 6.5 hours, called mom'), icon: '✨', title: 'Quick Add (the in-app assistant)', try: 'Type or speak a sentence like “spent 450 on swiggy, slept 6.5 hours, called mom”. Review the 3 proposed changes, apply, then hit Undo.', why: 'Logging effort is the #1 reason trackers get abandoned. One sentence updates several modules, and nothing changes until you confirm.' },
+  { to: '/today', icon: '☀️', title: 'Today', try: 'Read the Morning Briefing, check the Getting-started list, then seal the day with Day Close.', why: 'One screen that answers “what matters today?” by pulling from every module.' },
+  { to: '/music', icon: '🎸', title: 'Music (guitar first)', try: 'Tick off a practice block, start the metronome, and try the 60-second chord-change drill.', why: 'Practice is a daily habit with a clear skill curve, which makes it a good retention loop. More instruments plug in next.' },
+  { to: '/habits', icon: '✅', title: 'Habits', try: 'Tick a habit and watch the streak. Switch to “Break” and log a slip.', why: 'Bad habits are tracked as a downward trend, not a fragile streak that one slip destroys.' },
+  { to: '/recap', icon: '🎞', title: 'Life Recap', try: 'See 12 weeks of trends and the consistency map, then download your shareable card.', why: 'History is the switching cost. The longer you track, the more valuable (and shareable) it gets.' },
+  { to: '/insights', icon: '🧠', title: 'Insights  ✨ live AI', try: 'Press “Regenerate with AI” to have a real language model read the sample data.', why: 'The core idea: modules that talk to each other, e.g. “you sleep less on meeting-heavy days”.' },
+]
+
+const metrics = [
+  ['North star', 'Weekly active loggers', 'Users who log on 3+ days in a week. Measures habit formation rather than visits.'],
+  ['Activation', 'First log in under 60 seconds', 'Share of new users who complete the “first win” step in onboarding.'],
+  ['Engagement', 'Quick Add adoption', 'Applied Quick Adds per active user per week, plus the share of logs that come from Quick Add.'],
+  ['Quality', 'Quick Add accuracy', 'Changes applied ÷ changes proposed, and the Undo rate. A rising Undo rate means the parser is getting it wrong.'],
+  ['Retention', 'Day 1 / 7 / 30 return', 'Compared across starter packs to see which audience sticks.'],
+  ['Growth', 'Recap shares and app installs', 'Downloads or shares of the recap card, and installs of the web app.'],
+  ['Guardrails', 'AI cost per active user, error rate', 'Free-tier quota burn, rate-limit hits, time-to-understand.'],
+]
+
+const experiments = [
+  'Unlock the first AI insight after 3 days of data vs immediately (does anticipation lift Day-7 return?)',
+  'Starter pack chosen vs skipped (does a pack change activation?)',
+  'Reminder at a fixed time vs at the user’s own most-active hour',
+  'Grace day for streaks on vs off (does it reduce churn after a miss?)',
 ]
 
 const stack = [
@@ -26,7 +45,7 @@ const decisions = [
   ['Two builds, one codebase', 'The public demo uses fictional data. A private build runs on my own laptop with my real name and calendar.'],
 ]
 
-const next = ['Real data entry for every module (today the demo modules show sample data)', 'Accounts and a database for sync across devices', 'Bank statement and UPI import', 'Mobile app / installable PWA with reminders']
+const next = ['Real data entry for every module (today most modules show sample data)', 'Accounts and a database so your phone and laptop stay in sync', 'Wearable sync (Fitbit / Google Health) and bank statement import', 'Push reminders and a native app wrapper', 'More instruments: piano, vocals, drums']
 
 const btn = { padding: '13px 24px', borderRadius: 14, fontWeight: 800, fontSize: 14.5, border: 'none' }
 
@@ -52,16 +71,18 @@ export default function About() {
         ))}
       </div>
 
-      <div style={{ ...label, marginBottom: 12 }}>Guided tour · 6 things to try (about 3 minutes)</div>
+      <div style={{ ...label, marginBottom: 12 }}>Guided tour · 6 things to try (about 4 minutes)</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(290px,1fr))', gap: 14, marginBottom: 44 }}>
         {tour.map((t, i) => (
-          <button key={t.to} onClick={() => nav(t.to)} className="card-hover" style={{ ...card, padding: 20, textAlign: 'left', color: C.text, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <button key={t.title} onClick={() => (t.act ? t.act() : nav(t.to))} className="card-hover" style={{ ...card, padding: 20, textAlign: 'left', color: C.text, display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div style={{ fontWeight: 800, fontSize: 15.5 }}>{i + 1}. {t.icon} {t.title}</div>
             <div style={{ fontSize: 13.5, lineHeight: 1.5 }}><b>Try:</b> {t.try}</div>
             <div style={{ fontSize: 12.5, color: C.sub, lineHeight: 1.5 }}><b>Why it matters:</b> {t.why}</div>
           </button>
         ))}
       </div>
+
+      <InstallCard />
 
       <div style={{ ...label, marginBottom: 12 }}>How it works</div>
       <div style={{ ...card, padding: 24, marginBottom: 44 }}>
@@ -98,6 +119,21 @@ export default function About() {
             <div style={{ flex: 1, minWidth: 220, fontSize: 13.5, color: C.sub, lineHeight: 1.55 }}>{v}</div>
           </div>
         ))}
+      </div>
+
+      <div style={{ ...label, marginBottom: 12 }}>Product thinking: how I’d measure success</div>
+      <div style={{ ...card, padding: '6px 22px', marginBottom: 18 }}>
+        {metrics.map(([k, t, d], i) => (
+          <div key={k} style={{ display: 'flex', gap: 16, padding: '14px 0', borderTop: i ? '1px solid rgba(0,0,0,0.07)' : 'none', flexWrap: 'wrap' }}>
+            <div style={{ width: 100, fontWeight: 800, fontSize: 13.5 }}>{k}</div>
+            <div style={{ flex: 1, minWidth: 220, fontSize: 13.5, lineHeight: 1.55 }}><b>{t}.</b> <span style={{ color: C.sub }}>{d}</span></div>
+          </div>
+        ))}
+      </div>
+      <div style={{ ...card, padding: 22, marginBottom: 44 }}>
+        <div style={{ fontWeight: 800, marginBottom: 8 }}>Experiments I’d run next</div>
+        <ul style={{ color: C.sub, fontSize: 13.5, lineHeight: 1.8, margin: 0, paddingLeft: 20 }}>{experiments.map((e) => <li key={e}>{e}</li>)}</ul>
+        <div style={{ fontSize: 12.5, color: C.muted, marginTop: 12, lineHeight: 1.6 }}>Events are tracked without cookies or personal data. The public demo has analytics ready to switch on; counts in your own browser are kept locally.</div>
       </div>
 
       <div style={{ ...label, marginBottom: 12 }}>What's next</div>

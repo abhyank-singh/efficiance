@@ -10,39 +10,59 @@ const intEnv = (name, dflt) => {
 
 export const isDemo = () => process.env.APP_MODE === 'demo'
 
-// Demo: strict (public + costs money). Personal/local: generous (it's just you).
-export const limits = () => ({
-  perIpPerHour: intEnv('AI_LIMIT_PER_IP_HOUR', isDemo() ? 4 : 60),
-  perIpPerDay: intEnv('AI_LIMIT_PER_IP_DAY', isDemo() ? 10 : 300),
-  globalPerDay: intEnv('AI_LIMIT_GLOBAL_DAY', isDemo() ? 150 : 1000),
-})
+const buckets = new Map() // name -> { hits: Map<ip, number[]>, globalDay }
 
-const hits = new Map() // ip -> number[] (timestamps, last 24h)
-let globalDay = { start: Date.now(), count: 0 }
+/**
+ * Build an Express rate-limit middleware for one feature.
+ * Demo: strict (public + costs money). Personal/local: generous (it's just you).
+ * Env overrides: <PREFIX>_PER_IP_HOUR / _PER_IP_DAY / _GLOBAL_DAY.
+ */
+export function makeLimiter({ name, prefix, demo, personal, message }) {
+  const state = { hits: new Map(), globalDay: { start: Date.now(), count: 0 } }
+  buckets.set(name, state)
+  const L = () => {
+    const d = isDemo() ? demo : personal
+    return {
+      perIpPerHour: intEnv(`${prefix}_PER_IP_HOUR`, d[0]),
+      perIpPerDay: intEnv(`${prefix}_PER_IP_DAY`, d[1]),
+      globalPerDay: intEnv(`${prefix}_GLOBAL_DAY`, d[2]),
+    }
+  }
+  return function limiter(req, res, next) {
+    const now = Date.now()
+    const lim = L()
+    if (now - state.globalDay.start > DAY) state.globalDay = { start: now, count: 0 }
+    if (state.globalDay.count >= lim.globalPerDay) {
+      return res.status(429).json({ error: 'daily_cap', message: `The demo has used up its free AI quota for today. ${message}` })
+    }
+    const ip = req.ip || 'unknown'
+    const ts = (state.hits.get(ip) || []).filter((t) => t > now - DAY)
+    if (ts.length >= lim.perIpPerDay || ts.filter((t) => t > now - HOUR).length >= lim.perIpPerHour) {
+      return res.status(429).json({ error: 'rate_limited', message: `You have reached the demo limit for live AI. ${message}` })
+    }
+    ts.push(now)
+    state.hits.set(ip, ts)
+    state.globalDay.count += 1
+    next()
+  }
+}
 
 setInterval(() => { // keep memory bounded
   const cutoff = Date.now() - DAY
-  for (const [ip, ts] of hits) {
-    const kept = ts.filter((t) => t > cutoff)
-    kept.length ? hits.set(ip, kept) : hits.delete(ip)
+  for (const { hits } of buckets.values()) {
+    for (const [ip, ts] of hits) {
+      const kept = ts.filter((t) => t > cutoff)
+      kept.length ? hits.set(ip, kept) : hits.delete(ip)
+    }
   }
 }, HOUR).unref()
 
-/** Express middleware: 429 with a friendly reason when a cap is hit. */
-export function aiRateLimit(req, res, next) {
-  const now = Date.now()
-  const L = limits()
-  if (now - globalDay.start > DAY) globalDay = { start: now, count: 0 }
-  if (globalDay.count >= L.globalPerDay) {
-    return res.status(429).json({ error: 'daily_cap', message: 'The demo has used up its free AI quota for today. Saved insights are still available.' })
-  }
-  const ip = req.ip || 'unknown'
-  const ts = (hits.get(ip) || []).filter((t) => t > now - DAY)
-  if (ts.length >= L.perIpPerDay || ts.filter((t) => t > now - HOUR).length >= L.perIpPerHour) {
-    return res.status(429).json({ error: 'rate_limited', message: 'You have reached the demo limit for live AI. Saved insights are still available.' })
-  }
-  ts.push(now)
-  hits.set(ip, ts)
-  globalDay.count += 1
-  next()
-}
+// [perIpPerHour, perIpPerDay, globalPerDay]
+export const aiRateLimit = makeLimiter({
+  name: 'insights', prefix: 'AI_LIMIT', demo: [4, 10, 150], personal: [60, 300, 1000],
+  message: 'Saved insights are still available.',
+})
+export const parseRateLimit = makeLimiter({
+  name: 'parse', prefix: 'AI_PARSE_LIMIT', demo: [20, 60, 400], personal: [200, 1000, 5000],
+  message: 'Instant (offline) parsing still works.',
+})

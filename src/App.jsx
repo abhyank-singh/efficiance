@@ -14,6 +14,8 @@ import Review from './pages/Review.jsx'
 import Journal from './pages/Journal.jsx'
 import Settings from './pages/Settings.jsx'
 import About from './pages/About.jsx'
+import Music from './pages/Music.jsx'
+import Recap from './pages/Recap.jsx'
 import { useApp } from './store.jsx'
 import { IS_DEMO } from './config.js'
 
@@ -41,6 +43,8 @@ export default function App() {
         <Route path="/habits" element={<Habits />} />
         <Route path="/finance" element={<Finance />} />
         <Route path="/gym" element={<Gym />} />
+        <Route path="/music" element={<Music />} />
+        <Route path="/recap" element={<Recap />} />
         <Route path="/insights" element={<Insights />} />
         <Route path="/review" element={<Review />} />
         <Route path="/journal" element={<Journal />} />

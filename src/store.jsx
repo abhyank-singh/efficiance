@@ -38,6 +38,12 @@ const initial = {
   celebrated: {},
   milestones: {},
   waterCups: 5,
+  sleepToday: null, // hours, set by Quick Add / manual log; null → seed value
+  workouts: [], // logged via Quick Add
+  practice: { log: [], songs: {}, plan: {} }, // music: log = [{date,min,topic,src}]
+  activity: [], // [{t,type}] lightweight event log → Recap, checklist, metrics
+  starterPack: '',
+  checklistDismissed: false,
   windDown: true,
   integrations: {
     'Google Calendar': true,
@@ -69,8 +75,10 @@ export function AppProvider({ children }) {
   }, [state])
 
   const patch = (p) => setState((s) => ({ ...s, ...(typeof p === 'function' ? p(s) : p) }))
+  // record that something happened (feeds Recap, the getting-started checklist and metrics)
+  const log = (type) => patch((s) => ({ activity: [...(s.activity || []), { t: Date.now(), type }].slice(-500) }))
 
-  return <AppCtx.Provider value={{ s: state, patch }}>{children}</AppCtx.Provider>
+  return <AppCtx.Provider value={{ s: state, patch, log }}>{children}</AppCtx.Provider>
 }
 
 export function useApp() {

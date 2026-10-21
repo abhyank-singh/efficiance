@@ -39,6 +39,15 @@ Your data lives in that browser's storage for `localhost:3001`; use **Settings �
 npm run demo             # http://localhost:3001 in demo mode
 ```
 
+## What's inside
+
+- **Quick Add (⌘K / Ctrl K):** type or speak "spent 450 on swiggy, slept 6.5h, called mom". It proposes the changes, you confirm, and you can undo. An instant offline parser handles common sentences; the AI handles the rest. All model output is validated before it can touch app state (`shared/schema.js`).
+- **Installable web app:** offline-capable PWA (Settings → Install). Works on Mac, Windows, Android and iPhone.
+- **Music (guitar first):** practice plan, free-play timer, metronome, chord library with diagrams, chord-change drill, tuning reference, repertoire. New instruments plug into a registry (`src/pages/Music.jsx`).
+- **Life Recap:** 12-week trends, consistency heatmap and a downloadable share card.
+- **Onboarding:** starter packs and a "first win" step, plus a Getting-started checklist.
+- **Metrics:** privacy-friendly event tracking (optional GoatCounter), documented on the About page.
+
 ## AI provider (pick one in `.env`)
 
 - **Gemini** (free tier available) — `AI_PROVIDER=gemini`, `GEMINI_API_KEY=…`
