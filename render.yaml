@@ -1,0 +1,24 @@
+# Render Blueprint for the PUBLIC DEMO. Push this repo to GitHub, then in Render:
+# New + -> Blueprint -> pick the repo. Secrets (sync:false) are entered in the dashboard, never committed.
+services:
+  - type: web
+    name: efficiance
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: APP_MODE            # demo = fictional data, Google Calendar disabled, strict AI limits
+        value: demo
+      - key: AI_PROVIDER
+        value: gemini
+      - key: AI_MODEL
+        value: gemini-2.5-flash-lite
+      - key: GEMINI_API_KEY      # free key from https://aistudio.google.com/apikey
+        sync: false
+      # Optional overrides (defaults shown): 4 live-AI calls/visitor/hour, 10/day, 150/day across everyone.
+      # - key: AI_LIMIT_PER_IP_HOUR
+      #   value: "4"
+      # - key: AI_LIMIT_GLOBAL_DAY
+      #   value: "150"

@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #E9EDF3;
+  color: #16181D;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+a { color: #2563EB; text-decoration: none; }
+a:hover { color: #0EA478; }
+input, button, textarea, select { font-family: inherit; }
+input:focus, textarea:focus { outline: none; border-color: rgba(59,130,246,0.6) !important; }
+button { cursor: pointer; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 4px; }
+
+@keyframes aur1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(120px,90px) scale(1.15); } }
+@keyframes aur2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-110px,-70px) scale(1.1); } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+@keyframes flame { 0%,100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.18) rotate(4deg); } }
+@keyframes glowpulse { 0%,100% { box-shadow: 0 1px 2px rgba(16,24,40,0.05), 0 10px 30px rgba(16,24,40,0.08); } 50% { box-shadow: 0 8px 48px rgba(16,185,129,0.4); } }
+@keyframes ringin { from { stroke-dashoffset: 201; } }
+@keyframes confall { 0% { transform: translateY(-10vh) rotate(0); } 100% { transform: translateY(110vh) rotate(720deg); } }
+
+/* Hover utilities — the design's style-hover equivalents */
+.nav-btn { transition: background 0.15s ease; }
+.nav-btn:hover { background: rgba(0,0,0,0.06) !important; }
+.lift { transition: transform 0.15s ease; }
+.lift:hover { transform: translateY(-1px); }
+.card-hover { transition: all 0.2s ease; }
+.card-hover:hover { transform: translateY(-2px); border-color: rgba(0,0,0,0.15) !important; }
+.scale-hover { transition: transform 0.2s ease; }
+.scale-hover:hover { transform: scale(1.08); }
+.scale-hover-lg { transition: transform 0.15s ease; }
+.scale-hover-lg:hover { transform: scale(1.1); }
+.bd-hover:hover { border-color: rgba(0,0,0,0.2) !important; }
+.bd-hover-dark:hover { border-color: rgba(0,0,0,0.22) !important; }
+.bd-hover-teal:hover { border-color: rgba(34,211,174,0.5) !important; }
+.muted-hover:hover { color: #5B6472 !important; }
+.text-hover-dark:hover { color: #16181D !important; }
+
+/* Keyboard focus ring (accessibility) */
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid #2563EB; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }

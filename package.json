@@ -1,0 +1,32 @@
+{
+  "name": "efficiance",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Efficiance — one intelligence layer over seven modules. Track your life like your biggest project.",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "node --watch --env-file-if-exists=.env server/index.js",
+    "dev:client": "vite",
+    "build": "vite build",
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "preview": "vite preview",
+    "build:demo": "VITE_APP_MODE=demo vite build",
+    "personal": "vite build && node --env-file-if-exists=.env server/index.js",
+    "demo": "VITE_APP_MODE=demo vite build && APP_MODE=demo node --env-file-if-exists=.env server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "vite": "^6.2.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}
