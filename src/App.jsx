@@ -26,9 +26,9 @@ export default function App() {
     <svg width="0" height="0" style={{ position: 'absolute' }}>
       <defs>
         <linearGradient id="eg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#2563EB" />
-          <stop offset="55%" stopColor="#0EA5C4" />
-          <stop offset="100%" stopColor="#12C27E" />
+          <stop offset="0%" stopColor="var(--a1)" />
+          <stop offset="55%" stopColor="var(--a1-bright)" />
+          <stop offset="100%" stopColor="var(--a2)" />
         </linearGradient>
       </defs>
     </svg>

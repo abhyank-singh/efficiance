@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { C, grad, card, label } from '../theme.js'
+import { C, grad, card, label, glassPrimary } from '../theme.js'
 import { PROFILE } from '../config.js'
 import { InstallCard } from '../components/Install.jsx'
 import { openQuickAdd } from '../components/QuickAdd.jsx'
@@ -65,7 +65,7 @@ export default function About() {
         so those patterns surface on their own.
       </p>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 40 }}>
-        <button onClick={() => nav('/today')} className="lift" style={{ ...btn, background: grad, color: '#fff', boxShadow: '0 8px 28px rgba(16,185,129,0.3)' }}>Try the demo →</button>
+        <button onClick={() => nav('/today')} className="lift" style={{ ...btn, ...glassPrimary, boxShadow: '0 8px 28px rgba(var(--a2-rgb),0.3)' }}>Try the demo →</button>
         {links.map(([name, url]) => (
           <a key={name} href={url} target="_blank" rel="noreferrer" style={{ ...btn, background: '#fff', color: C.text, border: '1px solid rgba(0,0,0,0.1)' }}>{name} ↗</a>
         ))}
@@ -87,14 +87,14 @@ export default function About() {
       <div style={{ ...label, marginBottom: 12 }}>How it works</div>
       <div style={{ ...card, padding: 24, marginBottom: 44 }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16, alignItems: 'stretch' }}>
-          <div style={{ border: '1.5px solid rgba(37,99,235,0.35)', background: 'rgba(37,99,235,0.05)', borderRadius: 16, padding: 18 }}>
+          <div style={{ border: '1.5px solid rgba(var(--a1-rgb),0.35)', background: 'rgba(var(--a1-rgb),0.05)', borderRadius: 16, padding: 18 }}>
             <div style={{ fontWeight: 800, marginBottom: 6 }}>🖥 Your browser</div>
             <div style={{ fontSize: 13.5, color: C.sub, lineHeight: 1.6 }}>React app + <b>all your data</b> (habits, spend, journal…). Nothing is stored on a server, and there is no login.</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: C.muted, fontSize: 12.5, fontWeight: 700, textAlign: 'center', gap: 4 }}>
             <span>only a short text summary,<br />only when you press<br />"Regenerate with AI"</span><span style={{ fontSize: 22 }}>⇄</span>
           </div>
-          <div style={{ border: '1.5px solid rgba(16,185,129,0.4)', background: 'rgba(16,185,129,0.06)', borderRadius: 16, padding: 18 }}>
+          <div style={{ border: '1.5px solid rgba(var(--a2-rgb),0.4)', background: 'rgba(var(--a2-rgb),0.06)', borderRadius: 16, padding: 18 }}>
             <div style={{ fontWeight: 800, marginBottom: 6 }}>☁️ Small API server</div>
             <div style={{ fontSize: 13.5, color: C.sub, lineHeight: 1.6 }}>Holds the AI key (never sent to your browser), rate-limits each visitor, calls the model, validates the JSON answer, and returns insight cards.</div>
           </div>

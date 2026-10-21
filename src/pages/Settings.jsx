@@ -69,7 +69,7 @@ export default function Settings() {
           return (
             <button key={f.name} onClick={() => toggleFocus(f.name)} className="lift" style={{
               background: sel ? gradTab : 'rgba(0,0,0,0.04)',
-              border: '1px solid ' + (sel ? 'rgba(34,211,174,0.6)' : 'rgba(0,0,0,0.09)'),
+              border: '1px solid ' + (sel ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'),
               color: C.text, padding: '11px 17px', borderRadius: 999, fontSize: 13.5, fontWeight: 700,
             }}>
               {f.icon} {f.name}

@@ -54,7 +54,7 @@ function Logo() {
 
 function DemoBanner({ onAbout }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap', background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.22)', borderRadius: 14, padding: '9px 14px', marginBottom: 18, fontSize: 12.5, color: C.sub, fontWeight: 600 }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap', background: 'rgba(var(--a1-rgb),0.08)', border: '1px solid rgba(var(--a1-rgb),0.22)', borderRadius: 14, padding: '9px 14px', marginBottom: 18, fontSize: 12.5, color: C.sub, fontWeight: 600 }}>
       <span>🧪 <b style={{ color: C.text }}>Interactive demo</b> · fictional sample data, saved only in your browser</span>
       <span style={{ display: 'flex', gap: 16 }}>
         <button onClick={resetDemo} style={{ background: 'transparent', border: 'none', color: C.sub, fontWeight: 700, fontSize: 12.5, padding: 0 }}>Reset demo</button>
@@ -78,11 +78,12 @@ export default function Shell() {
 
   return (
     <div style={auroraBg}>
+      <div className="orbs" aria-hidden="true"><i /><i /></div>
       <a href="#main" style={{ position: 'absolute', left: -9999, top: 8, zIndex: 100, background: '#fff', padding: '8px 12px', borderRadius: 8 }} onFocus={(e) => { e.currentTarget.style.left = '8px' }} onBlur={(e) => { e.currentTarget.style.left = '-9999px' }}>Skip to content</a>
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', minHeight: '100vh' }}>
         {!mobile && (
           <div style={{ width: 224, flex: 'none', padding: '18px 0 18px 18px', position: 'sticky', top: 0, height: '100vh' }}>
-            <div style={{
+            <div className="glass-panel" style={{
               background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.085)', borderTopColor: 'rgba(0,0,0,0.05)',
               borderRadius: 22, boxShadow: '0 1px 2px rgba(16,24,40,0.05),0 10px 30px rgba(16,24,40,0.08)',
               height: '100%', display: 'flex', flexDirection: 'column', padding: '20px 12px',
@@ -118,20 +119,20 @@ export default function Shell() {
 
         <main id="main" style={{ flex: 1, minWidth: 0, maxWidth: 1280, margin: '0 auto', padding: 'clamp(16px,3vw,32px) clamp(16px,3vw,36px) 120px' }}>
           {IS_DEMO && <DemoBanner onAbout={() => go('about')} />}
-          <Outlet />
+          <div className="stagger-page" key={pathname}><Outlet /></div>
         </main>
       </div>
 
       {mobile && (
         <>
-          <div style={{
+          <div className="glass-panel" style={{
             position: 'fixed', bottom: 'calc(14px + env(safe-area-inset-bottom))', left: 14, right: 14, zIndex: 40,
             background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 20,
             boxShadow: '0 6px 28px rgba(16,24,40,0.16)', display: 'flex', justifyContent: 'space-around', padding: '8px 6px',
           }}>
             {bnDefs.map((d) => (
               <button key={d.id} onClick={() => go(d.id)} style={{
-                background: P(d.id) ? 'linear-gradient(135deg,rgba(59,130,246,0.35),rgba(16,185,129,0.35))' : 'transparent',
+                background: P(d.id) ? 'linear-gradient(135deg,rgba(var(--a1-rgb),0.35),rgba(var(--a2-rgb),0.35))' : 'transparent',
                 border: 'none', borderRadius: 12, padding: '8px 10px', display: 'flex', flexDirection: 'column',
                 alignItems: 'center', gap: 3, color: P(d.id) ? C.text : C.sub, fontSize: 10, fontWeight: 700, minWidth: 48,
               }}>

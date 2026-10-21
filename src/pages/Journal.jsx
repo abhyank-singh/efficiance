@@ -4,7 +4,7 @@ import { journal as seedJournal } from '../data/seed.js'
 
 const moodStrip = [3, 4, 2, 3, 4, 5, 3, 2, 4, 4, 3, 5, 4, 3].map((v) => ({
   h: v * 9 + 8,
-  c: v >= 4 ? 'linear-gradient(180deg,#2563EB,#12B981)' : v === 3 ? 'rgba(59,130,246,0.5)' : 'rgba(148,163,184,0.35)',
+  c: v >= 4 ? 'linear-gradient(180deg,var(--a1),var(--a2))' : v === 3 ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(148,163,184,0.35)',
 }))
 
 export default function Journal() {

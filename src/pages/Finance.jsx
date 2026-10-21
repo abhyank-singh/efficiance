@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import { useApp, fmtINR } from '../store.jsx'
-import { C, grad, gradTab, card, label } from '../theme.js'
+import { C, grad, gradTab, card, label, glassPrimary } from '../theme.js'
 import { txDays as seedTxDays, budgets as budgetDefs, subs, sips, wishlist } from '../data/seed.js'
 import { shortDay } from '../data/dates.js'
 
-const gradText = { background: 'linear-gradient(135deg,#2563EB,#0EA478)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
+const gradText = { background: 'linear-gradient(135deg,var(--a1),var(--ok))', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
 
 const allocSegs = [
-  { color: '#1D4ED8', dash: '140.7 201', off: '0' },
-  { color: '#0B7F5C', dash: '36.2 201', off: '-140.7' },
+  { color: 'var(--a1)', dash: '140.7 201', off: '0' },
+  { color: 'var(--ok)', dash: '36.2 201', off: '-140.7' },
   { color: '#F59E0B', dash: '24.1 201', off: '-176.9' },
 ]
 const allocLegend = [
-  { name: 'Equity', pct: '70%', color: '#1D4ED8' },
-  { name: 'Debt', pct: '18%', color: '#0B7F5C' },
+  { name: 'Equity', pct: '70%', color: 'var(--a1)' },
+  { name: 'Debt', pct: '18%', color: 'var(--ok)' },
   { name: 'Gold', pct: '12%', color: '#F59E0B' },
 ]
 
@@ -36,9 +36,9 @@ export default function Finance() {
     return {
       ...b, spentFmt: fmtINR(b.spent), capFmt: fmtINR(b.cap),
       pctText: Math.min(pct, 999) + '%', w: Math.min(pct, 100) + '%',
-      fill: over ? 'linear-gradient(90deg,#EF4444,#F87171)' : warn ? 'linear-gradient(90deg,#F59E0B,#FBBF24)' : 'linear-gradient(90deg,#2563EB,#12B981)',
+      fill: over ? 'linear-gradient(90deg,#EF4444,#F87171)' : warn ? 'linear-gradient(90deg,#F59E0B,#FBBF24)' : 'linear-gradient(90deg,var(--a1),var(--a2))',
       note: over ? 'Over budget' : warn ? 'Nearing limit' : 'On track',
-      noteCol: over ? '#F87171' : warn ? '#F59E0B' : '#0EA478',
+      noteCol: over ? '#F87171' : warn ? '#F59E0B' : 'var(--ok)',
     }
   })
 
@@ -70,7 +70,7 @@ export default function Finance() {
               <div style={{ color: C.sub, fontSize: 13, marginBottom: 14 }}>
                 Today so far: <span style={{ color: C.text, fontWeight: 800, fontFeatureSettings: "'tnum'" }}>{todaySpent}</span>
               </div>
-              <button onClick={() => patch({ qaOpen: true })} className="lift" style={{ width: '100%', background: grad, border: 'none', color: '#fff', padding: 13, borderRadius: 14, fontWeight: 800, fontSize: 14.5 }}>
+              <button onClick={() => patch({ qaOpen: true })} className="lift" style={{ width: '100%', ...glassPrimary, padding: 13, borderRadius: 14, fontWeight: 800, fontSize: 14.5 }}>
                 + Log a spend
               </button>
             </div>
@@ -85,7 +85,7 @@ export default function Finance() {
                   ⬆ Upload bank statement CSV / PDF
                 </button>
               ) : (
-                <div style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.35)', borderRadius: 14, padding: 16, animation: 'rise 0.2s ease-out' }}>
+                <div style={{ background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.35)', borderRadius: 14, padding: 16, animation: 'rise 0.2s ease-out' }}>
                   <div style={{ fontWeight: 800, fontSize: 13.5, color: C.greenDeep, marginBottom: 8 }}>statement_jun.csv parsed ✓</div>
                   <div style={{ fontSize: 12.5, color: C.sub, lineHeight: 1.7 }}>
                     142 transactions found · 131 auto-categorized<br />🍔 Food ₹6,120 · 🛒 Groceries ₹4,890 · 🛺 Transport ₹1,980
@@ -183,7 +183,7 @@ export default function Finance() {
                   <span>Invested: <b style={{ color: C.text, fontFeatureSettings: "'tnum'" }}>{sip.total}</b></span>
                 </div>
                 {sip.goal && (
-                  <div style={{ marginTop: 11, display: 'inline-block', background: 'linear-gradient(135deg,rgba(59,130,246,0.22),rgba(16,185,129,0.22))', border: '1px solid rgba(34,211,174,0.4)', borderRadius: 999, padding: '5px 13px', fontSize: 11.5, fontWeight: 700 }}>
+                  <div style={{ marginTop: 11, display: 'inline-block', background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.22),rgba(var(--a2-rgb),0.22))', border: '1px solid rgba(var(--a1-rgb),0.4)', borderRadius: 999, padding: '5px 13px', fontSize: 11.5, fontWeight: 700 }}>
                     🎯 {sip.goal}
                   </div>
                 )}

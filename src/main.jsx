@@ -6,6 +6,7 @@ import App from './App.jsx'
 import './styles.css'
 import { registerServiceWorker } from './pwa.js'
 import { initAnalytics, track } from './track.js'
+import { initTilt } from './motion.js'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -18,5 +19,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 )
 
 registerServiceWorker()
+initTilt()
 initAnalytics()
 track('visit')

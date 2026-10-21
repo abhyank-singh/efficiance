@@ -1,31 +1,51 @@
 // Design tokens — extracted verbatim from the Claude Design prototype (Efficiance.dc.html).
 // The prototype is the source of truth; change values there first.
 
+// All colours are CSS variables defined in styles.css (:root). To re-skin the app, edit that one block.
 export const C = {
-  bg: '#E9EDF3',
-  text: '#16181D',
-  sub: '#5B6472',
-  muted: '#5F6B7D',
-  blue: '#1D4ED8',
-  blueBright: '#3B82F6',
-  green: '#12B981',
-  greenDeep: '#0B7F5C',
-  emerald: '#10B981',
-  amber: '#B45309',
+  bg: 'var(--bg)',
+  text: 'var(--text)',
+  sub: 'var(--sub)',
+  muted: 'var(--muted)',
+  blue: 'var(--a1)',            // primary accent (text/links)
+  blueBright: 'var(--a1-bright)',
+  green: 'var(--a2-deep)',
+  greenDeep: 'var(--ok)',       // positive/OK text
+  emerald: 'var(--a2-deep)',
+  amber: 'var(--warn)',
 }
 
-export const grad = 'linear-gradient(135deg,#2563EB,#12B981)'
-export const gradSoft = 'linear-gradient(135deg,rgba(59,130,246,0.32),rgba(16,185,129,0.32))'
-export const gradTab = 'linear-gradient(135deg,rgba(59,130,246,0.35),rgba(16,185,129,0.35))'
+// Brand gradient for fills that carry white text (buttons, avatars, progress bars).
+export const grad = 'linear-gradient(135deg,var(--a1),var(--a2-deep))'
+export const gradSoft = 'linear-gradient(135deg,rgba(var(--a1-rgb),0.30),rgba(var(--a2-rgb),0.34))'
+export const gradTab = 'linear-gradient(135deg,rgba(var(--a1-rgb),0.32),rgba(var(--a2-rgb),0.36))'
+
+// Glass: translucent, blurred, with a bright top edge. Primary = tinted glass, secondary = frosted white.
+export const glassPrimary = {
+  background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.92),rgba(var(--a2d-rgb),0.88))',
+  border: '1px solid rgba(255,255,255,0.55)',
+  color: '#fff',
+  textShadow: '0 1px 1px rgba(0,0,0,0.18)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 26px rgba(var(--a1-rgb),0.28)',
+  backdropFilter: 'blur(10px) saturate(150%)',
+  WebkitBackdropFilter: 'blur(10px) saturate(150%)',
+}
+export const glassSoft = {
+  background: 'rgba(255,255,255,0.58)',
+  border: '1px solid rgba(255,255,255,0.85)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95), 0 6px 18px rgba(20,50,40,0.10)',
+  backdropFilter: 'blur(12px) saturate(160%)',
+  WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+}
 
 export const auroraBg = {
   minHeight: '100vh',
   position: 'relative',
   overflowX: 'hidden',
   background:
-    'radial-gradient(1200px 780px at 84% -14%,#DEEAFF 0%,rgba(233,237,243,0) 52%),' +
-    'radial-gradient(1000px 660px at 2% 108%,#D8F1E6 0%,rgba(233,237,243,0) 58%),' +
-    'linear-gradient(170deg,#EDF0F5 0%,#E2E7EF 100%)',
+    'radial-gradient(1200px 780px at 84% -14%,var(--aurora-1) 0%,rgba(238,244,238,0) 52%),' +
+    'radial-gradient(1000px 660px at 2% 108%,var(--aurora-2) 0%,rgba(238,244,238,0) 58%),' +
+    'linear-gradient(170deg,var(--bg-top) 0%,var(--bg-bottom) 100%)',
   animation: 'rise 0.25s ease-out',
 }
 
@@ -46,8 +66,7 @@ export const label = {
 }
 
 export const pillBtn = {
-  background: 'rgba(0,0,0,0.045)',
-  border: '1px solid rgba(0,0,0,0.09)',
+  ...glassSoft,
   color: C.text,
   padding: '10px 18px',
   borderRadius: 999,
@@ -56,9 +75,7 @@ export const pillBtn = {
 }
 
 export const gradBtn = {
-  background: grad,
-  border: 'none',
-  color: '#fff',
+  ...glassPrimary,
   fontWeight: 800,
 }
 

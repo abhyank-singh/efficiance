@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useApp } from '../store.jsx'
-import { C, grad, gradTab, card, label } from '../theme.js'
+import { C, grad, gradTab, card, label, glassPrimary } from '../theme.js'
 import { library, legDay, sleep } from '../data/seed.js'
 
-const heatCols = ['rgba(0,0,0,0.045)', 'rgba(59,130,246,0.3)', 'rgba(59,130,246,0.55)', 'rgba(16,185,129,0.55)', 'rgba(16,185,129,0.9)']
+const heatCols = ['rgba(0,0,0,0.045)', 'rgba(var(--a1-rgb),0.3)', 'rgba(var(--a1-rgb),0.55)', 'rgba(var(--a2-rgb),0.55)', 'rgba(var(--a2-rgb),0.9)']
 const gymHeat = Array.from({ length: 28 }, (_, i) => heatCols[(i * 11 + 5 + i * i * 2) % 13 % 5])
 const volBars = [42, 48, 45, 55, 52, 61, 58, 66].map((v) => Math.round((v / 66) * 90))
 const templates = [
@@ -17,7 +17,7 @@ const mkBars = (rows) => rows.map((d) => ({
   label: d.label,
   hLabel: d.h.toFixed(1) + 'h',
   barH: Math.round((d.h / sleepMax) * 120),
-  col: d.h >= 7.5 ? 'linear-gradient(180deg,#2563EB,#12B981)' : d.h >= 6.5 ? 'rgba(59,130,246,0.55)' : 'rgba(148,163,184,0.4)',
+  col: d.h >= 7.5 ? 'linear-gradient(180deg,var(--a1),var(--a2))' : d.h >= 6.5 ? 'rgba(var(--a1-rgb),0.55)' : 'rgba(148,163,184,0.4)',
 }))
 
 export default function Gym() {
@@ -88,13 +88,13 @@ export default function Gym() {
 
       {tab === 'train' && !s.workoutOn && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 16 }}>
-          <div style={{ gridColumn: '1/-1', background: 'linear-gradient(135deg,rgba(59,130,246,0.14),rgba(16,185,129,0.14))', border: '1px solid rgba(34,211,174,0.35)', borderRadius: 22, padding: 26, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+          <div style={{ gridColumn: '1/-1', background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.14),rgba(var(--a2-rgb),0.14))', border: '1px solid rgba(var(--a1-rgb),0.35)', borderRadius: 22, padding: 26, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
             <div>
               <div style={{ ...label, marginBottom: 8 }}>Up next · fits your 3 PM free block</div>
               <div style={{ fontWeight: 800, fontSize: 24 }}>🦵 Leg Day</div>
               <div style={{ color: C.sub, fontSize: 13.5, marginTop: 5 }}>Squat · Leg Press · Lunges · Leg Curl · Calf Raise</div>
             </div>
-            <button onClick={() => patch({ workoutOn: true })} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '15px 30px', borderRadius: 15, fontWeight: 800, fontSize: 15, boxShadow: '0 8px 28px rgba(16,185,129,0.35)' }}>
+            <button onClick={() => patch({ workoutOn: true })} className="lift" style={{ ...glassPrimary, padding: '15px 30px', borderRadius: 15, fontWeight: 800, fontSize: 15, boxShadow: '0 8px 28px rgba(var(--a2-rgb),0.35)' }}>
               Start workout →
             </button>
           </div>
@@ -126,8 +126,8 @@ export default function Gym() {
               {legDay.map((e, i) => (
                 <button key={e.name} onClick={() => pickExercise(i)} style={{
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  background: wIdx === i ? 'rgba(59,130,246,0.16)' : 'rgba(0,0,0,0.035)',
-                  border: '1px solid ' + (wIdx === i ? 'rgba(59,130,246,0.5)' : 'rgba(0,0,0,0.07)'),
+                  background: wIdx === i ? 'rgba(var(--a1-rgb),0.16)' : 'rgba(0,0,0,0.035)',
+                  border: '1px solid ' + (wIdx === i ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(0,0,0,0.07)'),
                   borderRadius: 13, padding: '12px 15px', color: C.text, textAlign: 'left', gap: 8,
                 }}>
                   <span style={{ fontWeight: 700, fontSize: 13.5 }}>{e.name}</span>
@@ -140,7 +140,7 @@ export default function Gym() {
           <div style={{ ...card, padding: 22 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
               <div style={{ fontWeight: 700, fontSize: 18 }}>{curEx.name}</div>
-              <span style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.25),rgba(16,185,129,0.25))', border: '1px solid rgba(34,211,174,0.45)', borderRadius: 999, padding: '5px 12px', fontSize: 11.5, fontWeight: 800, whiteSpace: 'nowrap' }}>
+              <span style={{ background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.25),rgba(var(--a2-rgb),0.25))', border: '1px solid rgba(var(--a1-rgb),0.45)', borderRadius: 999, padding: '5px 12px', fontSize: 11.5, fontWeight: 800, whiteSpace: 'nowrap' }}>
                 🏅 PB: {curEx.pb}kg
               </span>
             </div>
@@ -166,7 +166,7 @@ export default function Gym() {
             </div>
 
             <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-              <button onClick={logSet} className="lift" style={{ flex: 1, background: grad, border: 'none', color: '#fff', padding: 13, borderRadius: 13, fontWeight: 800, fontSize: 14.5 }}>
+              <button onClick={logSet} className="lift" style={{ flex: 1, ...glassPrimary, padding: 13, borderRadius: 13, fontWeight: 800, fontSize: 14.5 }}>
                 Log set ✓
               </button>
               {rest > 0 && (
@@ -177,7 +177,7 @@ export default function Gym() {
             </div>
 
             {pbNow && (
-              <div style={{ marginTop: 14, background: 'linear-gradient(135deg,rgba(59,130,246,0.2),rgba(16,185,129,0.2))', border: '1px solid rgba(34,211,174,0.55)', borderRadius: 14, padding: '13px 16px', fontWeight: 800, fontSize: 14, animation: 'glowpulse 2s ease-in-out infinite' }}>
+              <div style={{ marginTop: 14, background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.2),rgba(var(--a2-rgb),0.2))', border: '1px solid rgba(var(--a1-rgb),0.55)', borderRadius: 14, padding: '13px 16px', fontWeight: 800, fontSize: 14, animation: 'glowpulse 2s ease-in-out infinite' }}>
                 🎉 New personal best! That's the strongest you've ever been.
               </div>
             )}
@@ -270,7 +270,7 @@ export default function Gym() {
               <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 4 }}>Sync sleep automatically</div>
               <div style={{ color: C.muted, fontSize: 12.5, marginBottom: 12 }}>Google Fit connected · demo mode</div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <span style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.4)', borderRadius: 999, padding: '6px 13px', fontSize: 12, fontWeight: 700, color: C.greenDeep }}>❤️ Google Fit ✓</span>
+                <span style={{ background: 'rgba(var(--a2-rgb),0.12)', border: '1px solid rgba(var(--a2-rgb),0.4)', borderRadius: 999, padding: '6px 13px', fontSize: 12, fontWeight: 700, color: C.greenDeep }}>❤️ Google Fit ✓</span>
                 <span style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 999, padding: '6px 13px', fontSize: 12, fontWeight: 700, color: C.sub }}>🍎 Apple Health</span>
               </div>
             </div>
@@ -284,7 +284,7 @@ export default function Gym() {
             <div style={{ ...label, marginBottom: 16 }}>Weekly volume · tonnes lifted</div>
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 100 }}>
               {volBars.map((h, i) => (
-                <div key={i} style={{ flex: 1, height: h, background: 'linear-gradient(180deg,#2563EB,#12B981)', borderRadius: '6px 6px 2px 2px', opacity: 0.85 }} />
+                <div key={i} style={{ flex: 1, height: h, background: 'linear-gradient(180deg,var(--a1),var(--a2))', borderRadius: '6px 6px 2px 2px', opacity: 0.85 }} />
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, fontSize: 11, color: C.muted, fontWeight: 700 }}>
@@ -318,13 +318,13 @@ export default function Gym() {
             <div style={{ marginTop: 16, borderTop: '1px solid rgba(0,0,0,0.07)', paddingTop: 14 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                 <span style={{ fontWeight: 700, fontSize: 13.5 }}>💧 Water · {s.waterCups} / 8 glasses</span>
-                <button onClick={() => patch({ waterCups: Math.min(8, s.waterCups + 1) })} style={{ background: 'rgba(59,130,246,0.18)', border: '1px solid rgba(59,130,246,0.45)', color: C.text, padding: '6px 13px', borderRadius: 999, fontWeight: 800, fontSize: 12 }}>
+                <button onClick={() => patch({ waterCups: Math.min(8, s.waterCups + 1) })} style={{ background: 'rgba(var(--a1-rgb),0.18)', border: '1px solid rgba(var(--a1-rgb),0.45)', color: C.text, padding: '6px 13px', borderRadius: 999, fontWeight: 800, fontSize: 12 }}>
                   +1 glass
                 </button>
               </div>
               <div style={{ display: 'flex', gap: 5 }}>
                 {Array.from({ length: 8 }, (_, i) => (
-                  <div key={i} style={{ flex: 1, height: 26, borderRadius: 7, background: i < s.waterCups ? 'rgba(59,130,246,0.25)' : 'rgba(0,0,0,0.035)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>
+                  <div key={i} style={{ flex: 1, height: 26, borderRadius: 7, background: i < s.waterCups ? 'rgba(var(--a1-rgb),0.25)' : 'rgba(0,0,0,0.035)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>
                     {i < s.waterCups ? '💧' : '·'}
                   </div>
                 ))}

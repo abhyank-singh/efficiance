@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { C, grad, card, label } from '../theme.js'
+import { C, grad, card, label, glassPrimary } from '../theme.js'
 import { monthDay } from '../data/dates.js'
 
 const wins = [
@@ -32,7 +32,7 @@ export default function Review() {
         <div style={{ ...label, color: C.sub, marginBottom: 14 }}>🏆 Wins of the week</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 10, marginBottom: 28 }}>
           {wins.map((w) => (
-            <div key={w.t} style={{ display: 'flex', alignItems: 'center', gap: 11, background: 'linear-gradient(135deg,rgba(59,130,246,0.1),rgba(16,185,129,0.1))', border: '1px solid rgba(34,211,174,0.25)', borderRadius: 14, padding: '13px 15px' }}>
+            <div key={w.t} style={{ display: 'flex', alignItems: 'center', gap: 11, background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.1),rgba(var(--a2-rgb),0.1))', border: '1px solid rgba(var(--a1-rgb),0.25)', borderRadius: 14, padding: '13px 15px' }}>
               <span style={{ fontSize: 18 }}>{w.i}</span>
               <span style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.35 }}>{w.t}</span>
             </div>
@@ -61,7 +61,7 @@ export default function Review() {
           </div>
         </div>
 
-        <button onClick={() => nav('/calendar')} className="lift" style={{ marginTop: 22, width: '100%', background: grad, border: 'none', color: '#fff', padding: 15, borderRadius: 15, fontWeight: 800, fontSize: 15 }}>
+        <button onClick={() => nav('/calendar')} className="lift" style={{ marginTop: 22, width: '100%', ...glassPrimary, padding: 15, borderRadius: 15, fontWeight: 800, fontSize: 15 }}>
           Plan next week → pre-fill calendar blocks
         </button>
       </div>

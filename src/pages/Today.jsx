@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import { useApp, fmtINR } from '../store.jsx'
-import { C, grad, card, label, pillBtn } from '../theme.js'
+import { C, grad, card, label, pillBtn, glassPrimary } from '../theme.js'
 import { habits as habitDefs, journal as seedJournal } from '../data/seed.js'
 import { getDayBlocks, getDueList, topGoals, MOODS } from '../data/derived.js'
 import { shortDay, longDay } from '../data/dates.js'
 import { DEFAULT_NAME } from '../config.js'
 import { QuickBar } from '../components/QuickAdd.jsx'
 import Checklist from '../components/Checklist.jsx'
+import CountUp from '../components/CountUp.jsx'
 
 const summaryCard = { ...card, padding: 22 }
 
@@ -81,7 +82,7 @@ export default function Today() {
             Good morning, {userName}. <span style={{ color: C.blue }}>3 meetings</span> today with a <span style={{ color: C.greenDeep }}>2-hour free block at 3 PM</span> — perfect for your scheduled Leg Day. Mom's birthday is <span style={{ color: C.greenDeep }}>in 2 days 🎂</span>. You're <span style={{ color: C.amber }}>₹800 over</span> your food budget this week. You slept <span style={{ color: C.sub }}>{sleepLabel}</span>{sleepHrs < 7 ? ' — consider an earlier night.' : ' — nicely rested.'}
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
-            <button onClick={claimBlock} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '10px 18px', borderRadius: 999, fontWeight: 800, fontSize: 13 }}>
+            <button onClick={claimBlock} className="lift" style={{ ...glassPrimary, padding: '10px 18px', borderRadius: 999, fontWeight: 800, fontSize: 13 }}>
               🏋️ Claim 3 PM for Leg Day
             </button>
             <button onClick={() => nav('/people')} className="bd-hover" style={pillBtn}>🎂 Plan Mom's gift</button>
@@ -92,7 +93,7 @@ export default function Today() {
 
       {evening && (
         <div style={{
-          ...card, border: '1px solid rgba(34,211,174,0.28)', borderTopColor: 'rgba(0,0,0,0.05)', borderRadius: 24,
+          ...card, border: '1px solid rgba(var(--a1-rgb),0.28)', borderTopColor: 'rgba(0,0,0,0.05)', borderRadius: 24,
           padding: 'clamp(22px,3vw,32px)', marginBottom: 20,
           animation: s.sealed ? 'glowpulse 2.4s ease-in-out infinite' : 'none',
         }}>
@@ -128,7 +129,7 @@ export default function Today() {
               <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
                 {MOODS.map((e) => (
                   <button key={e} onClick={() => patch({ mood: e })} className="scale-hover-lg" style={{
-                    background: s.mood === e ? 'linear-gradient(135deg,rgba(59,130,246,0.4),rgba(16,185,129,0.4))' : 'rgba(0,0,0,0.04)',
+                    background: s.mood === e ? 'linear-gradient(135deg,rgba(var(--a1-rgb),0.4),rgba(var(--a2-rgb),0.4))' : 'rgba(0,0,0,0.04)',
                     border: '1px solid rgba(0,0,0,0.08)', borderRadius: 12, padding: '8px 10px', fontSize: 18,
                   }}>
                     {e}
@@ -144,7 +145,7 @@ export default function Today() {
                 placeholder="One thing that matters most"
                 style={{ width: '100%', background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 12, padding: 12, color: C.text, fontSize: 13.5 }}
               />
-              <button onClick={seal} className="lift" style={{ marginTop: 12, width: '100%', background: grad, border: 'none', color: '#fff', padding: 12, borderRadius: 12, fontWeight: 800, fontSize: 14 }}>
+              <button onClick={seal} className="lift" style={{ marginTop: 12, width: '100%', ...glassPrimary, padding: 12, borderRadius: 12, fontWeight: 800, fontSize: 14 }}>
                 Seal the day ✨
               </button>
             </div>
@@ -210,11 +211,11 @@ export default function Today() {
         <div className="card-hover" style={summaryCard}>
           <CardHeader title="This week's spend" action="Open →" onAction={() => nav('/finance')} />
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-            <span style={{ fontWeight: 800, fontSize: 26, fontFeatureSettings: "'tnum'" }}>₹14,250</span>
+            <span style={{ fontWeight: 800, fontSize: 26, fontFeatureSettings: "'tnum'" }}><CountUp text="₹14,250" /></span>
             <span style={{ color: C.sub, fontSize: 13 }}>of ₹27,000</span>
           </div>
           <div style={{ height: 10, background: 'rgba(0,0,0,0.05)', borderRadius: 6, margin: '12px 0', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: '53%', background: 'linear-gradient(90deg,#2563EB,#12B981)', borderRadius: 6 }} />
+            <div style={{ height: '100%', width: '53%', background: 'linear-gradient(90deg,var(--a1),var(--a2))', borderRadius: 6 }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5 }}>
             <span style={{ color: C.sub }}>Today so far</span>
@@ -230,7 +231,7 @@ export default function Today() {
           <div style={{ ...label, marginBottom: 14 }}>Next workout</div>
           <div style={{ fontWeight: 700, fontSize: 19 }}>🦵 Leg Day</div>
           <div style={{ color: C.sub, fontSize: 13, margin: '6px 0 16px' }}>5 exercises · ~65 min · fits your 3 PM free block</div>
-          <button onClick={startWorkout} className="lift" style={{ width: '100%', background: grad, border: 'none', color: '#fff', padding: 12, borderRadius: 12, fontWeight: 800, fontSize: 14 }}>
+          <button onClick={startWorkout} className="lift" style={{ width: '100%', ...glassPrimary, padding: 12, borderRadius: 12, fontWeight: 800, fontSize: 14 }}>
             Start workout →
           </button>
         </div>
@@ -252,8 +253,8 @@ export default function Today() {
         </div>
 
         <div className="card-hover" style={{
-          gridColumn: '1/-1', background: 'linear-gradient(135deg,rgba(59,130,246,0.12),rgba(16,185,129,0.12))',
-          border: '1px solid rgba(34,211,174,0.3)', borderRadius: 22,
+          gridColumn: '1/-1', background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.12),rgba(var(--a2-rgb),0.12))',
+          border: '1px solid rgba(var(--a1-rgb),0.3)', borderRadius: 22,
           boxShadow: '0 1px 2px rgba(16,24,40,0.05),0 10px 30px rgba(16,24,40,0.08)', padding: 22,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap',
         }}>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../store.jsx'
-import { C, grad, label } from '../theme.js'
+import { C, grad, label, glassPrimary } from '../theme.js'
 import { payees } from '../data/seed.js'
 import { openQuickAdd } from './QuickAdd.jsx'
 
@@ -40,8 +40,8 @@ export default function Fab({ mobile }) {
     <>
       <button aria-label="Quick actions" aria-expanded={open} onClick={() => setOpen(!open)} className="scale-hover" style={{
         position: 'fixed', bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 24, right: 22, zIndex: 45, width: 58, height: 58,
-        borderRadius: '50%', background: grad, border: 'none', color: '#fff', fontSize: 26, fontWeight: 400,
-        boxShadow: '0 8px 32px rgba(16,185,129,0.45)',
+        borderRadius: '50%', ...glassPrimary, fontSize: 26, fontWeight: 400,
+        boxShadow: '0 8px 32px rgba(var(--a2-rgb),0.45)',
       }}>
         {open ? '✕' : '+'}
       </button>
@@ -88,8 +88,8 @@ export default function Fab({ mobile }) {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {payees.map((p, i) => (
                 <button key={p.name} onClick={() => setPayeeIdx(i)} style={{
-                  background: i === payeeIdx ? 'rgba(59,130,246,0.18)' : 'rgba(0,0,0,0.045)',
-                  border: '1px solid ' + (i === payeeIdx ? 'rgba(59,130,246,0.5)' : 'rgba(0,0,0,0.08)'),
+                  background: i === payeeIdx ? 'rgba(var(--a1-rgb),0.18)' : 'rgba(0,0,0,0.045)',
+                  border: '1px solid ' + (i === payeeIdx ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(0,0,0,0.08)'),
                   borderRadius: 999, padding: '8px 14px', color: C.text, fontSize: 13, fontWeight: 700,
                 }}>
                   {p.icon} {p.name}
@@ -98,11 +98,11 @@ export default function Fab({ mobile }) {
             </div>
             {picked && (
               <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 8, color: C.sub, fontSize: 13 }}>
-                Category: <span style={{ background: 'rgba(59,130,246,0.18)', border: '1px solid rgba(59,130,246,0.4)', borderRadius: 999, padding: '5px 12px', color: C.text, fontWeight: 700, fontSize: 12.5 }}>{picked.cat}</span>
+                Category: <span style={{ background: 'rgba(var(--a1-rgb),0.18)', border: '1px solid rgba(var(--a1-rgb),0.4)', borderRadius: 999, padding: '5px 12px', color: C.text, fontWeight: 700, fontSize: 12.5 }}>{picked.cat}</span>
                 <span style={{ color: C.muted, fontSize: 12 }}>auto-suggested</span>
               </div>
             )}
-            <button onClick={addTx} className="lift" style={{ marginTop: 20, width: '100%', background: grad, border: 'none', color: '#fff', padding: 14, borderRadius: 14, fontWeight: 800, fontSize: 15 }}>
+            <button onClick={addTx} className="lift" style={{ marginTop: 20, width: '100%', ...glassPrimary, padding: 14, borderRadius: 14, fontWeight: 800, fontSize: 15 }}>
               Done ✓
             </button>
           </div>

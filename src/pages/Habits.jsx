@@ -3,8 +3,8 @@ import { useApp } from '../store.jsx'
 import { C, grad, gradTab, card, label } from '../theme.js'
 import { habits as habitDefs, breakHabits as breakDefs } from '../data/seed.js'
 
-const heatCols = ['rgba(0,0,0,0.045)', 'rgba(59,130,246,0.3)', 'rgba(59,130,246,0.55)', 'rgba(16,185,129,0.55)', 'rgba(16,185,129,0.9)']
-const gradText = { background: 'linear-gradient(135deg,#2563EB,#0EA478)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
+const heatCols = ['rgba(0,0,0,0.045)', 'rgba(var(--a1-rgb),0.3)', 'rgba(var(--a1-rgb),0.55)', 'rgba(var(--a2-rgb),0.55)', 'rgba(var(--a2-rgb),0.9)']
+const gradText = { background: 'linear-gradient(135deg,var(--a1),var(--ok))', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
 
 export default function Habits() {
   const { s, patch } = useApp()
@@ -112,7 +112,7 @@ export default function Habits() {
             const max = Math.max(...trend, b.from)
             const bars = trend.map((v, i) => ({
               h: Math.max(6, Math.round((v / max) * 44)),
-              c: i === 4 ? 'linear-gradient(180deg,#2563EB,#12B981)' : 'rgba(148,163,184,0.35)',
+              c: i === 4 ? 'linear-gradient(180deg,var(--a1),var(--a2))' : 'rgba(148,163,184,0.35)',
               lbl: i === 4 ? 'now' : 'w' + (i + 1),
             }))
             return (
@@ -151,7 +151,7 @@ export default function Habits() {
                       style={{ width: '100%', background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 12, padding: '11px 13px', color: C.text, fontSize: 13 }}
                     />
                     <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                      <button onClick={saveNote} style={{ flex: 1, background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.45)', color: C.text, padding: 9, borderRadius: 10, fontWeight: 700, fontSize: 12.5 }}>
+                      <button onClick={saveNote} style={{ flex: 1, background: 'rgba(var(--a1-rgb),0.2)', border: '1px solid rgba(var(--a1-rgb),0.45)', color: C.text, padding: 9, borderRadius: 10, fontWeight: 700, fontSize: 12.5 }}>
                         Save note
                       </button>
                       <button onClick={() => setNoteFor(null)} style={{ background: 'none', border: 'none', color: C.muted, fontWeight: 700, fontSize: 12.5, padding: '9px 12px' }}>

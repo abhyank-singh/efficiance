@@ -1,7 +1,7 @@
 // Efficiance service worker: makes the app installable and usable offline.
 // Strategy: network-first for pages (so deploys show up), cache-first for hashed assets,
 // stale-while-revalidate for fonts. /api/* is never cached (AI falls back to saved data offline).
-const CACHE = 'efficiance-v2'
+const CACHE = 'efficiance-v3'
 const PRECACHE = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
 
 self.addEventListener('install', (e) => {

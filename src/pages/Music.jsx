@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useApp } from '../store.jsx'
-import { C, grad, card, label } from '../theme.js'
+import { C, grad, card, label, glassPrimary } from '../theme.js'
 import { instruments, guitarPlan, practiceSeed, songs, chords, tuning, DAILY_GOAL_MIN } from '../data/music.js'
 import { weekday } from '../data/dates.js'
 import { todayKey } from '../data/actions.js'
 import { useMetronome, playTone } from '../audio.js'
 import { track } from '../track.js'
+import CountUp from '../components/CountUp.jsx'
 
 /* ───────────── practice maths (shared by the panel) ───────────── */
 
@@ -44,8 +45,8 @@ const Section = ({ title, hint, children, style }) => (
 )
 
 const pill = (on) => ({
-  background: on ? 'linear-gradient(135deg,rgba(59,130,246,0.35),rgba(16,185,129,0.35))' : 'rgba(0,0,0,0.045)',
-  border: '1px solid ' + (on ? 'rgba(34,211,174,0.6)' : 'rgba(0,0,0,0.09)'), color: C.text,
+  background: on ? 'linear-gradient(135deg,rgba(var(--a1-rgb),0.35),rgba(var(--a2-rgb),0.35))' : 'rgba(0,0,0,0.045)',
+  border: '1px solid ' + (on ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'), color: C.text,
   padding: '8px 14px', borderRadius: 999, fontSize: 13, fontWeight: 700,
 })
 
@@ -94,13 +95,13 @@ function Overview({ pr }) {
           </div>
         </div>
         <div style={{ display: 'flex', gap: 26, flexWrap: 'wrap' }}>
-          <div><div style={{ fontWeight: 800, fontSize: 26 }}>🔥 {streak}</div><div style={{ fontSize: 12, color: C.sub, fontWeight: 600 }}>day streak</div></div>
-          <div><div style={{ fontWeight: 800, fontSize: 26, fontFeatureSettings: "'tnum'" }}>{weekTotal}</div><div style={{ fontSize: 12, color: C.sub, fontWeight: 600 }}>minutes this week</div></div>
+          <div><div style={{ fontWeight: 800, fontSize: 26 }}>🔥 <CountUp text={String(streak)} /></div><div style={{ fontSize: 12, color: C.sub, fontWeight: 600 }}>day streak</div></div>
+          <div><div style={{ fontWeight: 800, fontSize: 26, fontFeatureSettings: "'tnum'" }}><CountUp text={String(weekTotal)} /></div><div style={{ fontSize: 12, color: C.sub, fontWeight: 600 }}>minutes this week</div></div>
         </div>
-        <div style={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'flex-end', gap: 8, height: 92 }} aria-label="Minutes practised per day">
+        <div role="img" style={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'flex-end', gap: 8, height: 92 }} aria-label="Minutes practised per day">
           {week.map((d, i) => (
             <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
-              <div title={`${d.min} min`} style={{ width: '100%', height: Math.max(4, (d.min / max) * 62), borderRadius: '6px 6px 3px 3px', background: d.min >= DAILY_GOAL_MIN ? 'linear-gradient(180deg,#2563EB,#12B981)' : d.min > 0 ? 'rgba(59,130,246,0.5)' : 'rgba(148,163,184,0.3)', transition: 'height 0.4s ease' }} />
+              <div title={`${d.min} min`} style={{ width: '100%', height: Math.max(4, (d.min / max) * 62), borderRadius: '6px 6px 3px 3px', background: d.min >= DAILY_GOAL_MIN ? 'linear-gradient(180deg,var(--a1),var(--a2))' : d.min > 0 ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(148,163,184,0.3)', transition: 'height 0.4s ease' }} />
               <div style={{ fontSize: 10.5, color: C.muted, fontWeight: 700 }}>{d.label}</div>
             </div>
           ))}
@@ -129,7 +130,7 @@ function Plan({ pr }) {
         {guitarPlan.map((b) => (
           <button key={b.id} onClick={() => toggle(b)} role="checkbox" aria-checked={!!done[b.id]} className="bd-hover-teal" style={{
             display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left', borderRadius: 16, padding: '13px 15px',
-            background: done[b.id] ? 'rgba(16,185,129,0.08)' : 'rgba(0,0,0,0.03)', border: '1px solid ' + (done[b.id] ? 'rgba(16,185,129,0.35)' : 'rgba(0,0,0,0.07)'), color: C.text,
+            background: done[b.id] ? 'rgba(var(--a2-rgb),0.08)' : 'rgba(0,0,0,0.03)', border: '1px solid ' + (done[b.id] ? 'rgba(var(--a2-rgb),0.35)' : 'rgba(0,0,0,0.07)'), color: C.text,
           }}>
             <span style={{ width: 26, height: 26, borderRadius: 9, flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', background: done[b.id] ? grad : 'rgba(0,0,0,0.05)', border: done[b.id] ? 'none' : '1.5px solid rgba(0,0,0,0.13)', color: '#fff', fontWeight: 800, fontSize: 13 }}>{done[b.id] ? '✓' : ''}</span>
             <span style={{ flex: 1, minWidth: 0 }}>
@@ -165,8 +166,8 @@ function SessionTimer({ pr }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
         <div style={{ fontWeight: 800, fontSize: 40, letterSpacing: -1, fontFeatureSettings: "'tnum'" }} aria-live="off">{mm}:{ss}</div>
         {start
-          ? <button onClick={stop} className="lift" style={{ background: '#16181D', border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>Stop &amp; log</button>
-          : <button onClick={() => { setStart(Date.now()); setNow(Date.now()) }} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>▶ Start session</button>}
+          ? <button onClick={stop} className="lift" style={{ background: 'var(--text)', border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>Stop &amp; log</button>
+          : <button onClick={() => { setStart(Date.now()); setNow(Date.now()) }} className="lift" style={{ ...glassPrimary, padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>▶ Start session</button>}
       </div>
     </Section>
   )
@@ -200,15 +201,15 @@ function Metronome() {
         </div>
         <button style={btn} aria-label="Faster" onClick={() => setBpm((b) => clamp(b + 1))}>+</button>
         <button onClick={tap} className="lift" style={{ ...pill(false), padding: '11px 16px' }}>Tap tempo</button>
-        <button onClick={() => { m.toggle(); track('music_metronome') }} className="lift" aria-pressed={m.running} style={{ background: m.running ? '#16181D' : grad, border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>
+        <button onClick={() => { m.toggle(); track('music_metronome') }} className="lift" aria-pressed={m.running} style={{ background: m.running ? 'var(--text)' : grad, border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>
           {m.running ? '■ Stop' : '▶ Start'}
         </button>
       </div>
-      <input type="range" min="40" max="220" value={bpm} onChange={(e) => setBpm(Number(e.target.value))} aria-label="Tempo" style={{ width: '100%', accentColor: '#2563EB' }} />
+      <input type="range" min="40" max="220" value={bpm} onChange={(e) => setBpm(Number(e.target.value))} aria-label="Tempo" style={{ width: '100%', accentColor: 'var(--a1)' }} />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, marginTop: 14, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', gap: 8 }} aria-label="Beat indicator">
+        <div role="group" style={{ display: 'flex', gap: 8 }} aria-label="Beat indicator">
           {Array.from({ length: bar }, (_, i) => (
-            <div key={i} style={{ width: 20, height: 20, borderRadius: '50%', transition: 'transform 0.08s, background 0.08s', transform: m.beat === i ? 'scale(1.35)' : 'none', background: m.beat === i ? (i === 0 ? '#2563EB' : '#12B981') : 'rgba(0,0,0,0.1)' }} />
+            <div key={i} style={{ width: 20, height: 20, borderRadius: '50%', transition: 'transform 0.08s, background 0.08s', transform: m.beat === i ? 'scale(1.35)' : 'none', background: m.beat === i ? (i === 0 ? 'var(--a1)' : 'var(--a2)') : 'rgba(0,0,0,0.1)' }} />
           ))}
         </div>
         <div style={{ display: 'flex', gap: 6 }}>
@@ -266,8 +267,8 @@ function ChordLab({ pr }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
             <div style={{ fontWeight: 800, fontSize: 30, fontFeatureSettings: "'tnum'" }}>{secs === null ? '60' : Math.max(0, secs)}s · <span style={{ color: C.greenDeep }}>{count}</span> changes</div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {!running && <button onClick={() => { setCount(0); setSecs(60) }} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '11px 18px', borderRadius: 14, fontWeight: 800 }}>{secs === 0 ? '↻ Again' : '▶ Start 60s'}</button>}
-              {running && <button onClick={() => setCount((n) => n + 1)} className="lift" style={{ background: '#16181D', border: 'none', color: '#fff', padding: '14px 26px', borderRadius: 14, fontWeight: 800, fontSize: 16 }}>Changed! +1</button>}
+              {!running && <button onClick={() => { setCount(0); setSecs(60) }} className="lift" style={{ ...glassPrimary, padding: '11px 18px', borderRadius: 14, fontWeight: 800 }}>{secs === 0 ? '↻ Again' : '▶ Start 60s'}</button>}
+              {running && <button onClick={() => setCount((n) => n + 1)} className="lift" style={{ background: 'var(--text)', border: 'none', color: '#fff', padding: '14px 26px', borderRadius: 14, fontWeight: 800, fontSize: 16 }}>Changed! +1</button>}
               <button onClick={shuffle} style={pill(false)}>🔀 New pair</button>
             </div>
           </div>
@@ -283,7 +284,7 @@ function Tuning() {
     <Section title="Tuning reference" hint="Standard tuning. Tap to hear each string, then match it.">
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         {tuning.map((t) => (
-          <button key={t.s + t.oct} onClick={() => { playTone(t.hz); setLast(t.s + t.oct) }} className="lift" aria-label={`Play ${t.s}${t.oct}`} style={{ ...pill(last === t.s + t.oct), padding: '12px 0', width: 62, textAlign: 'center' }}>
+          <button key={t.s + t.oct} onClick={() => { playTone(t.hz); setLast(t.s + t.oct) }} className="lift" style={{ ...pill(last === t.s + t.oct), padding: '12px 0', width: 62, textAlign: 'center' }}>
             <div style={{ fontWeight: 800, fontSize: 18 }}>{t.s}</div>
             <div style={{ fontSize: 10.5, color: C.sub, fontWeight: 700 }}>{t.hz} Hz</div>
           </button>
@@ -344,7 +345,7 @@ function ComingNext({ focusId }) {
   const vote = (id) => { patch((st) => ({ practice: { ...st.practice, votes: { ...st.practice.votes, [id]: !st.practice.votes?.[id] } } })); track('music_interest_' + id) }
   const upcoming = instruments.filter((i) => !i.ready)
   return (
-    <div style={{ border: '2px dashed rgba(37,99,235,0.35)', background: 'rgba(37,99,235,0.04)', borderRadius: 22, padding: 'clamp(18px,2.4vw,26px)' }}>
+    <div style={{ border: '2px dashed rgba(var(--a1-rgb),0.35)', background: 'rgba(var(--a1-rgb),0.04)', borderRadius: 22, padding: 'clamp(18px,2.4vw,26px)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.8, textTransform: 'uppercase', color: '#fff', background: C.blue, borderRadius: 999, padding: '4px 10px' }}>Coming next</span>
         <div style={{ fontWeight: 800, fontSize: 16 }}>More instruments are on the way</div>
@@ -354,7 +355,7 @@ function ComingNext({ focusId }) {
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 12 }}>
         {upcoming.map((i) => (
-          <div key={i.id} style={{ background: '#fff', border: '1px solid ' + (focusId === i.id ? 'rgba(37,99,235,0.5)' : 'rgba(0,0,0,0.08)'), borderRadius: 16, padding: 16 }}>
+          <div key={i.id} style={{ background: '#fff', border: '1px solid ' + (focusId === i.id ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(0,0,0,0.08)'), borderRadius: 16, padding: 16 }}>
             <div style={{ fontWeight: 800, fontSize: 15 }}>{i.icon} {i.name}</div>
             <div style={{ fontSize: 12.5, color: C.sub, margin: '6px 0 12px', lineHeight: 1.5 }}>{i.blurb}</div>
             <button onClick={() => vote(i.id)} aria-pressed={!!votes[i.id]} style={pill(!!votes[i.id])}>{votes[i.id] ? '✓ Requested' : '🔔 I want this'}</button>
@@ -377,7 +378,7 @@ export default function Music() {
       <div role="tablist" aria-label="Instrument" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
         {instruments.map((i) => (
           <button key={i.id} role="tab" aria-selected={tab === i.id} onClick={() => setTab(i.id)} style={{ ...pill(tab === i.id), padding: '10px 16px', opacity: i.ready ? 1 : 0.85 }}>
-            {i.icon} {i.name}{!i.ready && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 800, letterSpacing: 0.6, color: C.blue, background: 'rgba(37,99,235,0.1)', borderRadius: 999, padding: '2px 7px' }}>SOON</span>}
+            {i.icon} {i.name}{!i.ready && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 800, letterSpacing: 0.6, color: C.blue, background: 'rgba(var(--a1-rgb),0.1)', borderRadius: 999, padding: '2px 7px' }}>SOON</span>}
           </button>
         ))}
       </div>

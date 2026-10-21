@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useApp, useMobile } from '../store.jsx'
-import { C, grad, label } from '../theme.js'
+import { C, grad, label, glassPrimary } from '../theme.js'
 import { understand, applyActions, describe, MODULE_ROUTE, EXAMPLES } from '../data/actions.js'
 import { track } from '../track.js'
 
@@ -14,18 +14,19 @@ export const HOTKEY = isMac ? '⌘K' : 'Ctrl K'
 
 /** A search-bar-looking button that opens Quick Add (used on Today and in the sidebar). */
 export function QuickBar({ compact }) {
+  const mobile = useMobile()
   return (
-    <button onClick={() => openQuickAdd()} className="lift" aria-label="Open Quick Add" style={{
+    <button onClick={() => openQuickAdd()} className="lift" style={{
       width: '100%', display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left',
-      background: '#fff', border: '1px solid rgba(37,99,235,0.28)', borderRadius: compact ? 12 : 16,
+      background: '#fff', border: '1px solid rgba(var(--a1-rgb),0.28)', borderRadius: compact ? 12 : 16,
       padding: compact ? '10px 12px' : '14px 18px', color: C.sub, fontSize: compact ? 12.5 : 14.5, fontWeight: 600,
-      boxShadow: compact ? 'none' : '0 4px 18px rgba(37,99,235,0.10)',
+      boxShadow: compact ? 'none' : '0 4px 18px rgba(var(--a1-rgb),0.10)',
     }}>
       <span style={{ fontSize: compact ? 15 : 18 }}>✨</span>
       <span style={{ flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {compact ? 'Quick Add' : 'Tell me what you did… “spent 450 on swiggy, slept 6.5h, called mom”'}
       </span>
-      <kbd style={{ fontFamily: 'inherit', fontSize: 11, fontWeight: 700, color: C.muted, border: '1px solid rgba(0,0,0,0.12)', borderRadius: 6, padding: '2px 6px', flex: 'none' }}>{HOTKEY}</kbd>
+      {!mobile && <kbd style={{ fontFamily: 'inherit', fontSize: 11, fontWeight: 700, color: C.muted, border: '1px solid rgba(0,0,0,0.12)', borderRadius: 6, padding: '2px 6px', flex: 'none' }}>{HOTKEY}</kbd>}
     </button>
   )
 }
@@ -110,8 +111,8 @@ export default function QuickAdd() {
   }
 
   const srcBadge = res && ({
-    instant: ['⚡ Understood instantly', C.greenDeep, 'rgba(16,185,129,0.12)'],
-    ai: ['✨ Understood by AI', C.blue, 'rgba(37,99,235,0.10)'],
+    instant: ['⚡ Understood instantly', C.greenDeep, 'rgba(var(--a2-rgb),0.12)'],
+    ai: ['✨ Understood by AI', C.blue, 'rgba(var(--a1-rgb),0.10)'],
     none: ['🤔 Not sure', C.amber, 'rgba(245,158,11,0.12)'],
   })[res.source]
 
@@ -145,7 +146,7 @@ export default function QuickAdd() {
               {SR && (
                 <button onClick={toggleVoice} aria-label={listening ? 'Stop listening' : 'Speak'} style={{
                   position: 'absolute', right: 10, top: 10, width: 36, height: 36, borderRadius: '50%', border: 'none',
-                  background: listening ? '#EF4444' : 'rgba(37,99,235,0.1)', color: listening ? '#fff' : C.blue, fontSize: 16,
+                  background: listening ? '#EF4444' : 'rgba(var(--a1-rgb),0.1)', color: listening ? '#fff' : C.blue, fontSize: 16,
                   animation: listening ? 'glowpulse 1.2s ease-in-out infinite' : 'none',
                 }}>🎙</button>
               )}
@@ -176,8 +177,8 @@ export default function QuickAdd() {
                       const d = describe(a)
                       const on = !off.has(i)
                       return (
-                        <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, background: on ? 'rgba(16,185,129,0.07)' : 'rgba(0,0,0,0.03)', border: '1px solid ' + (on ? 'rgba(16,185,129,0.3)' : 'rgba(0,0,0,0.07)'), borderRadius: 14, padding: '11px 14px', cursor: 'pointer', opacity: on ? 1 : 0.55 }}>
-                          <input type="checkbox" checked={on} onChange={() => setOff((o) => { const n = new Set(o); n.has(i) ? n.delete(i) : n.add(i); return n })} style={{ width: 17, height: 17, accentColor: '#0B7F5C' }} />
+                        <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, background: on ? 'rgba(var(--a2-rgb),0.07)' : 'rgba(0,0,0,0.03)', border: '1px solid ' + (on ? 'rgba(var(--a2-rgb),0.3)' : 'rgba(0,0,0,0.07)'), borderRadius: 14, padding: '11px 14px', cursor: 'pointer', opacity: on ? 1 : 0.55 }}>
+                          <input type="checkbox" checked={on} onChange={() => setOff((o) => { const n = new Set(o); n.has(i) ? n.delete(i) : n.add(i); return n })} style={{ width: 17, height: 17, accentColor: 'var(--ok)' }} />
                           <span style={{ fontSize: 20 }}>{d.icon}</span>
                           <span style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>{d.text}</span>
                           <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 0.6, textTransform: 'uppercase', color: C.muted }}>{d.module}</span>
@@ -199,7 +200,7 @@ export default function QuickAdd() {
 
                 <div style={{ display: 'flex', gap: 10, marginTop: 16, justifyContent: 'flex-end' }}>
                   <button onClick={() => setPhase('idle')} style={{ background: 'transparent', border: 'none', color: C.sub, fontWeight: 700, fontSize: 14, padding: '10px 14px' }}>Edit</button>
-                  <button onClick={apply} disabled={!chosen.length} className={chosen.length ? 'lift' : ''} style={{ background: grad, border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800, fontSize: 14.5, opacity: chosen.length ? 1 : 0.45, boxShadow: '0 6px 20px rgba(16,185,129,0.3)' }}>
+                  <button onClick={apply} disabled={!chosen.length} className={chosen.length ? 'lift' : ''} style={{ ...glassPrimary, padding: '12px 22px', borderRadius: 14, fontWeight: 800, fontSize: 14.5, opacity: chosen.length ? 1 : 0.45, boxShadow: '0 6px 20px rgba(var(--a2-rgb),0.3)' }}>
                     Apply {chosen.length || ''} change{chosen.length === 1 ? '' : 's'}
                   </button>
                 </div>
@@ -209,7 +210,7 @@ export default function QuickAdd() {
             {phase !== 'review' && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
                 <span style={{ fontSize: 12, color: C.muted, fontWeight: 600 }}>Nothing changes until you confirm.</span>
-                <button onClick={() => submit()} disabled={!text.trim() || phase === 'thinking'} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '11px 20px', borderRadius: 14, fontWeight: 800, fontSize: 14, opacity: text.trim() ? 1 : 0.5 }}>
+                <button onClick={() => submit()} disabled={!text.trim() || phase === 'thinking'} className="lift" style={{ ...glassPrimary, padding: '11px 20px', borderRadius: 14, fontWeight: 800, fontSize: 14, opacity: text.trim() ? 1 : 0.5 }}>
                   Understand →
                 </button>
               </div>
@@ -221,7 +222,7 @@ export default function QuickAdd() {
       {toast && (
         <div role="status" style={{
           position: 'fixed', left: '50%', transform: 'translateX(-50%)', bottom: mobile ? 'calc(96px + env(safe-area-inset-bottom))' : 28, zIndex: 90,
-          background: '#16181D', color: '#fff', borderRadius: 16, padding: '12px 14px 12px 18px', display: 'flex', alignItems: 'center', gap: 14,
+          background: 'var(--text)', color: '#fff', borderRadius: 16, padding: '12px 14px 12px 18px', display: 'flex', alignItems: 'center', gap: 14,
           boxShadow: '0 12px 40px rgba(0,0,0,0.3)', fontSize: 13.5, fontWeight: 600, animation: 'rise 0.25s ease-out', maxWidth: 'calc(100vw - 24px)',
         }}>
           <span>✓ Updated {toast.modules.join(', ')}</span>

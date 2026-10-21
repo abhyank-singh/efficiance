@@ -5,14 +5,14 @@ import { people } from './seed.js'
 // Today's schedule; the 3 PM free block converts to Leg Day once claimed.
 export function getDayBlocks(blockTaken) {
   return [
-    { isEvent: true, time: '9:30 – 9:45', title: 'Daily standup', tag: 'Work', col: '#1D4ED8', bg: 'rgba(59,130,246,0.14)', bd: 'rgba(59,130,246,0.45)' },
-    { isEvent: true, time: '11:00 – 12:00', title: 'Design review — Q3 launch', tag: 'Work', col: '#1D4ED8', bg: 'rgba(59,130,246,0.14)', bd: 'rgba(59,130,246,0.45)' },
-    { isEvent: true, time: '13:00 – 13:45', title: 'Lunch + walk', tag: 'Personal', col: '#096B4E', bg: 'rgba(16,185,129,0.13)', bd: 'rgba(16,185,129,0.4)' },
-    { isEvent: true, time: '14:00 – 14:30', title: '1:1 with Priya', tag: 'Work', col: '#1D4ED8', bg: 'rgba(59,130,246,0.14)', bd: 'rgba(59,130,246,0.45)' },
+    { isEvent: true, time: '9:30 – 9:45', title: 'Daily standup', tag: 'Work', col: 'var(--a1)', bg: 'rgba(var(--a1-rgb),0.14)', bd: 'rgba(var(--a1-rgb),0.45)' },
+    { isEvent: true, time: '11:00 – 12:00', title: 'Design review — Q3 launch', tag: 'Work', col: 'var(--a1)', bg: 'rgba(var(--a1-rgb),0.14)', bd: 'rgba(var(--a1-rgb),0.45)' },
+    { isEvent: true, time: '13:00 – 13:45', title: 'Lunch + walk', tag: 'Personal', col: 'var(--ok)', bg: 'rgba(var(--a2-rgb),0.13)', bd: 'rgba(var(--a2-rgb),0.4)' },
+    { isEvent: true, time: '14:00 – 14:30', title: '1:1 with Priya', tag: 'Work', col: 'var(--a1)', bg: 'rgba(var(--a1-rgb),0.14)', bd: 'rgba(var(--a1-rgb),0.45)' },
     blockTaken
-      ? { isEvent: true, time: '15:00 – 17:00', title: '🏋️ Leg Day (from free block)', tag: 'Goal-linked', col: '#16181D', bg: 'linear-gradient(135deg,rgba(59,130,246,0.28),rgba(16,185,129,0.28))', bd: 'rgba(34,211,174,0.6)' }
+      ? { isEvent: true, time: '15:00 – 17:00', title: '🏋️ Leg Day (from free block)', tag: 'Goal-linked', col: 'var(--text)', bg: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.28),rgba(var(--a2-rgb),0.28))', bd: 'rgba(var(--a1-rgb),0.6)' }
       : { isEvent: false, isFree: true, time: '15:00 – 17:00', title: '2h free' },
-    { isEvent: true, time: '19:00 – 19:30', title: 'Call Dad 📞', tag: 'Personal', col: '#096B4E', bg: 'rgba(16,185,129,0.13)', bd: 'rgba(16,185,129,0.4)' },
+    { isEvent: true, time: '19:00 – 19:30', title: 'Call Dad 📞', tag: 'Personal', col: 'var(--ok)', bg: 'rgba(var(--a2-rgb),0.13)', bd: 'rgba(var(--a2-rgb),0.4)' },
   ]
 }
 

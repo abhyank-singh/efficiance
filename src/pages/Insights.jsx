@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useApp } from '../store.jsx'
-import { C, grad, card, label } from '../theme.js'
+import { C, grad, card, label, glassPrimary } from '../theme.js'
 import { insights as cachedInsights } from '../data/seed.js'
 import { buildDataSummary } from '../data/summary.js'
 
@@ -51,7 +51,7 @@ export default function Insights() {
           <p style={{ color: C.sub, fontSize: 14, margin: '0 0 4px' }}>Where your data starts talking to itself — one module noticing another.</p>
         </div>
         <button onClick={regenerate} disabled={loading} className={loading ? '' : 'lift'} style={{
-          background: grad, border: 'none', color: '#fff', padding: '11px 20px', borderRadius: 12,
+          ...glassPrimary, padding: '11px 20px', borderRadius: 12,
           fontWeight: 800, fontSize: 13, opacity: loading ? 0.7 : 1, cursor: loading ? 'default' : 'pointer', flex: 'none',
         }}>
           {loading ? 'Thinking…' : '✨ Regenerate with AI'}
@@ -60,7 +60,7 @@ export default function Insights() {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '10px 0 22px', minHeight: 22 }}>
         {source === 'live' ? (
-          <span style={{ fontSize: 12, fontWeight: 700, color: C.greenDeep, background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.35)', borderRadius: 999, padding: '4px 12px' }}>● Live from your data</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: C.greenDeep, background: 'rgba(var(--a2-rgb),0.12)', border: '1px solid rgba(var(--a2-rgb),0.35)', borderRadius: 999, padding: '4px 12px' }}>● Live from your data</span>
         ) : (
           <span style={{ fontSize: 12, fontWeight: 700, color: C.sub, background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 999, padding: '4px 12px' }}>Saved insights</span>
         )}
@@ -72,7 +72,7 @@ export default function Insights() {
           <div key={i} className="card-hover" style={{ ...card, padding: 22, display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {ins.mods.map((m) => (
-                <span key={m} style={{ background: 'rgba(59,130,246,0.13)', border: '1px solid rgba(59,130,246,0.3)', borderRadius: 999, padding: '4px 11px', fontSize: 10.5, fontWeight: 800, letterSpacing: 0.5, textTransform: 'uppercase', color: C.sub }}>
+                <span key={m} style={{ background: 'rgba(var(--a1-rgb),0.13)', border: '1px solid rgba(var(--a1-rgb),0.3)', borderRadius: 999, padding: '4px 11px', fontSize: 10.5, fontWeight: 800, letterSpacing: 0.5, textTransform: 'uppercase', color: C.sub }}>
                   {m}
                 </span>
               ))}
@@ -81,7 +81,7 @@ export default function Insights() {
             <div style={{ fontSize: 12.5, color: C.sub, lineHeight: 1.5, background: 'rgba(0,0,0,0.028)', borderRadius: 12, padding: '10px 12px' }}>
               <span style={{ fontWeight: 700 }}>Why we think this:</span> {ins.why}
             </div>
-            <button className="bd-hover-teal" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.35)', color: C.text, padding: '9px 14px', borderRadius: 11, fontWeight: 700, fontSize: 12.5, textAlign: 'left' }}>
+            <button className="bd-hover-teal" style={{ background: 'rgba(var(--a1-rgb),0.1)', border: '1px solid rgba(var(--a1-rgb),0.35)', color: C.text, padding: '9px 14px', borderRadius: 11, fontWeight: 700, fontSize: 12.5, textAlign: 'left' }}>
               {ins.action}
             </button>
           </div>

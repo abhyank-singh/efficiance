@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react'
 import { useApp, fmtINR } from '../store.jsx'
-import { C, grad, card, label } from '../theme.js'
+import { C, grad, card, label, glassPrimary } from '../theme.js'
 import { buildHistory, summarize, level } from '../data/history.js'
 import { DEFAULT_NAME } from '../config.js'
 import { track } from '../track.js'
+import CountUp from '../components/CountUp.jsx'
 
-const LEVELS = ['rgba(0,0,0,0.07)', '#BFE3D5', '#7CCFB0', '#34B98D', '#0B7F5C']
+const LEVELS = ['rgba(0,0,0,0.07)', '#CFE8E0', '#8FD0BF', '#3FA58F', '#0F766E']
 
-function Spark({ values, color = '#2563EB', fmt }) {
+function Spark({ values, color = 'var(--a1)', fmt }) {
   const w = 220, h = 54, pad = 4
   const min = Math.min(...values), max = Math.max(...values)
   const pts = values.map((v, i) => [pad + (i / (values.length - 1)) * (w - pad * 2), h - pad - ((v - min) / (max - min || 1)) * (h - pad * 2)])
@@ -33,7 +34,7 @@ function Tile({ icon, big, small }) {
   return (
     <div className="card-hover" style={{ ...card, borderRadius: 18, padding: '16px 18px' }}>
       <div style={{ fontSize: 18, marginBottom: 6 }}>{icon}</div>
-      <div style={{ fontWeight: 800, fontSize: 24, letterSpacing: -0.5, fontFeatureSettings: "'tnum'" }}>{big}</div>
+      <div style={{ fontWeight: 800, fontSize: 24, letterSpacing: -0.5, fontFeatureSettings: "'tnum'" }}><CountUp text={big} /></div>
       <div style={{ fontSize: 12, color: C.sub, fontWeight: 600, marginTop: 2 }}>{small}</div>
     </div>
   )
@@ -47,24 +48,24 @@ function ShareCard({ name, sum, days }) {
   return (
     <svg id="recap-card" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" role="img" aria-label="Shareable recap card" style={{ display: 'block', borderRadius: 22, boxShadow: '0 14px 40px rgba(16,24,40,0.16)' }}>
       <defs>
-        <linearGradient id="rc-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#2563EB" /><stop offset="1" stopColor="#12B981" /></linearGradient>
-        <linearGradient id="rc-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#EEF3FF" /><stop offset="1" stopColor="#E3F6EE" /></linearGradient>
+        <linearGradient id="rc-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#0F766E" /><stop offset="1" stopColor="#84CC16" /></linearGradient>
+        <linearGradient id="rc-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#EAF4EF" /><stop offset="1" stopColor="#EEF6DD" /></linearGradient>
       </defs>
       <rect width="1200" height="630" fill="url(#rc-bg)" />
-      <text x="70" y="86" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="34" fontWeight="800" fill="#16181D">effici<tspan fill="#0B7F5C">a</tspan>nce</text>
-      <text x="70" y="160" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="52" fontWeight="800" fill="#16181D">{name}’s last 12 weeks</text>
-      <text x="70" y="206" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="24" fill="#5B6472">Tracked like my biggest project.</text>
+      <text x="70" y="86" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="34" fontWeight="800" fill="#14201A">effici<tspan fill="#3F6212">a</tspan>nce</text>
+      <text x="70" y="160" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="52" fontWeight="800" fill="#14201A">{name}’s last 12 weeks</text>
+      <text x="70" y="206" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="24" fill="#55665C">Tracked like my biggest project.</text>
       {[['Habit consistency', sum.consistency + '%'], ['Best streak', sum.bestStreak + ' days'], ['Workouts', String(sum.workouts)], ['Guitar practice', Math.round(sum.practice / 60) + ' h']].map(([k, v], i) => (
         <g key={k} transform={`translate(${70 + i * 270},250)`}>
           <text fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="44" fontWeight="800" fill="url(#rc-g)">{v}</text>
-          <text y="30" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="19" fill="#5B6472">{k}</text>
+          <text y="30" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="19" fill="#55665C">{k}</text>
         </g>
       ))}
       {days.map((d, i) => {
         const idx = i + first
         return <rect key={i} x={x0 + Math.floor(idx / 7) * (cw + gapX)} y={y0 + (idx % 7) * (ch + gapY)} width={cw} height={ch} rx="6" fill={LEVELS[level(d)]} />
       })}
-      <text x="70" y="618" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="18" fill="#5B6472">Each square is a day · darker = more done</text>
+      <text x="70" y="618" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="18" fill="#55665C">Each square is a day · darker = more done</text>
     </svg>
   )
 }
@@ -112,7 +113,7 @@ export default function Recap() {
     setTimeout(() => setMsg(''), 2000)
   }
 
-  const pill = (on) => ({ background: on ? 'linear-gradient(135deg,rgba(59,130,246,0.35),rgba(16,185,129,0.35))' : 'rgba(0,0,0,0.045)', border: '1px solid ' + (on ? 'rgba(34,211,174,0.6)' : 'rgba(0,0,0,0.09)'), color: C.text, padding: '8px 14px', borderRadius: 999, fontSize: 13, fontWeight: 700 })
+  const pill = (on) => ({ background: on ? 'linear-gradient(135deg,rgba(var(--a1-rgb),0.35),rgba(var(--a2-rgb),0.35))' : 'rgba(0,0,0,0.045)', border: '1px solid ' + (on ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'), color: C.text, padding: '8px 14px', borderRadius: 999, fontSize: 13, fontWeight: 700 })
   const trend = (title, vals, fmt, goodUp, color) => {
     const d = delta(vals[vals.length - 1], vals[vals.length - 2], goodUp)
     return (
@@ -140,7 +141,7 @@ export default function Recap() {
         </div>
       </div>
 
-      <div style={{ background: grad, borderRadius: 24, padding: 'clamp(20px,3vw,30px)', color: '#fff', marginBottom: 18, boxShadow: '0 14px 40px rgba(16,185,129,0.25)' }}>
+      <div style={{ background: grad, borderRadius: 24, padding: 'clamp(20px,3vw,30px)', color: '#fff', marginBottom: 18, boxShadow: '0 14px 40px rgba(var(--a2-rgb),0.25)' }}>
         <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', opacity: 0.85 }}>Highlights</div>
         <div style={{ fontWeight: 800, fontSize: 'clamp(20px,2.8vw,28px)', lineHeight: 1.3, margin: '8px 0 0', maxWidth: 760 }}>
           You hit your habits {sum.consistency}% of the time, your best day is {sum.bestDay}, and your longest strong run was {sum.bestStreak} days.
@@ -170,16 +171,16 @@ export default function Recap() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 14, marginBottom: 22 }}>
-        {trend('Sleep · weekly avg', w.map((x) => x.sleep), (v) => v.toFixed(1) + 'h', true, '#2563EB')}
+        {trend('Sleep · weekly avg', w.map((x) => x.sleep), (v) => v.toFixed(1) + 'h', true, 'var(--a1)')}
         {trend('Spend · weekly', w.map((x) => x.spend), (v) => fmtINR(Math.round(v)), false, '#B45309')}
-        {trend('Guitar · weekly min', w.map((x) => x.practice), (v) => Math.round(v) + ' min', true, '#0B7F5C')}
+        {trend('Guitar · weekly min', w.map((x) => x.practice), (v) => Math.round(v) + ' min', true, 'var(--ok)')}
       </div>
 
       <div style={{ ...label, marginBottom: 12 }}>Share your recap</div>
       <div style={{ maxWidth: 640 }}>
         <ShareCard name={name === 'My' ? 'My' : name} sum={allSum} days={all} />
         <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-          <button onClick={download} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '12px 20px', borderRadius: 14, fontWeight: 800 }}>⬇ Download image</button>
+          <button onClick={download} className="lift" style={{ ...glassPrimary, padding: '12px 20px', borderRadius: 14, fontWeight: 800 }}>⬇ Download image</button>
           <button onClick={share} className="lift" style={{ ...pill(false), padding: '12px 18px' }}>Share text</button>
           {msg && <span style={{ fontSize: 13, color: C.greenDeep, fontWeight: 700 }}>{msg}</span>}
         </div>

@@ -1,14 +1,27 @@
+/* ============ Design tokens — "Forest Calm" ============
+   Re-skin the whole app by editing only this block. */
+:root {
+  --bg: #EEF4EE;            --bg-top: #F1F6F1;   --bg-bottom: #E2EBE2;
+  --aurora-1: #D7EFE6;      --aurora-2: #E4F1C9;
+  --text: #14201A;          --sub: #55665C;      --muted: #5E6D63;
+  --a1: #0F766E;            --a1-rgb: 15,118,110;     --a1-bright: #14B8A6;   /* teal: primary accent */
+  --a2: #84CC16;            --a2-rgb: 132,204,22;                              /* lime: highlights, charts */
+  --a2-deep: #4D7C0F;       --a2d-rgb: 77,124,15;                              /* lime, dark enough for white text */
+  --ok: #3F6212;            --warn: #B45309;
+  --orb-1: rgba(20,184,166,0.26); --orb-2: rgba(132,204,22,0.30);
+}
+
 html, body {
   margin: 0;
   padding: 0;
-  background: #E9EDF3;
-  color: #16181D;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 * { box-sizing: border-box; }
-a { color: #2563EB; text-decoration: none; }
-a:hover { color: #0EA478; }
+a { color: var(--a1); text-decoration: none; }
+a:hover { color: var(--ok); }
 input, button, textarea, select { font-family: inherit; }
 input:focus, textarea:focus { outline: none; border-color: rgba(59,130,246,0.6) !important; }
 button { cursor: pointer; }
@@ -38,9 +51,52 @@ button { cursor: pointer; }
 .bd-hover:hover { border-color: rgba(0,0,0,0.2) !important; }
 .bd-hover-dark:hover { border-color: rgba(0,0,0,0.22) !important; }
 .bd-hover-teal:hover { border-color: rgba(34,211,174,0.5) !important; }
-.muted-hover:hover { color: #5B6472 !important; }
-.text-hover-dark:hover { color: #16181D !important; }
+.muted-hover:hover { color: var(--sub) !important; }
+.text-hover-dark:hover { color: var(--text) !important; }
 
 /* Keyboard focus ring (accessibility) */
-button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid #2563EB; outline-offset: 2px; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--a1); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+
+
+/* ============ Glass ============ */
+/* Secondary buttons that carry these classes get frosted-glass treatment. */
+button.bd-hover, button.bd-hover-dark, button.bd-hover-teal, button.text-hover-dark {
+  background: rgba(255,255,255,0.58) !important;
+  border-color: rgba(255,255,255,0.85) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 6px 18px rgba(20,50,40,0.08);
+  -webkit-backdrop-filter: blur(12px) saturate(160%); backdrop-filter: blur(12px) saturate(160%);
+}
+button.bd-hover:hover, button.bd-hover-dark:hover, button.bd-hover-teal:hover { background: rgba(255,255,255,0.8) !important; }
+button.lift { transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease; }
+button.lift:hover:not(:disabled) { filter: brightness(1.06) saturate(1.05); }
+button.lift:active:not(:disabled) { transform: translateY(1px) scale(0.985); filter: brightness(0.97); }
+button:disabled { cursor: not-allowed; }
+
+/* Soft colour orbs behind the app give the glass something to blur */
+.orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.orbs i { position: absolute; border-radius: 50%; filter: blur(70px); will-change: transform; }
+.orbs i:nth-child(1) { width: 520px; height: 520px; background: var(--orb-1); top: -120px; right: -80px; animation: aur1 26s ease-in-out infinite; }
+.orbs i:nth-child(2) { width: 460px; height: 460px; background: var(--orb-2); bottom: -140px; left: -100px; animation: aur2 32s ease-in-out infinite; }
+
+/* Frosted sidebar and mobile bar */
+.glass-panel { background: rgba(255,255,255,0.62) !important; -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%); border-color: rgba(255,255,255,0.8) !important; }
+
+/* ============ Motion ============ */
+/* Stagger: blocks of a page, and children of grids, rise in one after another.
+   'backwards' fill so the end state does not pin a transform (hover/tilt still work afterwards). */
+.stagger-page > div > *, .stagger-page [style*="display: grid"] > * { animation: rise 0.5s cubic-bezier(0.2,0.8,0.2,1) backwards; }
+.stagger-page > div > *:nth-child(1), .stagger-page [style*="display: grid"] > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-page > div > *:nth-child(2), .stagger-page [style*="display: grid"] > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-page > div > *:nth-child(3), .stagger-page [style*="display: grid"] > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-page > div > *:nth-child(4), .stagger-page [style*="display: grid"] > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-page > div > *:nth-child(5), .stagger-page [style*="display: grid"] > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-page > div > *:nth-child(6), .stagger-page [style*="display: grid"] > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-page > div > *:nth-child(7), .stagger-page [style*="display: grid"] > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-page > div > *:nth-child(8), .stagger-page [style*="display: grid"] > *:nth-child(8) { animation-delay: 420ms; }
+.stagger-page > div > *:nth-child(n+9), .stagger-page [style*="display: grid"] > *:nth-child(n+9) { animation-delay: 480ms; }
+
+/* 3D tilt (set from JS in src/motion.js): cards follow the pointer */
+.card-hover { transform-style: preserve-3d; will-change: transform; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

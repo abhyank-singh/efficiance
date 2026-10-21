@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useApp } from '../store.jsx'
-import { C, grad, gradTab, card, label } from '../theme.js'
+import { C, grad, gradTab, card, label, glassPrimary } from '../theme.js'
 import { getDayBlocks } from '../data/derived.js'
 import { longDay, monthDay, dayNum } from '../data/dates.js'
 import { IS_DEMO } from '../config.js'
 
 const weekEvents = [
-  [{ t: 'Sprint planning', c: '#2563EB' }, { t: 'Gym — Push', c: '#0EA478' }],
-  [{ t: '3 meetings', c: '#2563EB' }, { t: 'Learning block', c: '#0EA478' }],
-  [{ t: 'Design review', c: '#2563EB' }, { t: 'Gym — Pull', c: '#0EA478' }],
-  [{ t: '3 meetings', c: '#2563EB' }, { t: 'Leg Day 3 PM', c: '#0EA478' }], // today
-  [{ t: 'Demo day', c: '#2563EB' }],
-  [{ t: "Mom's birthday 🎂", c: '#F59E0B' }, { t: 'Long run', c: '#0EA478' }],
-  [{ t: 'Weekly review', c: '#0EA478' }],
+  [{ t: 'Sprint planning', c: 'var(--a1)' }, { t: 'Gym — Push', c: 'var(--ok)' }],
+  [{ t: '3 meetings', c: 'var(--a1)' }, { t: 'Learning block', c: 'var(--ok)' }],
+  [{ t: 'Design review', c: 'var(--a1)' }, { t: 'Gym — Pull', c: 'var(--ok)' }],
+  [{ t: '3 meetings', c: 'var(--a1)' }, { t: 'Leg Day 3 PM', c: 'var(--ok)' }], // today
+  [{ t: 'Demo day', c: 'var(--a1)' }],
+  [{ t: "Mom's birthday 🎂", c: '#F59E0B' }, { t: 'Long run', c: 'var(--ok)' }],
+  [{ t: 'Weekly review', c: 'var(--ok)' }],
 ]
 const weekDays = weekEvents.map((events, i) => ({ name: dayNum(i - 3) + (i === 3 ? ' · today' : ''), events }))
 
@@ -73,7 +73,7 @@ export default function Calendar() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'linear-gradient(135deg,rgba(59,130,246,0.14),rgba(16,185,129,0.14))', border: '1px solid rgba(34,211,174,0.45)', borderRadius: 16, padding: '14px 18px', marginBottom: 18 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.14),rgba(var(--a2-rgb),0.14))', border: '1px solid rgba(var(--a1-rgb),0.45)', borderRadius: 16, padding: '14px 18px', marginBottom: 18 }}>
         <span style={{ fontSize: 20 }}>🎂</span>
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 800, fontSize: 14 }}>Mom's birthday — {longDay(2).split(',')[0]}, {monthDay(2)}</div>
@@ -96,10 +96,10 @@ export default function Calendar() {
                   <span style={{ fontSize: 11, fontWeight: 700, color: b.col, background: 'rgba(0,0,0,0.045)', borderRadius: 999, padding: '4px 10px' }}>{b.tag}</span>
                 </div>
               ) : (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(0,0,0,0.022)', border: '1.5px dashed rgba(34,211,174,0.45)', borderRadius: 14, padding: '14px 16px', flexWrap: 'wrap' }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(0,0,0,0.022)', border: '1.5px dashed rgba(var(--a1-rgb),0.45)', borderRadius: 14, padding: '14px 16px', flexWrap: 'wrap' }}>
                   <span style={{ fontFeatureSettings: "'tnum'", fontWeight: 800, fontSize: 13, color: C.greenDeep, width: 96, flex: 'none' }}>{b.time}</span>
                   <span style={{ flex: 1, fontWeight: 600, fontSize: 13.5, color: C.sub, minWidth: 160 }}>✨ {b.title} — Leg Day 🏋️ or Read 20 pages 📖?</span>
-                  <button onClick={scheduleLegDay} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '9px 16px', borderRadius: 999, fontWeight: 800, fontSize: 12.5 }}>
+                  <button onClick={scheduleLegDay} className="lift" style={{ ...glassPrimary, padding: '9px 16px', borderRadius: 999, fontWeight: 800, fontSize: 12.5 }}>
                     Schedule Leg Day
                   </button>
                 </div>
@@ -125,7 +125,7 @@ export default function Calendar() {
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 16, display: 'inline-flex', alignItems: 'center', gap: 10, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.35)', borderRadius: 999, padding: '9px 18px', fontSize: 13, fontWeight: 700, color: C.greenDeep }}>
+          <div style={{ marginTop: 16, display: 'inline-flex', alignItems: 'center', gap: 10, background: 'rgba(var(--a2-rgb),0.1)', border: '1px solid rgba(var(--a2-rgb),0.35)', borderRadius: 999, padding: '9px 18px', fontSize: 13, fontWeight: 700, color: C.greenDeep }}>
             🏆 Sunday is meeting-free — protect it
           </div>
         </>
@@ -171,7 +171,7 @@ export default function Calendar() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {google.events.length === 0 && <div style={{ color: C.sub, fontSize: 13 }}>No events in the next 7 days — enjoy the calm 🌿</div>}
             {google.events.map((e) => (
-              <div key={e.id} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(59,130,246,0.07)', borderLeft: '3px solid #2563EB', borderRadius: 10, padding: '10px 13px' }}>
+              <div key={e.id} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(var(--a1-rgb),0.07)', borderLeft: '3px solid var(--a1)', borderRadius: 10, padding: '10px 13px' }}>
                 <span style={{ fontWeight: 800, fontSize: 12, color: C.blue, fontFeatureSettings: "'tnum'", width: 130, flex: 'none' }}>{fmtGoogleEvent(e)}</span>
                 <span style={{ fontSize: 13.5, fontWeight: 600, flex: 1 }}>{e.title}</span>
               </div>

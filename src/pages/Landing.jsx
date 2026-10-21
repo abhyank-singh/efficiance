@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-import { auroraBg, grad, C, label } from '../theme.js'
+import { auroraBg, grad, C, label, glassPrimary } from '../theme.js'
 import { ghostApps, featureTiles, worksWith } from '../data/seed.js'
 import { shortDay } from '../data/dates.js'
 import { PROFILE } from '../config.js'
 
-const gradText = { background: 'linear-gradient(135deg,#2563EB,#0EA478)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
+const gradText = { background: 'linear-gradient(135deg,var(--a1),var(--ok))', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
 const gradTextLogo = { background: grad, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
 
 function Ring({ dash, size = 58 }) {
@@ -22,8 +22,8 @@ export default function Landing() {
 
   const cta = (extra) => (
     <button onClick={start} className="lift" style={{
-      background: grad, border: 'none', color: '#fff', padding: '16px 34px', borderRadius: 16,
-      fontWeight: 800, fontSize: 16, boxShadow: '0 8px 32px rgba(16,185,129,0.35)', ...extra,
+      ...glassPrimary, padding: '16px 34px', borderRadius: 16,
+      fontWeight: 800, fontSize: 16, boxShadow: '0 8px 32px rgba(var(--a2-rgb),0.35)', ...extra,
     }}>
       Start tracking your life →
     </button>
@@ -31,6 +31,7 @@ export default function Landing() {
 
   return (
     <div style={auroraBg}>
+      <div className="orbs" aria-hidden="true"><i /><i /></div>
       <div style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '28px clamp(20px,4vw,48px) 90px' }}>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0 60px' }}>
@@ -98,7 +99,7 @@ export default function Landing() {
               ))}
             </div>
             <div style={{ color: C.muted, fontSize: 22, padding: '0 6px' }}>→</div>
-            <div style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(59,130,246,0.4)', borderRadius: 18, padding: '18px 26px', fontWeight: 800, fontSize: 17, boxShadow: '0 0 44px rgba(16,185,129,0.25)' }}>
+            <div style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(var(--a1-rgb),0.4)', borderRadius: 18, padding: '18px 26px', fontWeight: 800, fontSize: 17, boxShadow: '0 0 44px rgba(var(--a2-rgb),0.25)' }}>
               effici<span style={gradTextLogo}>a</span>nce
             </div>
           </div>

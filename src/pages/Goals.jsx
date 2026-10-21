@@ -4,15 +4,15 @@ import { C, grad, card, label } from '../theme.js'
 import { monthDay } from '../data/dates.js'
 
 const goalDefs = [
-  { lane: 'Professional', color: '#1D4ED8', items: [
+  { lane: 'Professional', color: 'var(--a1)', items: [
     { id: 'g1', title: 'Ship Q3 product launch', date: monthDay(83), ms: ['Spec frozen', 'Design handoff', 'Beta with 20 users', 'GA launch'], msDone: [true, true, false, false], linked: 'Linked: 3 calendar blocks/wk' },
     { id: 'g2', title: 'AWS Solutions Architect cert', date: monthDay(129), ms: ['Course modules 1–4', 'Practice exam 70%+', 'Book exam slot'], msDone: [true, false, false], linked: 'Linked habit: Read 20 pages' },
   ] },
-  { lane: 'Personal', color: '#12B981', items: [
+  { lane: 'Personal', color: 'var(--a2)', items: [
     { id: 'g3', title: 'Run 10K under 60 min', date: monthDay(46), ms: ['5K under 30 min', '8K long run', 'Race registration'], msDone: [true, true, false], linked: 'Linked: Sunday long runs' },
     { id: 'g4', title: '₹3L emergency fund', date: monthDay(175), ms: ['₹1L saved', '₹2L saved', '₹3L saved'], msDone: [true, false, false], linked: 'Linked: SIP tracker' },
   ] },
-  { lane: 'Growth · Learning', color: '#0B7F5C', items: [
+  { lane: 'Growth · Learning', color: 'var(--ok)', items: [
     { id: 'g5', title: 'Deep Work — Cal Newport', date: monthDay(22), ms: ['Part I', 'Part II', 'Part III'], msDone: [true, true, false], linked: '📖 Book · 62% read', learning: true, cta: 'Continue: Ch. 7, p. 214' },
     { id: 'g6', title: 'System Design course', date: monthDay(93), ms: ['Fundamentals', 'Case studies', 'Mock interviews'], msDone: [true, false, false], linked: '🎓 Course · 30% complete', learning: true, cta: 'Continue: Module 5' },
   ] },
@@ -22,7 +22,7 @@ const confetti = Array.from({ length: 36 }, (_, i) => ({
   left: i * 2.77 + '%',
   width: 6 + (i % 3) * 3,
   height: 10 + (i % 4) * 3,
-  background: ['#2563EB', '#12B981', '#FF5A5F'][i % 3],
+  background: ['var(--a1)', 'var(--a2)', '#FF5A5F'][i % 3],
   animation: `confall ${2.4 + (i % 5) * 0.4}s linear ${(i % 7) * 0.18}s infinite`,
 }))
 
@@ -94,7 +94,7 @@ export default function Goals() {
 
                     <div style={{ fontSize: 12, color: C.muted, fontWeight: 600, paddingTop: 10, borderTop: '1px solid rgba(0,0,0,0.05)' }}>{g.linked}</div>
                     {g.learning && (
-                      <button className="bd-hover-teal" style={{ marginTop: 12, width: '100%', background: 'rgba(59,130,246,0.14)', border: '1px solid rgba(59,130,246,0.4)', color: C.text, padding: 10, borderRadius: 12, fontWeight: 700, fontSize: 13 }}>
+                      <button className="bd-hover-teal" style={{ marginTop: 12, width: '100%', background: 'rgba(var(--a1-rgb),0.14)', border: '1px solid rgba(var(--a1-rgb),0.4)', color: C.text, padding: 10, borderRadius: 12, fontWeight: 700, fontSize: 13 }}>
                         ▶ {g.cta}
                       </button>
                     )}

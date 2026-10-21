@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../store.jsx'
-import { auroraBg, grad, gradTab, C, card, label } from '../theme.js'
+import { auroraBg, grad, gradTab, C, card, label, glassPrimary } from '../theme.js'
 import { focusAreas } from '../data/seed.js'
 import { DEFAULT_NAME } from '../config.js'
 import { packs } from '../data/packs.js'
 import { understand, applyActions, describe } from '../data/actions.js'
 import { track } from '../track.js'
 
-const gradText = { background: 'linear-gradient(135deg,#2563EB,#0EA478)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
+const gradText = { background: 'linear-gradient(135deg,var(--a1),var(--ok))', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
 const calDefs = [
   { k: 'google', name: 'Google Calendar', icon: '🗓' },
   { k: 'outlook', name: 'Outlook', icon: '📧' },
@@ -51,6 +51,7 @@ export default function Onboarding() {
 
   return (
     <div style={{ ...auroraBg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+      <div className="orbs" aria-hidden="true"><i /><i /></div>
       <div style={{ ...card, borderRadius: 24, padding: 'clamp(26px,4vw,44px)', width: '100%', maxWidth: 560, animation: 'rise 0.3s ease-out', position: 'relative', zIndex: 1 }}>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
@@ -89,7 +90,7 @@ export default function Onboarding() {
               {packs.map((p) => (
                 <button key={p.id} onClick={() => choosePack(p)} aria-pressed={pack === p.id} className="lift" style={{
                   textAlign: 'left', borderRadius: 16, padding: '13px 14px', color: C.text,
-                  background: pack === p.id ? gradTab : 'rgba(0,0,0,0.04)', border: '1px solid ' + (pack === p.id ? 'rgba(34,211,174,0.6)' : 'rgba(0,0,0,0.09)'),
+                  background: pack === p.id ? gradTab : 'rgba(0,0,0,0.04)', border: '1px solid ' + (pack === p.id ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'),
                 }}>
                   <div style={{ fontSize: 20 }}>{p.icon}</div>
                   <div style={{ fontWeight: 800, fontSize: 14, marginTop: 4 }}>{p.title}</div>
@@ -104,7 +105,7 @@ export default function Onboarding() {
                 return (
                   <button key={f.name} onClick={() => toggleFocus(f.name)} style={{
                     background: sel ? gradTab : 'rgba(0,0,0,0.04)',
-                    border: '1px solid ' + (sel ? 'rgba(34,211,174,0.6)' : 'rgba(0,0,0,0.09)'),
+                    border: '1px solid ' + (sel ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'),
                     color: C.text, padding: '12px 18px', borderRadius: 999, fontSize: 14, fontWeight: 700, transition: 'all 0.15s ease',
                   }}>
                     {f.icon} {f.name}
@@ -127,7 +128,7 @@ export default function Onboarding() {
               style={{ width: '100%', resize: 'none', background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 14, padding: '14px 16px', color: C.text, fontSize: 15, lineHeight: 1.5 }}
             />
             {!firstRes && (
-              <button onClick={tryIt} disabled={!first.trim() || trying} className="lift" style={{ marginTop: 12, background: 'rgba(37,99,235,0.1)', border: '1px solid rgba(37,99,235,0.3)', color: C.blue, padding: '10px 16px', borderRadius: 12, fontWeight: 800, fontSize: 13.5, opacity: first.trim() ? 1 : 0.5 }}>
+              <button onClick={tryIt} disabled={!first.trim() || trying} className="lift" style={{ marginTop: 12, background: 'rgba(var(--a1-rgb),0.1)', border: '1px solid rgba(var(--a1-rgb),0.3)', color: C.blue, padding: '10px 16px', borderRadius: 12, fontWeight: 800, fontSize: 13.5, opacity: first.trim() ? 1 : 0.5 }}>
                 {trying ? 'Reading…' : 'See what I understand →'}
               </button>
             )}
@@ -135,7 +136,7 @@ export default function Onboarding() {
               <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease-out' }}>
                 {firstRes.actions.length ? firstRes.actions.map((a, i) => {
                   const d = describe(a)
-                  return <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 12, padding: '10px 12px', fontSize: 13.5, fontWeight: 600 }}><span>{d.icon}</span><span style={{ flex: 1 }}>{d.text}</span><span style={{ color: C.greenDeep, fontWeight: 800 }}>✓</span></div>
+                  return <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.3)', borderRadius: 12, padding: '10px 12px', fontSize: 13.5, fontWeight: 600 }}><span>{d.icon}</span><span style={{ flex: 1 }}>{d.text}</span><span style={{ color: C.greenDeep, fontWeight: 800 }}>✓</span></div>
                 }) : <div style={{ fontSize: 13.5, color: C.sub }}>I couldn’t map that. You can skip, or try “spent 100 on chai”.</div>}
                 {firstRes.actions.length > 0 && <div style={{ fontSize: 12, color: C.muted, fontWeight: 600 }}>These will be added when you enter. Your sample calendar loads automatically.</div>}
               </div>
@@ -147,7 +148,7 @@ export default function Onboarding() {
           <button onClick={back} style={{ background: 'none', border: 'none', color: step > 1 ? C.sub : 'transparent', fontWeight: 700, fontSize: 14, padding: '12px 6px', cursor: step > 1 ? 'pointer' : 'default' }}>
             ← Back
           </button>
-          <button onClick={next} className="lift" style={{ background: grad, border: 'none', color: '#fff', padding: '13px 28px', borderRadius: 14, fontWeight: 800, fontSize: 15, boxShadow: '0 6px 24px rgba(16,185,129,0.35)' }}>
+          <button onClick={next} className="lift" style={{ ...glassPrimary, padding: '13px 28px', borderRadius: 14, fontWeight: 800, fontSize: 15, boxShadow: '0 6px 24px rgba(var(--a2-rgb),0.35)' }}>
             {step === 3 ? 'Enter Efficiance →' : 'Continue →'}
           </button>
         </div>

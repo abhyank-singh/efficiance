@@ -56,6 +56,10 @@ npm run demo             # http://localhost:3001 in demo mode
 
 Without a key the app uses its saved insights; nothing breaks.
 
+## Extending it
+
+See [EXTENDING.md](EXTENDING.md): re-skin the palette, add modules, instruments and Quick Add actions.
+
 ## Deploy the demo
 
 See [DEPLOY_GUIDE.md](DEPLOY_GUIDE.md).

@@ -24,7 +24,7 @@ export default function People() {
       <div style={{ ...card, boxShadow: 'none', borderRadius: 18, padding: '16px 20px', marginBottom: 22, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
         <span style={label}>Due for a check-in</span>
         {dueList.map((p) => (
-          <span key={p.name} style={{ background: 'rgba(59,130,246,0.14)', border: '1px solid rgba(59,130,246,0.35)', borderRadius: 999, padding: '6px 14px', fontSize: 12.5, fontWeight: 700 }}>
+          <span key={p.name} style={{ background: 'rgba(var(--a1-rgb),0.14)', border: '1px solid rgba(var(--a1-rgb),0.35)', borderRadius: 999, padding: '6px 14px', fontSize: 12.5, fontWeight: 700 }}>
             {p.name}
           </span>
         ))}
@@ -40,14 +40,14 @@ export default function People() {
                 const logged = s.peopleLogged[p.id]
                 const d = logged ? 0 : p.d
                 const glow = d <= 3
-                  ? '0 0 0 3px rgba(16,185,129,0.4),0 0 26px rgba(16,185,129,0.45)'
+                  ? '0 0 0 3px rgba(var(--a2-rgb),0.4),0 0 26px rgba(var(--a2-rgb),0.45)'
                   : d <= 12
-                    ? '0 0 0 3px rgba(59,130,246,0.25),0 0 18px rgba(59,130,246,0.25)'
+                    ? '0 0 0 3px rgba(var(--a1-rgb),0.25),0 0 18px rgba(var(--a1-rgb),0.25)'
                     : '0 0 0 3px rgba(148,163,184,0.12)'
                 const avBg = d <= 3
-                  ? 'linear-gradient(135deg,#2563EB,#12B981)'
+                  ? 'linear-gradient(135deg,var(--a1),var(--a2))'
                   : d <= 12
-                    ? 'linear-gradient(135deg,rgba(59,130,246,0.7),rgba(16,185,129,0.4))'
+                    ? 'linear-gradient(135deg,rgba(var(--a1-rgb),0.7),rgba(var(--a2-rgb),0.4))'
                     : 'rgba(148,163,184,0.25)'
                 return (
                   <div key={p.id} className="card-hover" style={{ ...card, borderRadius: 20, padding: 18 }}>
@@ -103,7 +103,7 @@ export default function People() {
               {s.celebrated[o.id] ? (
                 <div style={{ marginTop: 12, color: C.greenDeep, fontWeight: 800, fontSize: 13 }}>Celebrated 🎉</div>
               ) : (
-                <button onClick={() => celebrate(o.id)} className="lift" style={{ marginTop: 12, background: 'linear-gradient(135deg,rgba(59,130,246,0.3),rgba(16,185,129,0.3))', border: '1px solid rgba(34,211,174,0.4)', color: C.text, padding: '8px 16px', borderRadius: 999, fontWeight: 800, fontSize: 12.5 }}>
+                <button onClick={() => celebrate(o.id)} className="lift" style={{ marginTop: 12, background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.3),rgba(var(--a2-rgb),0.3))', border: '1px solid rgba(var(--a1-rgb),0.4)', color: C.text, padding: '8px 16px', borderRadius: 999, fontWeight: 800, fontSize: 12.5 }}>
                   Celebrated 🎉
                 </button>
               )}
