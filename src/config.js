@@ -13,7 +13,7 @@ export const DEFAULT_NAME = IS_DEMO ? 'Alex' : 'there'
 export const PROFILE = {
   name: 'Abhyank Singh',
   tagline: 'Product & Strategy',
-  github: '',    // e.g. https://github.com/<you>/efficiance
+  github: 'https://github.com/abhyank-singh/efficiance',
   linkedin: 'https://www.linkedin.com/in/abhyank-singh/',
   email: 'singhabhyank@gmail.com',
 }

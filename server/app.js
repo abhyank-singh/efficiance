@@ -6,10 +6,7 @@ import googleRouter from './google.js'
 import insightsRouter from './insights.js'
 import { isDemo } from './limits.js'
 
-// The Express app, WITHOUT app.listen(). This lets the exact same app run three ways:
-//   - as a long-running Node server (Docker / Render / Railway / local) via server/index.js
-//   - as a Vercel serverless function via api/index.js
-//   - as a Netlify function via netlify/functions/api.js
+// The Express app, WITHOUT app.listen(); server/index.js starts it (Docker / Render / local).
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
 
@@ -38,9 +35,7 @@ if (isDemo()) {
 }
 app.use('/api/ai', insightsRouter)
 
-// Serve the built SPA from dist/. Used by the Node/Docker path. On Vercel/Netlify the
-// platform serves dist/ as static assets and only routes /api/* to the function, so this
-// static block simply never runs there — it is harmless.
+// Serve the built SPA from dist/.
 const dist = path.resolve(__dirname, '..', 'dist')
 // index.html carries %ORIGIN% placeholders (link-preview image/url must be absolute); fill from the request.
 let indexHtml = null
