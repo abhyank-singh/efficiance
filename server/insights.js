@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { aiRateLimit } from './limits.js'
-import { completeJson, keyLoaded, MODEL, PROVIDER } from './ai.js'
+import { completeJson, keyLoaded, currentModel, PROVIDER } from './ai.js'
 
 // AI Insights: turns a compact summary of the user's tracked data into cross-module
 // insight cards. The frontend ships a saved set, so a slow/failed/limited call never breaks the app.
@@ -39,7 +39,7 @@ function parseInsights(parsed) {
 }
 
 router.get('/status', (_req, res) => {
-  res.json({ keyLoaded: keyLoaded(), provider: PROVIDER, model: MODEL })
+  res.json({ keyLoaded: keyLoaded(), provider: PROVIDER, model: currentModel() })
 })
 
 router.post('/insights', aiRateLimit, async (req, res) => {
@@ -52,7 +52,7 @@ router.post('/insights', aiRateLimit, async (req, res) => {
 
   try {
     const raw = await completeJson({ system: SYSTEM_PROMPT, user: userPrompt(summary), maxTokens: 1500, temperature: 0.7 })
-    res.json({ insights: parseInsights(raw), model: MODEL, generatedAt: new Date().toISOString() })
+    res.json({ insights: parseInsights(raw), model: currentModel(), generatedAt: new Date().toISOString() })
   } catch (err) {
     const aborted = err.name === 'AbortError'
     console.error('Insights generation failed:', aborted ? 'timeout' : err.message)

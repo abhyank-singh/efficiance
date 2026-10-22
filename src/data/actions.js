@@ -231,7 +231,8 @@ export function localParse(text) {
  */
 export async function understand(text) {
   const local = localParse(text)
-  if (local.actions.length && !local.unmatched.length) return { actions: local.actions, source: 'instant', unmatched: [] }
+  if (local.actions.length && !local.unmatched.length) return { actions: local.actions, source: 'instant', unmatched: [], ai: 'skipped' }
+  const fallback = { actions: local.actions, source: local.actions.length ? 'instant' : 'none', unmatched: local.unmatched }
   try {
     const ctl = new AbortController()
     const t = setTimeout(() => ctl.abort(), 13000)
@@ -239,11 +240,15 @@ export async function understand(text) {
     clearTimeout(t)
     const data = await res.json().catch(() => ({}))
     if (res.ok && Array.isArray(data.actions) && data.actions.length) {
-      return { actions: sanitizeActions(data.actions), source: 'ai', reply: data.reply, unmatched: [] }
+      return { actions: sanitizeActions(data.actions), source: 'ai', reply: data.reply, unmatched: [], ai: 'ok' }
     }
-    return { actions: local.actions, source: local.actions.length ? 'instant' : 'none', unmatched: local.unmatched, note: res.status === 429 ? data.message : data.reply }
+    // ai: ok = the AI answered but found nothing loggable | limited = quota/rate limit | down = AI service failed or timed out | no_key
+    if (res.ok) return { ...fallback, ai: 'empty', note: data.reply }
+    if (res.status === 429) return { ...fallback, ai: 'limited', note: data.message }
+    if (res.status === 503 && data.error === 'no_key') return { ...fallback, ai: 'no_key' }
+    return { ...fallback, ai: 'down' }
   } catch {
-    return { actions: local.actions, source: local.actions.length ? 'instant' : 'none', unmatched: local.unmatched, offline: true }
+    return { ...fallback, ai: 'offline', offline: true }
   }
 }
 

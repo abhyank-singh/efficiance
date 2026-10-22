@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { parseRateLimit } from './limits.js'
-import { completeJson, keyLoaded } from './ai.js'
+import { completeJson, keyLoaded, currentModel, PROVIDER } from './ai.js'
 import { sanitizeActions, HABIT_IDS, BREAK_IDS, PEOPLE, CATEGORIES, MOODS } from '../shared/schema.js'
 
 // Quick Add: turns a natural sentence ("spent 450 on swiggy, slept 6.5h, called mom") into a
@@ -38,7 +38,7 @@ router.post('/parse', parseRateLimit, async (req, res) => {
     const out = await completeJson({
       system: SYSTEM_PROMPT,
       user: `<text>\n${text}\n</text>`,
-      maxTokens: 600,
+      maxTokens: 500,
       temperature: 0.1,
       timeoutMs: 12000,
     })
@@ -47,6 +47,17 @@ router.post('/parse', parseRateLimit, async (req, res) => {
     const aborted = err.name === 'AbortError'
     console.error('Quick Add parse failed:', aborted ? 'timeout' : err.message)
     res.status(aborted ? 504 : 502).json({ error: aborted ? 'timeout' : 'upstream' })
+  }
+})
+
+// Health check for the AI connection: makes one tiny model call and reports what happened (no secrets).
+router.get('/ping', parseRateLimit, async (_req, res) => {
+  if (!keyLoaded()) return res.json({ ok: false, provider: PROVIDER, error: 'no key configured' })
+  try {
+    await completeJson({ system: 'Return exactly {"ok":true} as JSON.', user: 'ping', maxTokens: 20, temperature: 0, timeoutMs: 10000 })
+    res.json({ ok: true, provider: PROVIDER, model: currentModel() })
+  } catch (err) {
+    res.json({ ok: false, provider: PROVIDER, model: currentModel(), error: String(err.message).replace(/key=[^&\s"]+/gi, 'key=…').slice(0, 220) })
   }
 })
 

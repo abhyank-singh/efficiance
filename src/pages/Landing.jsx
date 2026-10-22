@@ -116,7 +116,8 @@ export default function Landing() {
         </div>
 
         <div style={{ textAlign: 'center', marginTop: 80 }}>
-          <div style={{ ...label, marginBottom: 18 }}>Works with</div>
+          <div style={{ ...label, marginBottom: 8 }}>Planned integrations</div>
+          <div style={{ color: C.sub, fontSize: 13, marginBottom: 18 }}>The demo runs on sample data. Live connections are on the roadmap.</div>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             {worksWith.map((w) => (
               <div key={w.name} style={{ background: 'rgba(0,0,0,0.038)', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 12, padding: '10px 18px', color: C.sub, fontSize: 13, fontWeight: 600 }}>

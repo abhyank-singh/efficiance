@@ -33,7 +33,8 @@ export default function Settings() {
 
       <InstallCard />
 
-      <div style={{ ...label, color: C.sub, marginBottom: 12 }}>Integrations</div>
+      <div style={{ ...label, color: C.sub, marginBottom: 6 }}>Integrations · previews only</div>
+      <div style={{ color: C.sub, fontSize: 12.5, marginBottom: 12 }}>These show how connections will look using sample data. Live connections are planned.</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 12, marginBottom: 14 }}>
         {Object.keys(s.integrations).map((k) => {
           const on = s.integrations[k]
@@ -43,11 +44,11 @@ export default function Settings() {
                 <span style={{ width: 9, height: 9, borderRadius: '50%', background: on ? C.greenDeep : 'rgba(148,163,184,0.4)', flex: 'none' }} />
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 13.5 }}>{k}</div>
-                  <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>{on ? 'Connected · demo mode' : 'Connect'}</div>
+                  <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>{on ? 'Preview · sample data' : 'Planned'}</div>
                 </div>
               </div>
               <button onClick={() => toggleIntegration(k)} className="text-hover-dark bd-hover" style={{ background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', color: C.sub, padding: '7px 13px', borderRadius: 10, fontWeight: 700, fontSize: 12, flex: 'none' }}>
-                {on ? 'Disconnect' : 'Connect'}
+                {on ? 'Turn off' : 'Preview'}
               </button>
             </div>
           )
@@ -89,7 +90,7 @@ export default function Settings() {
         <div style={smallCard}>
           <div>
             <div style={{ fontWeight: 700, fontSize: 13.5 }}>Notifications</div>
-            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>Briefing 7:30 AM · Day Close 9 PM</div>
+            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>Preview · reminders arrive with accounts</div>
           </div>
           <span style={{ fontSize: 17 }}>🔔</span>
         </div>

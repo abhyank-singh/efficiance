@@ -114,7 +114,8 @@ export default function QuickAdd() {
     instant: ['⚡ Understood instantly', C.greenDeep, 'rgba(var(--a2-rgb),0.12)'],
     ai: ['✨ Understood by AI', C.blue, 'rgba(var(--a1-rgb),0.10)'],
     none: ['🤔 Not sure', C.amber, 'rgba(245,158,11,0.12)'],
-  })[res.source]
+    down: ['⚠️ AI unavailable', C.amber, 'rgba(245,158,11,0.12)'],
+  })[res.source === 'none' && (res.ai === 'down' || res.ai === 'offline') ? 'down' : res.source]
 
   return (
     <>
@@ -188,15 +189,21 @@ export default function QuickAdd() {
                   </div>
                 ) : (
                   <div style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 14, padding: 14, fontSize: 13.5, lineHeight: 1.55 }}>
-                    I couldn’t turn that into anything I can log. I can record spends, habits, sleep, water, mood, journal lines, people check-ins, guitar practice and workouts. Try one of the examples.
+                    {res.ai === 'down' && <>The AI helper couldn’t be reached just now, so I could only use instant parsing. Instant parsing handles sentences like “spent 450 on swiggy” or “slept 7 hours”. Try again in a minute for anything more free-form.</>}
+                    {res.ai === 'offline' && <>You appear to be offline, so only instant parsing is available. Try “spent 450 on swiggy” or “slept 7 hours”.</>}
+                    {res.ai === 'limited' && <>{res.note || 'The AI helper is at its demo limit for now.'} Instant parsing still works for sentences like “spent 450 on swiggy”.</>}
+                    {res.ai === 'no_key' && <>The AI helper isn’t configured on this server. Instant parsing still works for sentences like “spent 450 on swiggy”.</>}
+                    {res.ai === 'empty' && <>{res.note || 'I couldn’t find anything to log in that.'} I can record spends, habits, sleep, water, mood, journal lines, people check-ins, guitar practice and workouts.</>}
+                    {!['down', 'offline', 'limited', 'no_key', 'empty'].includes(res.ai) && <>I couldn’t turn that into anything I can log. I can record spends, habits, sleep, water, mood, journal lines, people check-ins, guitar practice and workouts. Try one of the examples.</>}
                   </div>
                 )}
 
                 {res.unmatched.length > 0 && res.actions.length > 0 && (
                   <div style={{ marginTop: 10, fontSize: 12.5, color: C.sub }}>Skipped (not understood): {res.unmatched.map((u) => `“${u}”`).join(', ')}</div>
                 )}
-                {res.note && <div style={{ marginTop: 10, fontSize: 12.5, color: C.sub }}>{res.note}</div>}
-                {res.offline && <div style={{ marginTop: 10, fontSize: 12.5, color: C.sub }}>Offline: only instant parsing is available.</div>}
+                {res.actions.length > 0 && res.ai === 'down' && <div style={{ marginTop: 10, fontSize: 12.5, color: C.sub }}>The AI helper is unavailable right now, so only instant parsing was used.</div>}
+                {res.actions.length > 0 && res.ai === 'limited' && res.note && <div style={{ marginTop: 10, fontSize: 12.5, color: C.sub }}>{res.note}</div>}
+                {res.actions.length > 0 && res.offline && <div style={{ marginTop: 10, fontSize: 12.5, color: C.sub }}>Offline: only instant parsing is available.</div>}
 
                 <div style={{ display: 'flex', gap: 10, marginTop: 16, justifyContent: 'flex-end' }}>
                   <button onClick={() => setPhase('idle')} style={{ background: 'transparent', border: 'none', color: C.sub, fontWeight: 700, fontSize: 14, padding: '10px 14px' }}>Edit</button>

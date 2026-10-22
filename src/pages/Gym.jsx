@@ -268,10 +268,10 @@ export default function Gym() {
 
             <div style={{ ...card, boxShadow: 'none', borderRadius: 20, padding: 20 }}>
               <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 4 }}>Sync sleep automatically</div>
-              <div style={{ color: C.muted, fontSize: 12.5, marginBottom: 12 }}>Google Fit connected · demo mode</div>
+              <div style={{ color: C.muted, fontSize: 12.5, marginBottom: 12 }}>Planned: Google Health / Apple Health sync. For now, log sleep with Quick Add.</div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <span style={{ background: 'rgba(var(--a2-rgb),0.12)', border: '1px solid rgba(var(--a2-rgb),0.4)', borderRadius: 999, padding: '6px 13px', fontSize: 12, fontWeight: 700, color: C.greenDeep }}>❤️ Google Fit ✓</span>
-                <span style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 999, padding: '6px 13px', fontSize: 12, fontWeight: 700, color: C.sub }}>🍎 Apple Health</span>
+                <span style={{ background: 'rgba(var(--a2-rgb),0.12)', border: '1px solid rgba(var(--a2-rgb),0.4)', borderRadius: 999, padding: '6px 13px', fontSize: 12, fontWeight: 700, color: C.greenDeep }}>❤️ Google Health (planned)</span>
+                <span style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 999, padding: '6px 13px', fontSize: 12, fontWeight: 700, color: C.sub }}>🍎 Apple Health (planned)</span>
               </div>
             </div>
           </div>

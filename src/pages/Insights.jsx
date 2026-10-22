@@ -34,7 +34,9 @@ export default function Insights() {
           ? 'Add an AI key to .env to generate live — showing saved insights for now.'
           : res.status === 429
             ? data.message
-            : 'Live generation is slow right now — showing your saved insights.')
+            : data.error === 'upstream'
+              ? 'The AI service is unavailable right now — showing your saved insights.'
+              : 'Live generation is slow right now — showing your saved insights.')
       }
     } catch {
       setNote('Live generation unavailable — showing your saved insights.')

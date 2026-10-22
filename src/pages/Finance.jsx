@@ -82,11 +82,11 @@ export default function Finance() {
                   width: '100%', background: 'rgba(0,0,0,0.04)', border: '1.5px dashed rgba(0,0,0,0.13)',
                   color: C.sub, padding: 18, borderRadius: 14, fontWeight: 700, fontSize: 13,
                 }}>
-                  ⬆ Upload bank statement CSV / PDF
+                  ⬆ Try a sample statement import (demo)
                 </button>
               ) : (
                 <div style={{ background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.35)', borderRadius: 14, padding: 16, animation: 'rise 0.2s ease-out' }}>
-                  <div style={{ fontWeight: 800, fontSize: 13.5, color: C.greenDeep, marginBottom: 8 }}>statement_jun.csv parsed ✓</div>
+                  <div style={{ fontWeight: 800, fontSize: 13.5, color: C.greenDeep, marginBottom: 8 }}>Sample statement parsed ✓ (demo output; real import is planned)</div>
                   <div style={{ fontSize: 12.5, color: C.sub, lineHeight: 1.7 }}>
                     142 transactions found · 131 auto-categorized<br />🍔 Food ₹6,120 · 🛒 Groceries ₹4,890 · 🛺 Transport ₹1,980
                   </div>

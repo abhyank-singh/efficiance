@@ -7,9 +7,11 @@ Everything you track stays in your browser (localStorage); a small Express serve
 
 **Live demo:** _add your Render URL here after deploying_ · [Source](https://github.com/abhyank-singh/efficiance) · **Built by** [Abhyank Singh](https://www.linkedin.com/in/abhyank-singh/)
 
-| Today | Insights (live AI) | Finance |
+| Today | Quick Add | Life Recap |
 |---|---|---|
-| ![Today](docs/screenshots/today.png) | ![Insights](docs/screenshots/insights.png) | ![Finance](docs/screenshots/finance.png) |
+| ![Today](docs/screenshots/today.png) | ![Quick Add](docs/screenshots/quick-add.png) | ![Life Recap](docs/screenshots/recap.png) |
+| **Music** | **Insights (live AI)** | **Mobile** |
+| ![Music](docs/screenshots/music.png) | ![Insights](docs/screenshots/insights.png) | ![Mobile](docs/screenshots/mobile-today.png) |
 
 ## Two builds, one codebase
 
@@ -56,6 +58,17 @@ npm run demo             # http://localhost:3001 in demo mode
 
 Without a key the app uses its saved insights; nothing breaks.
 
+## Honest scope
+
+This is a portfolio prototype. Most modules show sample data, the Fitbit / Google Health / Apple Health / bank / UPI
+integrations are **planned previews**, and Google Calendar sync only works in the personal build. Quick Add, Music,
+the Recap and the AI insights are real and working.
+
+## Troubleshooting the AI
+
+Open `/api/ai/ping` on your deployment. It makes one tiny model call and reports the model in use or the exact error.
+Gemini retires models periodically; the server auto-switches to an available Flash-Lite model when that happens.
+
 ## Extending it
 
 See [EXTENDING.md](EXTENDING.md): re-skin the palette, add modules, instruments and Quick Add actions.
@@ -68,3 +81,7 @@ See [DEPLOY_GUIDE.md](DEPLOY_GUIDE.md).
 
 Single container: Express (Node 22) serves the built React SPA and the API (`/api/ai/insights`, `/api/google/*`, `/api/health`).
 Product spec: [spec.md](spec.md).
+
+## License
+
+MIT, see [LICENSE](LICENSE).
