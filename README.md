@@ -5,7 +5,7 @@
 One intelligence layer over seven modules (calendar, goals, people, habits, finance, gym & health, journal) with AI cross-module insights.
 Everything you track stays in your browser (localStorage); a small Express server only relays AI and Google Calendar calls.
 
-**Live demo:** _add your Render URL here after deploying_ · [Source](https://github.com/abhyank-singh/efficiance) · **Built by** [Abhyank Singh](https://www.linkedin.com/in/abhyank-singh/)
+**Live demo:** [efficiance.onrender.com](https://efficiance.onrender.com) · [Source](https://github.com/abhyank-singh/efficiance) · **Built by** [Abhyank Singh](https://www.linkedin.com/in/abhyank-singh/)
 
 | Today | Quick Add | Life Recap |
 |---|---|---|
