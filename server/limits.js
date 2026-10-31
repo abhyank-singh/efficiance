@@ -10,6 +10,22 @@ const intEnv = (name, dflt) => {
 
 export const isDemo = () => process.env.APP_MODE === 'demo'
 
+/**
+ * The identity a visitor is limited by. IPv4 as-is; IPv6 collapses to its /64, because one household or
+ * attacker normally controls a whole /64 and could otherwise rotate addresses to dodge the limit.
+ */
+export function ipKey(raw) {
+  let ip = String(raw || 'unknown').split('%')[0].toLowerCase()
+  if (ip.startsWith('::ffff:') && ip.includes('.')) return ip.slice(7) // IPv4-mapped IPv6
+  if (!ip.includes(':')) return ip
+  const [head, tail = null] = ip.split('::')
+  const h = head ? head.split(':') : []
+  const t = tail === null ? [] : tail ? tail.split(':') : []
+  const groups = tail === null ? h : [...h, ...Array(Math.max(0, 8 - h.length - t.length)).fill('0'), ...t]
+  return groups.slice(0, 4).map((g) => (g || '0').replace(/^0+(?=.)/, '')).join(':') + '::/64'
+}
+
+const MAX_TRACKED_IPS = 50_000 // memory guard: a flood of distinct addresses cannot grow the map without bound
 const buckets = new Map() // name -> { hits: Map<ip, number[]>, globalDay }
 
 /**
@@ -35,13 +51,16 @@ export function makeLimiter({ name, prefix, demo, personal, message }) {
     if (state.globalDay.count >= lim.globalPerDay) {
       return res.status(429).json({ error: 'daily_cap', message: `The demo has used up its free AI quota for today. ${message}` })
     }
-    const ip = req.ip || 'unknown'
+    const ip = ipKey(req.ip)
     const ts = (state.hits.get(ip) || []).filter((t) => t > now - DAY)
     if (ts.length >= lim.perIpPerDay || ts.filter((t) => t > now - HOUR).length >= lim.perIpPerHour) {
       return res.status(429).json({ error: 'rate_limited', message: `You have reached the demo limit for live AI. ${message}` })
     }
     ts.push(now)
     state.hits.set(ip, ts)
+    if (state.hits.size > MAX_TRACKED_IPS) {
+      for (const k of state.hits.keys()) { state.hits.delete(k); if (state.hits.size <= MAX_TRACKED_IPS * 0.8) break }
+    }
     state.globalDay.count += 1
     next()
   }

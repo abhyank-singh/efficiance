@@ -32,6 +32,9 @@ Edit `src/config.js` (`PROFILE`) with your GitHub/LinkedIn/email; empty values h
 ## Optional: anonymous analytics
 Create a free site at goatcounter.com, then add an environment variable `VITE_GOATCOUNTER` (your site code) in Render and redeploy. It is read at build time. No cookies, no personal data, and Do-Not-Track is honored.
 
+## Security check after deploying
+Open `https://<your-app>.onrender.com/api/health?ip=1` from a phone on mobile data: `clientIp` should be your own public address. If everyone shows the same address, raise `TRUST_PROXY`. Details: [SECURITY.md](SECURITY.md).
+
 ## Cost & abuse controls
 Defaults in demo mode: 4 live-AI calls per visitor per hour, 10 per day, 150 per day overall, 8 KB input, 1.5K output tokens.
 Quick Add AI parsing has its own, looser budget: 20 per visitor per hour, 60 per day, 400 per day overall (instant offline parsing is unlimited).

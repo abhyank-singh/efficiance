@@ -14,18 +14,53 @@ const app = express()
 app.disable('x-powered-by')
 // Behind Render's proxy, trust 1 hop so req.ip is the real visitor (used by the AI rate limiter).
 app.set('trust proxy', Number(process.env.TRUST_PROXY ?? 1))
-app.use((_req, res, next) => {
-  res.set({ 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin' })
+
+// Personal build: only answer to localhost names. Without this, a web page you visit can re-point its own
+// domain at 127.0.0.1 ("DNS rebinding") and read your calendar from this server. Add names with ALLOWED_HOSTS.
+const LOCAL_HOSTS = /^(localhost|127\.0\.0\.1|\[::1\])$/i
+const EXTRA_HOSTS = (process.env.ALLOWED_HOSTS || '').split(',').map((h) => h.trim().toLowerCase()).filter(Boolean)
+if (!isDemo()) {
+  app.use((req, res, next) => {
+    const host = String(req.headers.host || '').toLowerCase().replace(/:\d+$/, '')
+    if (LOCAL_HOSTS.test(host) || EXTRA_HOSTS.includes(host)) return next()
+    res.status(421).type('text/plain').send('Unexpected Host header. This personal build only answers on localhost.')
+  })
+}
+
+// Security headers. The CSP allows only what the app uses: its own scripts, inline styles (React style props),
+// Google Fonts, and the optional GoatCounter analytics host.
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' https://gc.zgo.at",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com",
+  "img-src 'self' data: https://*.goatcounter.com",
+  "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.goatcounter.com",
+  "manifest-src 'self'",
+  "worker-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join('; ')
+app.use((req, res, next) => {
+  res.set({
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Content-Security-Policy': CSP,
+    'X-Frame-Options': 'DENY',
+    'Permissions-Policy': 'camera=(), geolocation=(), payment=(), microphone=(self)', // microphone: Quick Add voice input
+  })
+  if (req.secure) res.set('Strict-Transport-Security', 'max-age=15552000')
   next()
 })
 app.use(express.json({ limit: '16kb' }))
 
-app.get('/api/health', (_req, res) => {
-  res.json({
-    ok: true,
-    service: 'efficiance',
-    mode: isDemo() ? 'demo' : 'personal',
-  })
+app.get('/api/health', (req, res) => {
+  const body = { ok: true, service: 'efficiance', mode: isDemo() ? 'demo' : 'personal' }
+  // /api/health?ip=1 shows the address the server sees for YOU, to confirm TRUST_PROXY is right behind a proxy.
+  if (req.query.ip === '1') body.clientIp = req.ip
+  res.json(body)
 })
 
 // Google Calendar holds ONE server-wide token, so it must never be enabled on a public demo.
@@ -44,7 +79,9 @@ let indexHtml = null
 const sendIndex = (req, res, next) => {
   try {
     indexHtml ??= fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
-    res.type('html').send(indexHtml.replaceAll('%ORIGIN%', `${req.protocol}://${req.get('host')}`))
+    // The Host header is attacker-controlled text: only plain hostname characters ever reach the HTML.
+    const host = /^[a-z0-9.\-:[\]]{1,255}$/i.test(req.get('host') || '') ? req.get('host') : 'localhost'
+    res.set('Cache-Control', 'no-cache').type('html').send(indexHtml.replaceAll('%ORIGIN%', `${req.protocol === 'https' ? 'https' : 'http'}://${host}`))
   } catch { next() }
 }
 app.use(express.static(dist, {

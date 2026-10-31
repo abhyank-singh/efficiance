@@ -83,6 +83,10 @@ Main changes: emoji used as icons became SVG icons, tracked all-caps labels beca
 every colour and the font moved into tokens, text under 11px and tap targets under 32px were fixed, and form fields got a visible edge.
 The waivers and dismissals are written as stamps at the top of `src/styles.css`.
 
+## Security
+
+See [SECURITY.md](SECURITY.md): design, the review that was run, what it found and fixed, and how to report an issue. `npm test` runs the security checks.
+
 ## Extending it
 
 See [EXTENDING.md](EXTENDING.md): re-skin the palette, add modules, instruments and Quick Add actions.

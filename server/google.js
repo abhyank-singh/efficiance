@@ -2,6 +2,7 @@ import { Router } from 'express'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import crypto from 'node:crypto'
 
 // Google Calendar OAuth (read-only) using plain fetch — no SDK needed.
 // Tokens persist to a git-ignored file so a server restart doesn't drop the connection.
@@ -16,8 +17,30 @@ try { tokens = JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8')) } catch { /* not 
 
 const saveTokens = (t) => {
   tokens = t
-  try { fs.writeFileSync(TOKEN_FILE, JSON.stringify(t)) } catch { /* fs readonly — keep in memory */ }
+  try {
+    fs.writeFileSync(TOKEN_FILE, JSON.stringify(t), { mode: 0o600 }) // owner-only: the refresh token lives here
+    fs.chmodSync(TOKEN_FILE, 0o600) // also tightens a file written by an older version
+  } catch { /* fs readonly, keep in memory */ }
 }
+
+// ---- Request guards -------------------------------------------------------------------------------------------
+// Any website you visit can make your browser POST to localhost. State-changing calls must come from this app.
+const DEV_ORIGINS = new Set(['http://localhost:5173', 'http://127.0.0.1:5173']) // the Vite dev server proxies here
+const sameSite = (req) => {
+  const origin = req.get('origin')
+  if (origin) { try { return new URL(origin).host === req.get('host') || DEV_ORIGINS.has(origin) } catch { return false } }
+  const fetchSite = req.get('sec-fetch-site') // absent for non-browser clients such as curl
+  return !fetchSite || fetchSite === 'same-origin' || fetchSite === 'none'
+}
+router.use((req, res, next) => {
+  if (['GET', 'HEAD', 'OPTIONS'].includes(req.method) || sameSite(req)) return next()
+  res.status(403).json({ error: 'cross_site_request_blocked' })
+})
+
+// OAuth `state`: binds the Google redirect back to the browser that started the flow (blocks login CSRF).
+const STATE_COOKIE = 'efi_oauth_state'
+const readCookie = (req, name) => (req.headers.cookie || '').split(';').map((c) => c.trim()).find((c) => c.startsWith(name + '='))?.slice(name.length + 1)
+const safeEqual = (a, b) => typeof a === 'string' && typeof b === 'string' && a.length === b.length && a.length > 0 && crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b))
 
 const cfg = () => ({
   id: process.env.GOOGLE_CLIENT_ID,
@@ -45,13 +68,18 @@ router.get('/auth', (req, res) => {
   url.searchParams.set('scope', 'https://www.googleapis.com/auth/calendar.readonly')
   url.searchParams.set('access_type', 'offline')
   url.searchParams.set('prompt', 'consent')
+  const state = crypto.randomBytes(16).toString('hex')
+  res.cookie(STATE_COOKIE, state, { httpOnly: true, sameSite: 'lax', maxAge: 10 * 60 * 1000, path: '/api/google' })
+  url.searchParams.set('state', state)
   res.redirect(url.toString())
 })
 
 router.get('/callback', async (req, res) => {
   const { id, secret, redirect } = cfg()
   const code = req.query.code
-  if (!code) return res.redirect(appOrigin() + '/calendar?google=error')
+  const stateOk = safeEqual(req.query.state, readCookie(req, STATE_COOKIE))
+  res.clearCookie(STATE_COOKIE, { path: '/api/google' })
+  if (!code || !stateOk) return res.redirect(appOrigin() + '/calendar?google=error')
   try {
     const r = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',

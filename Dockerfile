@@ -28,6 +28,8 @@ COPY shared ./shared
 COPY --from=build /app/dist ./dist
 # PaaS hosts inject PORT; the server honors it. 8080 is the default.
 ENV PORT=8080
+# Inside a container the app must listen on all interfaces; publish the port with `-p 127.0.0.1:...` for a private run.
+ENV HOST=0.0.0.0
 EXPOSE 8080
 USER node
 CMD ["node", "server/index.js"]

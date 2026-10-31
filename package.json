@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "build:demo": "VITE_APP_MODE=demo vite build",
     "personal": "vite build && node --env-file-if-exists=.env server/index.js",
-    "demo": "VITE_APP_MODE=demo vite build && APP_MODE=demo node --env-file-if-exists=.env server/index.js"
+    "demo": "VITE_APP_MODE=demo vite build && APP_MODE=demo node --env-file-if-exists=.env server/index.js",
+    "test": "node --test \"tests/*.test.mjs\""
   },
   "dependencies": {
     "express": "^4.21.2",
