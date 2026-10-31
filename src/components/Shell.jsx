@@ -5,43 +5,44 @@ import { C, grad, gradSoft, auroraBg } from '../theme.js'
 import Fab from './Fab.jsx'
 import { IS_DEMO, resetDemo } from '../config.js'
 import QuickAdd, { QuickBar } from './QuickAdd.jsx'
+import Icon from './Icon.jsx'
 
 const navDefs = [
-  { id: 'today', label: 'Today', icon: '☀️' },
-  { id: 'goals', label: 'Goals', icon: '🎯' },
-  { id: 'calendar', label: 'Calendar', icon: '🗓' },
-  { id: 'people', label: 'People', icon: '🌱' },
-  { id: 'habits', label: 'Habits', icon: '✅' },
-  { id: 'finance', label: 'Finance', icon: '₹' },
-  { id: 'gym', label: 'Gym & Health', icon: '🏋️' },
-  { id: 'music', label: 'Music', icon: '🎸' },
+  { id: 'today', label: 'Today', icon: 'sun' },
+  { id: 'goals', label: 'Goals', icon: 'goals' },
+  { id: 'calendar', label: 'Calendar', icon: 'calendar' },
+  { id: 'people', label: 'People', icon: 'sprout' },
+  { id: 'habits', label: 'Habits', icon: 'habits' },
+  { id: 'finance', label: 'Finance', icon: 'rupee' },
+  { id: 'gym', label: 'Gym & Health', icon: 'gym' },
+  { id: 'music', label: 'Music', icon: 'guitar' },
   { divider: true },
-  { id: 'insights', label: 'Insights', icon: '🧠' },
-  { id: 'review', label: 'Weekly Review', icon: '🏁' },
-  { id: 'recap', label: 'Life Recap', icon: '🎞' },
-  { id: 'journal', label: 'Journal', icon: '📓' },
-  { id: 'settings', label: 'Settings', icon: '⚙️' },
-  ...(IS_DEMO ? [{ id: 'about', label: 'About', icon: '💡' }] : []),
+  { id: 'insights', label: 'Insights', icon: 'brain' },
+  { id: 'review', label: 'Weekly Review', icon: 'flag' },
+  { id: 'recap', label: 'Life Recap', icon: 'recap' },
+  { id: 'journal', label: 'Journal', icon: 'journal' },
+  { id: 'settings', label: 'Settings', icon: 'settings' },
+  ...(IS_DEMO ? [{ id: 'about', label: 'About', icon: 'idea' }] : []),
 ]
 
 const bnDefs = [
-  { id: 'today', label: 'Today', icon: '☀️' },
-  { id: 'calendar', label: 'Cal', icon: '🗓' },
-  { id: 'habits', label: 'Habits', icon: '✅' },
-  { id: 'finance', label: '₹', icon: '💸' },
-  { id: 'gym', label: 'Gym', icon: '🏋️' },
+  { id: 'today', label: 'Today', icon: 'sun' },
+  { id: 'calendar', label: 'Cal', icon: 'calendar' },
+  { id: 'habits', label: 'Habits', icon: 'habits' },
+  { id: 'finance', label: '₹', icon: 'cash' },
+  { id: 'gym', label: 'Gym', icon: 'gym' },
 ]
 
 const moreDefs = [
-  { id: 'goals', label: 'Goals', icon: '🎯' },
-  { id: 'people', label: 'People', icon: '🌱' },
-  { id: 'music', label: 'Music', icon: '🎸' },
-  { id: 'insights', label: 'Insights', icon: '🧠' },
-  { id: 'review', label: 'Weekly Review', icon: '🏁' },
-  { id: 'recap', label: 'Life Recap', icon: '🎞' },
-  { id: 'journal', label: 'Journal', icon: '📓' },
-  { id: 'settings', label: 'Settings', icon: '⚙️' },
-  ...(IS_DEMO ? [{ id: 'about', label: 'About', icon: '💡' }] : []),
+  { id: 'goals', label: 'Goals', icon: 'goals' },
+  { id: 'people', label: 'People', icon: 'sprout' },
+  { id: 'music', label: 'Music', icon: 'guitar' },
+  { id: 'insights', label: 'Insights', icon: 'brain' },
+  { id: 'review', label: 'Weekly Review', icon: 'flag' },
+  { id: 'recap', label: 'Life Recap', icon: 'recap' },
+  { id: 'journal', label: 'Journal', icon: 'journal' },
+  { id: 'settings', label: 'Settings', icon: 'settings' },
+  ...(IS_DEMO ? [{ id: 'about', label: 'About', icon: 'idea' }] : []),
 ]
 
 function Logo() {
@@ -54,11 +55,11 @@ function Logo() {
 
 function DemoBanner({ onAbout }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap', background: 'rgba(var(--a1-rgb),0.08)', border: '1px solid rgba(var(--a1-rgb),0.22)', borderRadius: 14, padding: '9px 14px', marginBottom: 18, fontSize: 12.5, color: C.sub, fontWeight: 600 }}>
-      <span>🧪 <b style={{ color: C.text }}>Interactive demo</b> · fictional sample data, saved only in your browser</span>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap', background: 'rgba(var(--a1-rgb),0.08)', border: '1px solid rgba(var(--a1-rgb),0.22)', borderRadius: 14, padding: '9px 14px', marginBottom: 18, fontSize: 12.5, color: C.sub, fontWeight: 700 }}>
+      <span><Icon name="flask" size={14} /> <b style={{ color: C.text }}>Interactive demo</b>: fictional sample data, saved only in your browser</span>
       <span style={{ display: 'flex', gap: 16 }}>
         <button onClick={resetDemo} style={{ background: 'transparent', border: 'none', color: C.sub, fontWeight: 700, fontSize: 12.5, padding: 0 }}>Reset demo</button>
-        <button onClick={onAbout} style={{ background: 'transparent', border: 'none', color: C.blue, fontWeight: 800, fontSize: 12.5, padding: 0 }}>What is this project? →</button>
+        <button onClick={onAbout} style={{ background: 'transparent', border: 'none', color: C.blue, fontWeight: 800, fontSize: 12.5, padding: 0 }}>What is this project?</button>
       </span>
     </div>
   )
@@ -79,12 +80,12 @@ export default function Shell() {
   return (
     <div style={auroraBg}>
       <div className="orbs" aria-hidden="true"><i /><i /></div>
-      <a href="#main" style={{ position: 'absolute', left: -9999, top: 8, zIndex: 100, background: '#fff', padding: '8px 12px', borderRadius: 8 }} onFocus={(e) => { e.currentTarget.style.left = '8px' }} onBlur={(e) => { e.currentTarget.style.left = '-9999px' }}>Skip to content</a>
+      <a href="#main" style={{ position: 'absolute', left: -9999, top: 8, zIndex: 100, background: 'var(--surface)', padding: '8px 12px', borderRadius: 8 }} onFocus={(e) => { e.currentTarget.style.left = '8px' }} onBlur={(e) => { e.currentTarget.style.left = '-9999px' }}>Skip to content</a>
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', minHeight: '100vh' }}>
         {!mobile && (
           <div style={{ width: 224, flex: 'none', padding: '18px 0 18px 18px', position: 'sticky', top: 0, height: '100vh' }}>
             <div className="glass-panel" style={{
-              background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.085)', borderTopColor: 'rgba(0,0,0,0.05)',
+              background: 'var(--surface)', border: '1px solid rgba(0,0,0,0.085)', borderTopColor: 'rgba(0,0,0,0.05)',
               borderRadius: 22, boxShadow: '0 1px 2px rgba(16,24,40,0.05),0 10px 30px rgba(16,24,40,0.08)',
               height: '100%', display: 'flex', flexDirection: 'column', padding: '20px 12px',
             }}>
@@ -100,17 +101,17 @@ export default function Shell() {
                     border: 'none', borderRadius: 12, padding: '10px 12px',
                     color: P(d.id) ? C.text : C.sub, fontSize: 13.5, fontWeight: 700, textAlign: 'left',
                   }}>
-                    <span style={{ fontSize: 15, width: 20, textAlign: 'center' }}>{d.icon}</span>{d.label}
+                    <Icon name={d.icon} size={15} />{d.label}
                   </button>
                 ))}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 10px 4px', borderTop: '1px solid rgba(0,0,0,0.07)' }}>
-                <div style={{ width: 34, height: 34, borderRadius: '50%', background: grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, color: '#fff' }}>
+                <div style={{ width: 34, height: 34, borderRadius: '50%', background: grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, color: 'var(--on-accent)' }}>
                   {userName.charAt(0).toUpperCase()}
                 </div>
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontWeight: 700, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName}</div>
-                  <div style={{ color: C.muted, fontSize: 11 }}>Life OS · v1</div>
+                  <div style={{ color: C.muted, fontSize: 11 }}>Life OS v1</div>
                 </div>
               </div>
             </div>
@@ -134,14 +135,14 @@ export default function Shell() {
               <button key={d.id} onClick={() => go(d.id)} style={{
                 background: P(d.id) ? 'linear-gradient(135deg,rgba(var(--a1-rgb),0.35),rgba(var(--a2-rgb),0.35))' : 'transparent',
                 border: 'none', borderRadius: 12, padding: '8px 10px', display: 'flex', flexDirection: 'column',
-                alignItems: 'center', gap: 3, color: P(d.id) ? C.text : C.sub, fontSize: 10, fontWeight: 700, minWidth: 48,
+                alignItems: 'center', gap: 3, color: P(d.id) ? C.text : C.sub, fontSize: 11.5, fontWeight: 700, minWidth: 48,
               }}>
-                <span style={{ fontSize: 17 }}>{d.icon}</span>{d.label}
+                <Icon name={d.icon} size={17} />{d.label}
               </button>
             ))}
             <button onClick={() => setMoreOpen(!moreOpen)} style={{
               background: 'transparent', border: 'none', borderRadius: 12, padding: '8px 10px', display: 'flex',
-              flexDirection: 'column', alignItems: 'center', gap: 3, color: C.sub, fontSize: 10, fontWeight: 700, minWidth: 48,
+              flexDirection: 'column', alignItems: 'center', gap: 3, color: C.sub, fontSize: 11.5, fontWeight: 700, minWidth: 48,
             }}>
               <span style={{ fontSize: 17 }}>⋯</span>More
             </button>
@@ -150,7 +151,7 @@ export default function Shell() {
             <>
               <div onClick={() => setMoreOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 39, background: 'rgba(17,24,39,0.32)', backdropFilter: 'blur(4px)' }} />
               <div style={{
-                position: 'fixed', bottom: 'calc(86px + env(safe-area-inset-bottom))', left: 14, right: 14, zIndex: 41, background: '#FFFFFF',
+                position: 'fixed', bottom: 'calc(86px + env(safe-area-inset-bottom))', left: 14, right: 14, zIndex: 41, background: 'var(--surface)',
                 border: '1px solid rgba(0,0,0,0.09)', borderRadius: 20, padding: 12,
                 display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, animation: 'rise 0.2s ease-out',
               }}>
@@ -159,7 +160,7 @@ export default function Shell() {
                     background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14,
                     padding: 14, color: C.text, fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10,
                   }}>
-                    <span style={{ fontSize: 16 }}>{d.icon}</span>{d.label}
+                    <Icon name={d.icon} size={16} />{d.label}
                   </button>
                 ))}
               </div>

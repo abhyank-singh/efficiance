@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import { C, grad, card, label, glassPrimary } from '../theme.js'
 import { monthDay } from '../data/dates.js'
+import Icon from '../components/Icon.jsx'
 
 const wins = [
-  { t: 'Held a 12-day meditation streak', i: '🧘' },
-  { t: 'PB: Bench Press 70kg × 5', i: '🏋️' },
-  { t: 'Finished Part II of Deep Work', i: '📚' },
-  { t: 'Stayed under budget in 4 of 6 categories', i: '₹' },
+  { t: 'Held a 12-day meditation streak', i: 'lotus' },
+  { t: 'PB: Bench Press 70kg × 5', i: 'gym' },
+  { t: 'Finished Part II of Deep Work', i: 'books' },
+  { t: 'Stayed under budget in 4 of 6 categories', i: 'rupee' },
 ]
 
 const reviewStats = [
@@ -24,16 +25,16 @@ export default function Review() {
     <div style={{ animation: 'rise 0.25s ease-out', maxWidth: 860, margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
         <div style={label}>Weekly Life Sprint Review</div>
-        <h1 style={{ fontWeight: 800, fontSize: 'clamp(24px,3.4vw,32px)', letterSpacing: -1, margin: '10px 0 4px' }}>Week of {monthDay(-10)} – {monthDay(-4)}</h1>
-        <div style={{ color: C.sub, fontSize: 13.5 }}>Auto-generated every Sunday · screenshot-worthy on purpose</div>
+        <h1 style={{ fontWeight: 800, fontSize: 'clamp(24px,3.4vw,32px)', letterSpacing: -1, margin: '10px 0 4px' }}>Week of {monthDay(-10)} to {monthDay(-4)}</h1>
+        <div style={{ color: C.sub, fontSize: 13.5 }}>Auto-generated every Sunday, screenshot-worthy on purpose</div>
       </div>
 
       <div style={{ ...card, borderRadius: 26, padding: 'clamp(24px,4vw,36px)' }}>
-        <div style={{ ...label, color: C.sub, marginBottom: 14 }}>🏆 Wins of the week</div>
+        <div style={{ ...label, color: C.sub, marginBottom: 14 }}><Icon name="trophy" size={16} /> Wins of the week</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 10, marginBottom: 28 }}>
           {wins.map((w) => (
             <div key={w.t} style={{ display: 'flex', alignItems: 'center', gap: 11, background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.1),rgba(var(--a2-rgb),0.1))', border: '1px solid rgba(var(--a1-rgb),0.25)', borderRadius: 14, padding: '13px 15px' }}>
-              <span style={{ fontSize: 18 }}>{w.i}</span>
+              <Icon name={w.i} size={18} />
               <span style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.35 }}>{w.t}</span>
             </div>
           ))}
@@ -43,7 +44,7 @@ export default function Review() {
           {reviewStats.map((st) => (
             <div key={st.label} style={{ textAlign: 'center' }}>
               <div style={{ position: 'relative', width: 76, height: 76, margin: '0 auto' }}>
-                <svg width="76" height="76" viewBox="0 0 76 76">
+                <svg aria-hidden="true" width="76" height="76" viewBox="0 0 76 76">
                   <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="7" />
                   <circle cx="38" cy="38" r="32" fill="none" stroke="url(#eg)" strokeWidth="7" strokeLinecap="round" strokeDasharray="201" strokeDashoffset={st.dash} transform="rotate(-90 38 38)" style={{ animation: 'ringin 0.8s ease-out' }} />
                 </svg>
@@ -55,14 +56,14 @@ export default function Review() {
         </div>
 
         <div style={{ marginTop: 24, background: 'rgba(0,0,0,0.035)', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 18, padding: 20 }}>
-          <div style={{ ...label, marginBottom: 8 }}>🧭 Focus suggestion for next week</div>
-          <div style={{ fontWeight: 600, fontSize: 16, lineHeight: 1.5 }}>
-            Move your two evening workouts to 7 AM — your completion rate doubles before 8 AM, and it frees Tuesday evening for your most consistent learning block.
+          <div style={{ ...label, marginBottom: 8 }}><Icon name="compass" size={16} /> Focus suggestion for next week</div>
+          <div style={{ fontWeight: 700, fontSize: 16, lineHeight: 1.5 }}>
+            Move your two evening workouts to 7 AM, your completion rate doubles before 8 AM, and it frees Tuesday evening for your most consistent learning block.
           </div>
         </div>
 
         <button onClick={() => nav('/calendar')} className="lift" style={{ marginTop: 22, width: '100%', ...glassPrimary, padding: 15, borderRadius: 15, fontWeight: 800, fontSize: 15 }}>
-          Plan next week → pre-fill calendar blocks
+          Plan next week
         </button>
       </div>
     </div>

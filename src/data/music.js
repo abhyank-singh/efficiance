@@ -2,20 +2,20 @@
 // and register a panel for it in src/pages/Music.jsx (PANELS).
 
 export const instruments = [
-  { id: 'guitar', name: 'Guitar', icon: '🎸', ready: true },
-  { id: 'piano', name: 'Piano', icon: '🎹', ready: false, blurb: 'Scales, chord shapes and a keyboard-based practice plan.' },
-  { id: 'vocals', name: 'Vocals', icon: '🎤', ready: false, blurb: 'Warm-ups, range tracking and pitch drills.' },
-  { id: 'drums', name: 'Drums', icon: '🥁', ready: false, blurb: 'Rudiments, grooves and tempo ladders.' },
+  { id: 'guitar', name: 'Guitar', icon: 'guitar', ready: true },
+  { id: 'piano', name: 'Piano', icon: 'piano', ready: false, blurb: 'Scales, chord shapes and a keyboard-based practice plan.' },
+  { id: 'vocals', name: 'Vocals', icon: 'voice', ready: false, blurb: 'Warm-ups, range tracking and pitch drills.' },
+  { id: 'drums', name: 'Drums', icon: 'drum', ready: false, blurb: 'Rudiments, grooves and tempo ladders.' },
 ]
 
 export const DAILY_GOAL_MIN = 30
 
 // Today's practice routine (each block logs its minutes when ticked).
 export const guitarPlan = [
-  { id: 'warm', icon: '🔥', title: 'Warm-up: spider walk', min: 5, tip: 'One finger per fret, slow and even. Relax your thumb.' },
-  { id: 'chords', icon: '🎵', title: 'Chord changes', min: 10, tip: 'Use the drill below. Aim for clean changes, not speed.' },
-  { id: 'scale', icon: '📈', title: 'A minor pentatonic, 2 positions', min: 10, tip: 'Up and down with a metronome at 70 BPM.' },
-  { id: 'song', icon: '🎶', title: 'Song work', min: 15, tip: 'Pick the hardest 8 bars and loop them slowly.' },
+  { id: 'warm', icon: 'flame', title: 'Warm-up: spider walk', min: 5, tip: 'One finger per fret, slow and even. Relax your thumb.' },
+  { id: 'chords', icon: 'note', title: 'Chord changes', min: 10, tip: 'Use the drill below. Aim for clean changes, not speed.' },
+  { id: 'scale', icon: 'trend-up', title: 'A minor pentatonic, 2 positions', min: 10, tip: 'Up and down with a metronome at 70 BPM.' },
+  { id: 'song', icon: 'music', title: 'Song work', min: 15, tip: 'Pick the hardest 8 bars and loop them slowly.' },
 ]
 
 // Demo baseline: minutes practised on each of the last 7 days (today is added live).
@@ -23,7 +23,7 @@ export const practiceSeed = [20, 35, 0, 25, 40, 15]
 
 export const songs = [
   { id: 's1', title: 'Knockin’ on Heaven’s Door', level: 'Beginner', base: 70, next: 'Play the full chorus at tempo' },
-  { id: 's2', title: 'Wonderwall (capo 2)', level: 'Beginner', base: 45, next: 'Smooth the Em7 → G change' },
+  { id: 's2', title: 'Wonderwall (capo 2)', level: 'Beginner', base: 45, next: 'Smooth the Em7-to-G change' },
   { id: 's3', title: 'Blackbird (fingerstyle)', level: 'Intermediate', base: 20, next: 'Learn bars 1–8 hands-together' },
 ]
 

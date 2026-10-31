@@ -3,6 +3,7 @@ import { C, gradTab, label } from '../theme.js'
 import { focusAreas } from '../data/seed.js'
 import { IS_DEMO, resetDemo } from '../config.js'
 import { InstallCard } from '../components/Install.jsx'
+import Icon from '../components/Icon.jsx'
 
 const comingSoon = [{ name: 'UPI notification auto-capture' }, { name: 'RBI Account Aggregator connect' }]
 
@@ -25,7 +26,7 @@ export default function Settings() {
     URL.revokeObjectURL(url)
   }
 
-  const smallCard = { background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 18, padding: 18, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }
+  const smallCard = { background: 'var(--surface)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 18, padding: 18, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }
 
   return (
     <div style={{ animation: 'rise 0.25s ease-out', maxWidth: 860, margin: '0 auto' }}>
@@ -33,7 +34,7 @@ export default function Settings() {
 
       <InstallCard />
 
-      <div style={{ ...label, color: C.sub, marginBottom: 6 }}>Integrations · previews only</div>
+      <div style={{ ...label, color: C.sub, marginBottom: 6 }}>Integrations: previews only</div>
       <div style={{ color: C.sub, fontSize: 12.5, marginBottom: 12 }}>These show how connections will look using sample data. Live connections are planned.</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 12, marginBottom: 14 }}>
         {Object.keys(s.integrations).map((k) => {
@@ -44,7 +45,7 @@ export default function Settings() {
                 <span style={{ width: 9, height: 9, borderRadius: '50%', background: on ? C.greenDeep : 'rgba(148,163,184,0.4)', flex: 'none' }} />
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 13.5 }}>{k}</div>
-                  <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>{on ? 'Preview · sample data' : 'Planned'}</div>
+                  <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>{on ? 'Preview with sample data' : 'Planned'}</div>
                 </div>
               </div>
               <button onClick={() => toggleIntegration(k)} className="text-hover-dark bd-hover" style={{ background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', color: C.sub, padding: '7px 13px', borderRadius: 10, fontWeight: 700, fontSize: 12, flex: 'none' }}>
@@ -58,12 +59,12 @@ export default function Settings() {
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 30 }}>
         {comingSoon.map((c) => (
           <div key={c.name} style={{ background: 'rgba(0,0,0,0.024)', border: '1.5px dashed rgba(0,0,0,0.1)', borderRadius: 14, padding: '12px 18px', color: C.muted, fontSize: 12.5, fontWeight: 700 }}>
-            {c.name} · Coming soon
+            {c.name}, coming soon
           </div>
         ))}
       </div>
 
-      <div style={{ ...label, color: C.sub, marginBottom: 12 }}>Focus areas · reconfigures your dashboard</div>
+      <div style={{ ...label, color: C.sub, marginBottom: 12 }}>Focus areas: reconfigure your dashboard</div>
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 30 }}>
         {focusAreas.map((f) => {
           const sel = s.focus.includes(f.name)
@@ -73,7 +74,7 @@ export default function Settings() {
               border: '1px solid ' + (sel ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'),
               color: C.text, padding: '11px 17px', borderRadius: 999, fontSize: 13.5, fontWeight: 700,
             }}>
-              {f.icon} {f.name}
+              <Icon name={f.icon} size={16} /> {f.name}
             </button>
           )
         })}
@@ -83,31 +84,31 @@ export default function Settings() {
         <div style={smallCard}>
           <div>
             <div style={{ fontWeight: 700, fontSize: 13.5 }}>Theme</div>
-            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>Light · evening mode on Today</div>
+            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>Light, evening mode on Today</div>
           </div>
-          <span style={{ fontSize: 17 }}>🌙</span>
+          <Icon name="moon" size={18} />
         </div>
         <div style={smallCard}>
           <div>
             <div style={{ fontWeight: 700, fontSize: 13.5 }}>Notifications</div>
-            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>Preview · reminders arrive with accounts</div>
+            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>Preview: reminders arrive with accounts</div>
           </div>
-          <span style={{ fontSize: 17 }}>🔔</span>
+          <Icon name="bell" size={18} />
         </div>
         <button onClick={exportData} className="bd-hover" style={{ ...smallCard, cursor: 'pointer', textAlign: 'left', width: '100%' }}>
           <div>
             <div style={{ fontWeight: 700, fontSize: 13.5 }}>Export my data</div>
-            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>JSON · everything, always yours</div>
+            <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>JSON, everything, always yours</div>
           </div>
-          <span style={{ fontSize: 17 }}>⬇</span>
+          <Icon name="download" size={18} />
         </button>
         {IS_DEMO && (
           <button onClick={resetDemo} className="bd-hover" style={{ ...smallCard, cursor: 'pointer', textAlign: 'left', width: '100%' }}>
             <div>
               <div style={{ fontWeight: 700, fontSize: 13.5 }}>Reset demo data</div>
-              <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>Back to the original sample week</div>
+              <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>Back to the original sample week</div>
             </div>
-            <span style={{ fontSize: 17 }}>↺</span>
+            <Icon name="reset" size={18} />
           </button>
         )}
       </div>

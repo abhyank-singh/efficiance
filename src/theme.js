@@ -22,9 +22,10 @@ export const gradTab = 'linear-gradient(135deg,rgba(var(--a1-rgb),0.32),rgba(var
 
 // Glass: translucent, blurred, with a bright top edge. Primary = tinted glass, secondary = frosted white.
 export const glassPrimary = {
-  background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.92),rgba(var(--a2d-rgb),0.88))',
+  backgroundColor: 'var(--a1)', // opaque fallback under the gradient: the text is always on a solid, readable ground
+  backgroundImage: 'linear-gradient(135deg,var(--a1),var(--ok))',
   border: '1px solid rgba(255,255,255,0.55)',
-  color: '#fff',
+  color: 'var(--on-accent)',
   textShadow: '0 1px 1px rgba(0,0,0,0.18)',
   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 26px rgba(var(--a1-rgb),0.28)',
   backdropFilter: 'blur(10px) saturate(150%)',
@@ -50,7 +51,7 @@ export const auroraBg = {
 }
 
 export const card = {
-  background: '#FFFFFF',
+  background: 'var(--surface)',
   border: '1px solid rgba(0,0,0,0.09)',
   borderTopColor: 'rgba(0,0,0,0.05)',
   borderRadius: 22,
@@ -58,9 +59,7 @@ export const card = {
 }
 
 export const label = {
-  fontSize: 11,
-  letterSpacing: 2,
-  textTransform: 'uppercase',
+  fontSize: 12.5,
   color: C.muted,
   fontWeight: 700,
 }

@@ -8,6 +8,9 @@ Change `--a1`, `--a2`, `--bg`, `--text`… and the whole app follows. `src/theme
 (`C.blue`, `grad`, `glassPrimary`, `glassSoft`). The share-card image (`src/pages/Recap.jsx`) and the PNG icons
 in `public/` use fixed colours because they are rendered outside the page; update those by hand.
 
+## Icons
+`<Icon name="spark" />` from `src/components/Icon.jsx` (Lucide, 94 icons in `src/components/icons.js`). Add one by copying its SVG shapes from lucide.dev into `icons.js`. Moods stay stored as emoji but are drawn with `<Mood />`.
+
 ## Buttons and motion
 - Primary buttons spread `...glassPrimary` from `src/theme.js`; secondary pills use the `bd-hover` class or `glassSoft`.
 - 3D card tilt: add class `card-hover` to any card (logic in `src/motion.js`).

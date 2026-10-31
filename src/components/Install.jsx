@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import { usePwaInstall } from '../pwa.js'
 import { C, grad, glassPrimary } from '../theme.js'
+import Icon from './Icon.jsx'
 
 // "Install as an app": one-tap on Chrome/Edge/Android, a short how-to on iPhone/Safari.
 export function InstallCard({ style }) {
   const pwa = usePwaInstall()
   const [help, setHelp] = useState(false)
   if (pwa.installed) {
-    return <div style={{ background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.3)', borderRadius: 18, padding: '14px 18px', marginBottom: 22, fontSize: 13.5, fontWeight: 700, color: C.greenDeep, ...style }}>✓ Running as an installed app</div>
+    return <div style={{ background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.3)', borderRadius: 18, padding: '14px 18px', marginBottom: 22, fontSize: 13.5, fontWeight: 700, color: C.greenDeep, ...style }}><Icon name="check" size={16} /> Running as an installed app</div>
   }
   return (
-    <div style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 18, padding: 18, marginBottom: 22, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', ...style }}>
+    <div style={{ background: 'var(--surface)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 18, padding: 18, marginBottom: 22, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', ...style }}>
       <div style={{ width: 44, height: 44, borderRadius: 12, ...glassPrimary, fontWeight: 800, fontSize: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 'none' }}>a</div>
       <div style={{ flex: 1, minWidth: 200 }}>
         <div style={{ fontWeight: 700, fontSize: 14 }}>Install Efficiance as an app</div>
@@ -18,8 +19,8 @@ export function InstallCard({ style }) {
         {help && (
           <div style={{ marginTop: 10, fontSize: 12.5, color: C.text, lineHeight: 1.6, background: 'rgba(0,0,0,0.04)', borderRadius: 12, padding: '10px 12px' }}>
             {pwa.ios
-              ? <>On iPhone/iPad: tap <b>Share</b> (the square with an arrow) → <b>Add to Home Screen</b> → <b>Add</b>.</>
-              : <>On Mac Safari: <b>File → Add to Dock</b>. On Chrome/Edge: open the browser menu (⋮) → <b>Install Efficiance</b> (or the install icon in the address bar).</>}
+              ? <>On iPhone/iPad: tap <b>Share</b> (the square with an arrow), then <b>Add to Home Screen</b>, then <b>Add</b>.</>
+              : <>On Mac Safari: <b>File, then Add to Dock</b>. On Chrome/Edge: open the browser menu (⋮), then <b>Install Efficiance</b> (or the install icon in the address bar).</>}
           </div>
         )}
       </div>

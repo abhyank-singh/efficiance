@@ -69,6 +69,20 @@ the Recap and the AI insights are real and working.
 Open `/api/ai/ping` on your deployment. It makes one tiny model call and reports the model in use or the exact error.
 Gemini retires models periodically; the server auto-switches to an available Flash-Lite model when that happens.
 
+## Design
+
+Forest Calm palette, glass surfaces, one Lucide line-icon set, and sentence-case labels. The UI was run through the open-source
+[Hallmark](https://github.com/nutlope/hallmark) design linter (polish depth, which keeps the chosen system and fixes only what its gates name):
+
+| | Before | After |
+|---|---|---|
+| App screens (14 URLs) | 168 FAIL, 19 REFLEX, 43 WARN | 0 FAIL, 0 REFLEX, 0 WARN (5 reasoned dismissals, 1 waiver) |
+| Landing and onboarding | 16 FAIL, 4 REFLEX, 11 WARN | 0 FAIL |
+
+Main changes: emoji used as icons became SVG icons, tracked all-caps labels became sentence case, em dashes and glued arrows left the copy,
+every colour and the font moved into tokens, text under 11px and tap targets under 32px were fixed, and form fields got a visible edge.
+The waivers and dismissals are written as stamps at the top of `src/styles.css`.
+
 ## Extending it
 
 See [EXTENDING.md](EXTENDING.md): re-skin the palette, add modules, instruments and Quick Add actions.

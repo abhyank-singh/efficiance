@@ -2,6 +2,7 @@ import { useApp } from '../store.jsx'
 import { C, card, label } from '../theme.js'
 import { people, occasions } from '../data/seed.js'
 import { getDueList } from '../data/derived.js'
+import Icon from '../components/Icon.jsx'
 
 // Warmth model: contact recency drives avatar glow — recent = green glow,
 // fading = blue, neglected = grey. No red badges, no guilt.
@@ -19,7 +20,7 @@ export default function People() {
   return (
     <div style={{ animation: 'rise 0.25s ease-out' }}>
       <h1 style={{ fontWeight: 800, fontSize: 'clamp(24px,3.4vw,32px)', letterSpacing: -1, margin: '0 0 6px' }}>People</h1>
-      <p style={{ color: C.sub, fontSize: 14, margin: '0 0 22px' }}>Warmth fades gently with time — no guilt, just gardening. 🌱</p>
+      <p style={{ color: C.sub, fontSize: 14, margin: '0 0 22px' }}>Warmth fades gently with time (no guilt, just gardening).</p>
 
       <div style={{ ...card, boxShadow: 'none', borderRadius: 18, padding: '16px 20px', marginBottom: 22, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
         <span style={label}>Due for a check-in</span>
@@ -28,7 +29,7 @@ export default function People() {
             {p.name}
           </span>
         ))}
-        {dueList.length === 0 && <span style={{ color: C.greenDeep, fontSize: 12.5, fontWeight: 700 }}>All caught up 🌿</span>}
+        {dueList.length === 0 && <span style={{ color: C.greenDeep, fontSize: 12.5, fontWeight: 700 }}>All caught up</span>}
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
@@ -52,21 +53,21 @@ export default function People() {
                 return (
                   <div key={p.id} className="card-hover" style={{ ...card, borderRadius: 20, padding: 18 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 13, marginBottom: 12 }}>
-                      <div style={{ width: 44, height: 44, borderRadius: '50%', background: avBg, boxShadow: glow, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 16, flex: 'none', transition: 'box-shadow 0.4s ease', color: d <= 12 ? '#fff' : C.text }}>
+                      <div style={{ width: 44, height: 44, borderRadius: '50%', background: avBg, boxShadow: glow, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 16, flex: 'none', transition: 'box-shadow 0.4s ease', color: d <= 12 ? 'var(--on-accent)' : C.text }}>
                         {p.n.charAt(0)}
                       </div>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 14.5 }}>{p.n}</div>
-                        <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>{p.cad} cadence</div>
+                        <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>{p.cad} cadence</div>
                       </div>
                     </div>
-                    <div style={{ fontSize: 12.5, color: logged ? C.greenDeep : C.sub, fontWeight: 600, marginBottom: 12 }}>
-                      {logged ? 'Connected just now ✓' : `Last connected ${p.d}d ago`}
+                    <div style={{ fontSize: 12.5, color: logged ? C.greenDeep : C.sub, fontWeight: 700, marginBottom: 12 }}>
+                      {logged ? 'Connected just now' : `Last connected ${p.d}d ago`}
                     </div>
                     <div style={{ display: 'flex', gap: 6 }}>
-                      {[['📞', 'Called'], ['🤝', 'Met'], ['💬', 'Texted']].map(([icon, how]) => (
+                      {[['phone', 'Called'], ['handshake', 'Met'], ['chat', 'Texted']].map(([icon, how]) => (
                         <button key={how} onClick={() => logContact(p.id, how)} className="bd-hover-teal" style={{ flex: 1, background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 10, padding: '8px 4px', color: C.text, fontSize: 11.5, fontWeight: 700 }}>
-                          {icon} {how}
+                          <Icon name={icon} size={14} /> {how}
                         </button>
                       ))}
                     </div>
@@ -82,29 +83,29 @@ export default function People() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 12 }}>
           <div style={{ ...label, color: C.sub }}>Occasions</div>
           <button className="text-hover-dark" style={{ background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', color: C.sub, padding: '8px 14px', borderRadius: 10, fontWeight: 700, fontSize: 12 }}>
-            Import from Google Contacts · demo
+            Import contacts (demo)
           </button>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(270px,1fr))', gap: 14 }}>
           {occasions.map((o) => (
             <div key={o.id} style={{ ...card, boxShadow: 'none', borderRadius: 20, padding: 18, position: 'relative', overflow: 'hidden' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <span style={{ fontSize: 24 }}>{o.icon}</span>
+                <Icon name={o.icon} size={24} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: 14.5 }}>{o.name}</div>
-                  <div style={{ color: C.sub, fontSize: 12, fontWeight: 600 }}>{o.date} · <span style={{ color: C.greenDeep }}>{o.inDays}</span></div>
+                  <div style={{ color: C.sub, fontSize: 12, fontWeight: 700 }}>{o.date}, <span style={{ color: C.greenDeep }}>{o.inDays}</span></div>
                 </div>
               </div>
               {o.gift && (
                 <div style={{ marginTop: 12, background: 'rgba(0,0,0,0.035)', border: '1px dashed rgba(0,0,0,0.09)', borderRadius: 12, padding: '10px 12px', fontSize: 12.5, color: C.sub }}>
-                  🎁 {o.gift}
+                  <Icon name="gift" size={14} /> {o.gift}
                 </div>
               )}
               {s.celebrated[o.id] ? (
-                <div style={{ marginTop: 12, color: C.greenDeep, fontWeight: 800, fontSize: 13 }}>Celebrated 🎉</div>
+                <div style={{ marginTop: 12, color: C.greenDeep, fontWeight: 800, fontSize: 13 }}>Celebrated</div>
               ) : (
                 <button onClick={() => celebrate(o.id)} className="lift" style={{ marginTop: 12, background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.3),rgba(var(--a2-rgb),0.3))', border: '1px solid rgba(var(--a1-rgb),0.4)', color: C.text, padding: '8px 16px', borderRadius: 999, fontWeight: 800, fontSize: 12.5 }}>
-                  Celebrated 🎉
+                  Celebrated
                 </button>
               )}
             </div>

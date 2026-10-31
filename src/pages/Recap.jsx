@@ -5,6 +5,7 @@ import { buildHistory, summarize, level } from '../data/history.js'
 import { DEFAULT_NAME } from '../config.js'
 import { track } from '../track.js'
 import CountUp from '../components/CountUp.jsx'
+import Icon from '../components/Icon.jsx'
 
 const LEVELS = ['rgba(0,0,0,0.07)', '#CFE8E0', '#8FD0BF', '#3FA58F', '#0F766E']
 
@@ -26,16 +27,16 @@ function Spark({ values, color = 'var(--a1)', fmt }) {
 const delta = (a, b, goodUp = true) => {
   if (!b) return null
   const pct = Math.round(((a - b) / b) * 100)
-  if (Math.abs(pct) < 1) return { t: '→ flat', good: true }
+  if (Math.abs(pct) < 1) return { t: 'flat', good: true }
   return { t: (pct > 0 ? '↑ ' : '↓ ') + Math.abs(pct) + '%', good: goodUp ? pct > 0 : pct < 0 }
 }
 
 function Tile({ icon, big, small }) {
   return (
     <div className="card-hover" style={{ ...card, borderRadius: 18, padding: '16px 18px' }}>
-      <div style={{ fontSize: 18, marginBottom: 6 }}>{icon}</div>
+      <div style={{ marginBottom: 6 }}><Icon name={icon} size={20} /></div>
       <div style={{ fontWeight: 800, fontSize: 24, letterSpacing: -0.5, fontFeatureSettings: "'tnum'" }}><CountUp text={big} /></div>
-      <div style={{ fontSize: 12, color: C.sub, fontWeight: 600, marginTop: 2 }}>{small}</div>
+      <div style={{ fontSize: 12, color: C.sub, fontWeight: 700, marginTop: 2 }}>{small}</div>
     </div>
   )
 }
@@ -65,7 +66,7 @@ function ShareCard({ name, sum, days }) {
         const idx = i + first
         return <rect key={i} x={x0 + Math.floor(idx / 7) * (cw + gapX)} y={y0 + (idx % 7) * (ch + gapY)} width={cw} height={ch} rx="6" fill={LEVELS[level(d)]} />
       })}
-      <text x="70" y="618" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="18" fill="#55665C">Each square is a day · darker = more done</text>
+      <text x="70" y="618" fontFamily="system-ui,Helvetica,Arial,sans-serif" fontSize="18" fill="#55665C">Each square is a day; darker means more done</text>
     </svg>
   )
 }
@@ -141,46 +142,46 @@ export default function Recap() {
         </div>
       </div>
 
-      <div style={{ background: grad, borderRadius: 24, padding: 'clamp(20px,3vw,30px)', color: '#fff', marginBottom: 18, boxShadow: '0 14px 40px rgba(var(--a2-rgb),0.25)' }}>
-        <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', opacity: 0.85 }}>Highlights</div>
+      <div style={{ backgroundColor: 'var(--a1)', backgroundImage: grad, borderRadius: 24, padding: 'clamp(20px,3vw,30px)', color: 'var(--on-accent)', marginBottom: 18, boxShadow: '0 14px 40px rgba(var(--a2-rgb),0.25)' }}>
+        <div style={{ fontSize: 13, fontWeight: 700, opacity: 0.9 }}>Highlights</div>
         <div style={{ fontWeight: 800, fontSize: 'clamp(20px,2.8vw,28px)', lineHeight: 1.3, margin: '8px 0 0', maxWidth: 760 }}>
           You hit your habits {sum.consistency}% of the time, your best day is {sum.bestDay}, and your longest strong run was {sum.bestStreak} days.
         </div>
-        <div style={{ fontSize: 13.5, opacity: 0.92, marginTop: 10 }}>Best week: {range === 12 ? 'week ' + (sum.bestWeek + 1) + ' of 12' : 'week ' + (sum.bestWeek + 1) + ' of 4'}{quickAdds ? ` · ${quickAdds} things logged with Quick Add` : ''}</div>
+        <div style={{ fontSize: 13.5, opacity: 0.92, marginTop: 10 }}>Best week: {range === 12 ? 'week ' + (sum.bestWeek + 1) + ' of 12' : 'week ' + (sum.bestWeek + 1) + ' of 4'}{quickAdds ? `, ${quickAdds} things logged with Quick Add` : ''}</div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(170px,1fr))', gap: 12, marginBottom: 18 }}>
-        <Tile icon="✅" big={sum.consistency + '%'} small="habit consistency" />
-        <Tile icon="🔥" big={sum.bestStreak + ' days'} small="longest strong streak" />
-        <Tile icon="😴" big={sum.avgSleep.toFixed(1) + 'h'} small="average sleep" />
+        <Tile icon="habits" big={sum.consistency + '%'} small="habit consistency" />
+        <Tile icon="flame" big={sum.bestStreak + ' days'} small="longest strong streak" />
+        <Tile icon="sleep" big={sum.avgSleep.toFixed(1) + 'h'} small="average sleep" />
         <Tile icon="₹" big={fmtINR(sum.perDay)} small="average spend / day" />
-        <Tile icon="🏋️" big={String(sum.workouts)} small="workouts" />
-        <Tile icon="🎸" big={Math.round(sum.practice / 60) + ' h'} small="guitar practice" />
+        <Tile icon="gym" big={String(sum.workouts)} small="workouts" />
+        <Tile icon="guitar" big={Math.round(sum.practice / 60) + ' h'} small="guitar practice" />
       </div>
 
       <div style={{ ...card, borderRadius: 22, padding: 'clamp(18px,2.4vw,26px)', marginBottom: 18 }}>
-        <div style={{ ...label, marginBottom: 14 }}>Consistency map · each square is a day</div>
+        <div style={{ ...label, marginBottom: 14 }}>Consistency map: each square is a day</div>
         <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.ceil(cells.length / 7)}, minmax(0, 1fr))`, gridTemplateRows: 'repeat(7, 28px)', gridAutoFlow: 'column', gap: 5, maxWidth: 760 }} role="img" aria-label="Daily consistency heatmap">
           {cells.map((d, i) => d
             ? <div key={i} title={`${d.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}: ${d.habits}/5 habits`} style={{ borderRadius: 6, background: LEVELS[level(d)] }} />
             : <div key={i} />)}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 12, fontSize: 11.5, color: C.sub, fontWeight: 600 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 12, fontSize: 11.5, color: C.sub, fontWeight: 700 }}>
           Less {LEVELS.map((c) => <span key={c} style={{ width: 13, height: 13, borderRadius: 3, background: c }} />)} More
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 14, marginBottom: 22 }}>
-        {trend('Sleep · weekly avg', w.map((x) => x.sleep), (v) => v.toFixed(1) + 'h', true, 'var(--a1)')}
-        {trend('Spend · weekly', w.map((x) => x.spend), (v) => fmtINR(Math.round(v)), false, '#B45309')}
-        {trend('Guitar · weekly min', w.map((x) => x.practice), (v) => Math.round(v) + ' min', true, 'var(--ok)')}
+        {trend('Sleep, weekly average', w.map((x) => x.sleep), (v) => v.toFixed(1) + 'h', true, 'var(--a1)')}
+        {trend('Spend, weekly', w.map((x) => x.spend), (v) => fmtINR(Math.round(v)), false, '#B45309')}
+        {trend('Guitar, weekly minutes', w.map((x) => x.practice), (v) => Math.round(v) + ' min', true, 'var(--ok)')}
       </div>
 
       <div style={{ ...label, marginBottom: 12 }}>Share your recap</div>
       <div style={{ maxWidth: 640 }}>
         <ShareCard name={name === 'My' ? 'My' : name} sum={allSum} days={all} />
         <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-          <button onClick={download} className="lift" style={{ ...glassPrimary, padding: '12px 20px', borderRadius: 14, fontWeight: 800 }}>⬇ Download image</button>
+          <button onClick={download} className="lift" style={{ ...glassPrimary, padding: '12px 20px', borderRadius: 14, fontWeight: 800 }}><Icon name="download" size={15} /> Download image</button>
           <button onClick={share} className="lift" style={{ ...pill(false), padding: '12px 18px' }}>Share text</button>
           {msg && <span style={{ fontSize: 13, color: C.greenDeep, fontWeight: 700 }}>{msg}</span>}
         </div>

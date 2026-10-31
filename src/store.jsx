@@ -31,8 +31,8 @@ const initial = {
   workoutOn: false,
   journalEntries: null, // null → screens fall back to seed journal
   txToday: [
-    { p: 'Chai Point', i: '☕', c: 'Food', a: 40 },
-    { p: 'Auto fare', i: '🛺', c: 'Transport', a: 120 },
+    { p: 'Chai Point', i: 'coffee', c: 'Food', a: 40 },
+    { p: 'Auto fare', i: 'car', c: 'Transport', a: 120 },
   ],
   peopleLogged: {},
   celebrated: {},

@@ -3,14 +3,15 @@ import { C, grad, card, label, glassPrimary } from '../theme.js'
 import { PROFILE } from '../config.js'
 import { InstallCard } from '../components/Install.jsx'
 import { openQuickAdd } from '../components/QuickAdd.jsx'
+import Icon from '../components/Icon.jsx'
 
 const tour = [
-  { act: () => openQuickAdd('spent 450 on swiggy, slept 6.5 hours, called mom'), icon: '✨', title: 'Quick Add (the in-app assistant)', try: 'Type or speak a sentence like “spent 450 on swiggy, slept 6.5 hours, called mom”. Review the 3 proposed changes, apply, then hit Undo.', why: 'Logging effort is the #1 reason trackers get abandoned. One sentence updates several modules, and nothing changes until you confirm.' },
-  { to: '/today', icon: '☀️', title: 'Today', try: 'Read the Morning Briefing, check the Getting-started list, then seal the day with Day Close.', why: 'One screen that answers “what matters today?” by pulling from every module.' },
-  { to: '/music', icon: '🎸', title: 'Music (guitar first)', try: 'Tick off a practice block, start the metronome, and try the 60-second chord-change drill.', why: 'Practice is a daily habit with a clear skill curve, which makes it a good retention loop. More instruments plug in next.' },
-  { to: '/habits', icon: '✅', title: 'Habits', try: 'Tick a habit and watch the streak. Switch to “Break” and log a slip.', why: 'Bad habits are tracked as a downward trend, not a fragile streak that one slip destroys.' },
-  { to: '/recap', icon: '🎞', title: 'Life Recap', try: 'See 12 weeks of trends and the consistency map, then download your shareable card.', why: 'History is the switching cost. The longer you track, the more valuable (and shareable) it gets.' },
-  { to: '/insights', icon: '🧠', title: 'Insights  ✨ live AI', try: 'Press “Regenerate with AI” to have a real language model read the sample data.', why: 'The core idea: modules that talk to each other, e.g. “you sleep less on meeting-heavy days”.' },
+  { act: () => openQuickAdd('spent 450 on swiggy, slept 6.5 hours, called mom'), icon: 'spark', title: 'Quick Add (the in-app assistant)', try: 'Type or speak a sentence like “spent 450 on swiggy, slept 6.5 hours, called mom”. Review the 3 proposed changes, apply, then hit Undo.', why: 'Logging effort is the #1 reason trackers get abandoned. One sentence updates several modules, and nothing changes until you confirm.' },
+  { to: '/today', icon: 'sun', title: 'Today', try: 'Read the Morning Briefing, check the Getting-started list, then seal the day with Day Close.', why: 'One screen that answers “what matters today?” by pulling from every module.' },
+  { to: '/music', icon: 'guitar', title: 'Music (guitar first)', try: 'Tick off a practice block, start the metronome, and try the 60-second chord-change drill.', why: 'Practice is a daily habit with a clear skill curve, which makes it a good retention loop. More instruments plug in next.' },
+  { to: '/habits', icon: 'habits', title: 'Habits', try: 'Tick a habit and watch the streak. Switch to “Break” and log a slip.', why: 'Bad habits are tracked as a downward trend, not a fragile streak that one slip destroys.' },
+  { to: '/recap', icon: 'recap', title: 'Life Recap', try: 'See 12 weeks of trends and the consistency map, then download your shareable card.', why: 'History is the switching cost. The longer you track, the more valuable (and shareable) it gets.' },
+  { to: '/insights', icon: 'brain', title: 'Insights (live AI)', try: 'Press “Regenerate with AI” to have a real language model read the sample data.', why: 'The core idea: modules that talk to each other, e.g. “you sleep less on meeting-heavy days”.' },
 ]
 
 const metrics = [
@@ -57,7 +58,7 @@ export default function About() {
     <div style={{ animation: 'rise 0.25s ease-out', maxWidth: 980, margin: '0 auto' }}>
       <div style={label}>About this project</div>
       <h1 style={{ fontWeight: 800, fontSize: 'clamp(28px,4.4vw,44px)', letterSpacing: -1.5, lineHeight: 1.1, margin: '10px 0 14px' }}>
-        Efficiance: a "Life OS" that connects the apps you already use
+        Efficiance: a “Life OS” that connects the apps you already use
       </h1>
       <p style={{ color: C.sub, fontSize: 16.5, lineHeight: 1.65, maxWidth: 720, margin: '0 0 22px' }}>
         Most people track their life in six disconnected apps: calendar, habits, budget, fitness, notes and contacts. None of them can notice that you
@@ -65,17 +66,17 @@ export default function About() {
         so those patterns surface on their own.
       </p>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 40 }}>
-        <button onClick={() => nav('/today')} className="lift" style={{ ...btn, ...glassPrimary, boxShadow: '0 8px 28px rgba(var(--a2-rgb),0.3)' }}>Try the demo →</button>
+        <button onClick={() => nav('/today')} className="lift" style={{ ...btn, ...glassPrimary, boxShadow: '0 8px 28px rgba(var(--a2-rgb),0.3)' }}>Try the demo</button>
         {links.map(([name, url]) => (
-          <a key={name} href={url} target="_blank" rel="noreferrer" style={{ ...btn, background: '#fff', color: C.text, border: '1px solid rgba(0,0,0,0.1)' }}>{name} ↗</a>
+          <a key={name} href={url} target="_blank" rel="noreferrer" style={{ ...btn, background: 'var(--surface)', color: C.text, border: '1px solid rgba(0,0,0,0.1)' }}>{name} ↗</a>
         ))}
       </div>
 
-      <div style={{ ...label, marginBottom: 12 }}>Guided tour · 6 things to try (about 4 minutes)</div>
+      <div style={{ ...label, marginBottom: 12 }}>Guided tour: 6 things to try (about 4 minutes)</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(290px,1fr))', gap: 14, marginBottom: 44 }}>
         {tour.map((t, i) => (
           <button key={t.title} onClick={() => (t.act ? t.act() : nav(t.to))} className="card-hover" style={{ ...card, padding: 20, textAlign: 'left', color: C.text, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ fontWeight: 800, fontSize: 15.5 }}>{i + 1}. {t.icon} {t.title}</div>
+            <div style={{ fontWeight: 800, fontSize: 15.5 }}>{i + 1}. <Icon name={t.icon} size={16} /> {t.title}</div>
             <div style={{ fontSize: 13.5, lineHeight: 1.5 }}><b>Try:</b> {t.try}</div>
             <div style={{ fontSize: 12.5, color: C.sub, lineHeight: 1.5 }}><b>Why it matters:</b> {t.why}</div>
           </button>
@@ -88,14 +89,14 @@ export default function About() {
       <div style={{ ...card, padding: 24, marginBottom: 44 }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16, alignItems: 'stretch' }}>
           <div style={{ border: '1.5px solid rgba(var(--a1-rgb),0.35)', background: 'rgba(var(--a1-rgb),0.05)', borderRadius: 16, padding: 18 }}>
-            <div style={{ fontWeight: 800, marginBottom: 6 }}>🖥 Your browser</div>
+            <div style={{ fontWeight: 800, marginBottom: 6 }}><Icon name="monitor" size={16} /> Your browser</div>
             <div style={{ fontSize: 13.5, color: C.sub, lineHeight: 1.6 }}>React app + <b>all your data</b> (habits, spend, journal…). Nothing is stored on a server, and there is no login.</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: C.muted, fontSize: 12.5, fontWeight: 700, textAlign: 'center', gap: 4 }}>
-            <span>only a short text summary,<br />only when you press<br />"Regenerate with AI"</span><span style={{ fontSize: 22 }}>⇄</span>
+            <span>only a short text summary,<br />only when you press<br />“Regenerate with AI”</span><span style={{ fontSize: 22 }}>⇄</span>
           </div>
           <div style={{ border: '1.5px solid rgba(var(--a2-rgb),0.4)', background: 'rgba(var(--a2-rgb),0.06)', borderRadius: 16, padding: 18 }}>
-            <div style={{ fontWeight: 800, marginBottom: 6 }}>☁️ Small API server</div>
+            <div style={{ fontWeight: 800, marginBottom: 6 }}><Icon name="cloud" size={16} /> Small API server</div>
             <div style={{ fontSize: 13.5, color: C.sub, lineHeight: 1.6 }}>Holds the AI key (never sent to your browser), rate-limits each visitor, calls the model, validates the JSON answer, and returns insight cards.</div>
           </div>
         </div>
@@ -136,7 +137,7 @@ export default function About() {
         <div style={{ fontSize: 12.5, color: C.muted, marginTop: 12, lineHeight: 1.6 }}>Events are tracked without cookies or personal data. The public demo has analytics ready to switch on; counts in your own browser are kept locally.</div>
       </div>
 
-      <div style={{ ...label, marginBottom: 12 }}>What's next</div>
+      <div style={{ ...label, marginBottom: 12 }}>What’s next</div>
       <ul style={{ color: C.sub, fontSize: 14, lineHeight: 1.9, margin: '0 0 44px', paddingLeft: 20 }}>
         {next.map((n) => <li key={n}>{n}</li>)}
       </ul>
@@ -144,7 +145,7 @@ export default function About() {
       <div style={{ ...card, padding: 22, marginBottom: 20 }}>
         <div style={{ fontWeight: 800, marginBottom: 4 }}>Built by {PROFILE.name}</div>
         <div style={{ color: C.sub, fontSize: 13.5, lineHeight: 1.6 }}>
-          {PROFILE.tagline}. A side project to learn by shipping. All data in this demo is fictional and lives only in your browser. Use Settings → Export to see exactly what is stored.
+          {PROFILE.tagline}. A side project to learn by shipping. All data in this demo is fictional and lives only in your browser. Use Settings, then Export to see exactly what is stored.
         </div>
       </div>
     </div>

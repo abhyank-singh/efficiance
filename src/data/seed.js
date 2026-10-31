@@ -4,47 +4,47 @@ import { shortDay, monthDay, weekday } from './dates.js'
 // Keeps the app instantly demo-able; user actions layer on top of this via the store.
 
 export const payees = [
-  { name: 'Swiggy', icon: '🍔', cat: 'Food' },
-  { name: 'Zomato', icon: '🥡', cat: 'Food' },
-  { name: 'Chai Point', icon: '☕', cat: 'Food' },
-  { name: 'Auto fare', icon: '🛺', cat: 'Transport' },
-  { name: 'Kirana Store', icon: '🛒', cat: 'Groceries' },
-  { name: 'BigBasket', icon: '🥬', cat: 'Groceries' },
+  { name: 'Swiggy', icon: 'food', cat: 'Food' },
+  { name: 'Zomato', icon: 'food', cat: 'Food' },
+  { name: 'Chai Point', icon: 'coffee', cat: 'Food' },
+  { name: 'Auto fare', icon: 'car', cat: 'Transport' },
+  { name: 'Kirana Store', icon: 'cart', cat: 'Groceries' },
+  { name: 'BigBasket', icon: 'veg', cat: 'Groceries' },
 ]
 
 export const ghostApps = [
-  { name: 'Calendar', icon: '🗓' },
-  { name: 'Habit app', icon: '✅' },
-  { name: 'Budget app', icon: '💸' },
-  { name: 'Fitness app', icon: '🏋️' },
-  { name: 'Notes', icon: '📝' },
-  { name: 'Contacts', icon: '👥' },
+  { name: 'Calendar', icon: 'calendar' },
+  { name: 'Habit app', icon: 'habits' },
+  { name: 'Budget app', icon: 'cash' },
+  { name: 'Fitness app', icon: 'gym' },
+  { name: 'Notes', icon: 'notes' },
+  { name: 'Contacts', icon: 'users' },
 ]
 
 export const featureTiles = [
-  { icon: '☀️', title: 'Morning Briefing', desc: 'One glanceable paragraph that synthesizes your calendar, sleep, budget, people and workouts — before your first coffee.' },
-  { icon: '🧠', title: 'Cross-module Insights', desc: '"You sleep 40 min less on 5-meeting days." Your data starts talking to itself.' },
-  { icon: '🌱', title: 'People warmth', desc: 'Relationships that gently fade when neglected — no red badges, no guilt. Just gardening.' },
-  { icon: '📉', title: 'Break bad habits', desc: 'Downward frequency trends instead of fragile abstinence streaks. One slip never shatters the system.' },
-  { icon: '₹', title: 'UPI-speed spend log', desc: 'Amount → payee → done. Logging a chai takes as long as paying for it.' },
-  { icon: '📈', title: 'SIP discipline', desc: 'Track every SIP, plan the next one, and link investments to life goals.' },
+  { icon: 'sun', title: 'Morning Briefing', desc: 'One glanceable paragraph that synthesizes your calendar, sleep, budget, people and workouts, before your first coffee.' },
+  { icon: 'brain', title: 'Cross-module Insights', desc: '"You sleep 40 min less on 5-meeting days." Your data starts talking to itself.' },
+  { icon: 'sprout', title: 'People warmth', desc: 'Relationships that gently fade when neglected, with no red badges and no guilt. Just gardening.' },
+  { icon: 'trend-down', title: 'Break bad habits', desc: 'Downward frequency trends instead of fragile abstinence streaks. One slip never shatters the system.' },
+  { icon: 'rupee', title: 'UPI-speed spend log', desc: 'Amount, payee, done. Logging a chai takes as long as paying for it.' },
+  { icon: 'trend-up', title: 'SIP discipline', desc: 'Track every SIP, plan the next one, and link investments to life goals.' },
 ]
 
 export const worksWith = [
-  { name: 'Google Calendar', icon: '🗓' },
-  { name: 'Outlook', icon: '📧' },
-  { name: 'Google Fit', icon: '❤️' },
-  { name: 'Apple Health', icon: '🍎' },
-  { name: 'UPI apps', icon: '₹' },
+  { name: 'Google Calendar', icon: 'calendar' },
+  { name: 'Outlook', icon: 'mail' },
+  { name: 'Google Fit', icon: 'heart' },
+  { name: 'Apple Health', icon: 'apple' },
+  { name: 'UPI apps', icon: 'rupee' },
 ]
 
 export const focusAreas = [
-  { name: 'Career', icon: '💼' },
-  { name: 'Fitness', icon: '🏋️' },
-  { name: 'Money', icon: '₹' },
-  { name: 'Relationships', icon: '🌱' },
-  { name: 'Learning', icon: '📚' },
-  { name: 'Mindfulness', icon: '🧘' },
+  { name: 'Career', icon: 'briefcase' },
+  { name: 'Fitness', icon: 'gym' },
+  { name: 'Money', icon: 'rupee' },
+  { name: 'Relationships', icon: 'sprout' },
+  { name: 'Learning', icon: 'books' },
+  { name: 'Mindfulness', icon: 'lotus' },
 ]
 
 export const habits = [
@@ -69,19 +69,19 @@ export const people = [
 ]
 
 export const occasions = [
-  { id: 'mom', icon: '🎂', name: "Mom's birthday", date: shortDay(2), inDays: 'in 2 days', gift: 'Gift idea: that Kanjivaram saree she bookmarked' },
-  { id: 'arjun', icon: '🎂', name: "Arjun's birthday", date: shortDay(15), inDays: 'in 15 days', gift: 'Gift idea: mechanical keyboard' },
-  { id: 'anniv', icon: '💍', name: "Parents' anniversary", date: shortDay(24), inDays: 'in 24 days', gift: 'Book a table at their favourite place' },
-  { id: 'sneha', icon: '🎉', name: "Sneha's wedding anniversary", date: 'Mon, Sep 14', inDays: 'in 67 days', gift: '' },
+  { id: 'mom', icon: 'cake', name: "Mom’s birthday", date: shortDay(2), inDays: 'in 2 days', gift: 'Gift idea: that Kanjivaram saree she bookmarked' },
+  { id: 'arjun', icon: 'cake', name: "Arjun’s birthday", date: shortDay(15), inDays: 'in 15 days', gift: 'Gift idea: mechanical keyboard' },
+  { id: 'anniv', icon: 'gem', name: "Parents' anniversary", date: shortDay(24), inDays: 'in 24 days', gift: 'Book a table at their favourite place' },
+  { id: 'sneha', icon: 'party', name: "Sneha’s wedding anniversary", date: 'Mon, Sep 14', inDays: 'in 67 days', gift: '' },
 ]
 
 export const budgets = [
-  { cat: 'Food & dining', icon: '🍔', spent: 6400, cap: 8000 },
-  { cat: 'Transport', icon: '🛺', spent: 1450, cap: 3000 },
-  { cat: 'Groceries', icon: '🛒', spent: 4100, cap: 6000 },
-  { cat: 'Entertainment', icon: '🎬', spent: 2150, cap: 2000 },
-  { cat: 'Shopping', icon: '🛍', spent: 1800, cap: 5000 },
-  { cat: 'Health', icon: '💊', spent: 900, cap: 3000 },
+  { cat: 'Food & dining', icon: 'food', spent: 6400, cap: 8000 },
+  { cat: 'Transport', icon: 'car', spent: 1450, cap: 3000 },
+  { cat: 'Groceries', icon: 'cart', spent: 4100, cap: 6000 },
+  { cat: 'Entertainment', icon: 'movie', spent: 2150, cap: 2000 },
+  { cat: 'Shopping', icon: 'bag', spent: 1800, cap: 5000 },
+  { cat: 'Health', icon: 'pill', spent: 900, cap: 3000 },
 ]
 
 export const subs = [
@@ -122,27 +122,27 @@ export const legDay = [
 export const sleep = [7.2, 6.8, 6.2, 7.5, 6.1, 8.1, 6.2].map((h, i) => ({ label: weekday(i - 6), h }))
 
 export const insights = [
-  { mods: ['Sleep', 'Calendar'], text: 'You sleep ~40 min less on days with 5+ meetings.', why: 'Based on 4 weeks of sleep logs matched against calendar density.', action: 'Block a wind-down at 10:30 PM →' },
-  { mods: ['Gym', 'Calendar'], text: 'Workout completion is 2× higher when scheduled before 8 AM.', why: '14 of 16 morning sessions completed vs 7 of 16 evening ones.', action: 'Schedule workouts at 7 AM →' },
-  { mods: ['Finance', 'Gym'], text: 'Food-delivery spend spikes on days you skip the gym.', why: 'Avg ₹410 on skipped days vs ₹140 on workout days.', action: 'Prep dinner on rest days →' },
-  { mods: ['People'], text: 'No contact with your Mentors circle this month.', why: 'Last log: Rajat sir, 34 days ago.', action: 'Schedule a mentor call →' },
-  { mods: ['Mood', 'Calendar'], text: 'Your mood dips on Sunday evenings.', why: 'Journal mood averages 2.1/5 on Sundays vs 3.8 weekdays.', action: 'Plan something light for Sundays →' },
-  { mods: ['Habits'], text: "'No late-night scrolling' slips cluster after 11 PM on weekdays.", why: '9 of 12 slips this month were logged between 11 PM–1 AM.', action: 'Enable wind-down reminder →' },
-  { mods: ['Finance'], text: 'Subscriptions grew ₹450/month this quarter.', why: '2 new subscriptions added since April.', action: 'Review subscriptions →' },
-  { mods: ['Learning', 'Calendar'], text: 'You learn most consistently in Tuesday free blocks.', why: '6 of last 8 learning sessions happened Tuesday 6–8 PM.', action: 'Protect Tuesday evenings →' },
+  { mods: ['Sleep', 'Calendar'], text: 'You sleep ~40 min less on days with 5+ meetings.', why: 'Based on 4 weeks of sleep logs matched against calendar density.', action: 'Block a wind-down at 10:30 PM' },
+  { mods: ['Gym', 'Calendar'], text: 'Workout completion is 2× higher when scheduled before 8 AM.', why: '14 of 16 morning sessions completed vs 7 of 16 evening ones.', action: 'Schedule workouts at 7 AM' },
+  { mods: ['Finance', 'Gym'], text: 'Food-delivery spend spikes on days you skip the gym.', why: 'Avg ₹410 on skipped days vs ₹140 on workout days.', action: 'Prep dinner on rest days' },
+  { mods: ['People'], text: 'No contact with your Mentors circle this month.', why: 'Last log: Rajat sir, 34 days ago.', action: 'Schedule a mentor call' },
+  { mods: ['Mood', 'Calendar'], text: 'Your mood dips on Sunday evenings.', why: 'Journal mood averages 2.1/5 on Sundays vs 3.8 weekdays.', action: 'Plan something light for Sundays' },
+  { mods: ['Habits'], text: "'No late-night scrolling' slips cluster after 11 PM on weekdays.", why: '9 of 12 slips this month were logged between 11 PM–1 AM.', action: 'Enable wind-down reminder' },
+  { mods: ['Finance'], text: 'Subscriptions grew ₹450/month this quarter.', why: '2 new subscriptions added since April.', action: 'Review subscriptions' },
+  { mods: ['Learning', 'Calendar'], text: 'You learn most consistently in Tuesday free blocks.', why: '6 of last 8 learning sessions happened Tuesday 6–8 PM.', action: 'Protect Tuesday evenings' },
 ]
 
 export const journal = [
-  { date: shortDay(-1), mood: '🙂', text: 'Design review went long but the free block saved the day — got the gym session in.' },
+  { date: shortDay(-1), mood: '🙂', text: 'Design review went long but the free block saved the day, so I got the gym session in.' },
   { date: shortDay(-2), mood: '😄', text: 'Finished Part II of Deep Work. Evenings really are my learning slot.' },
-  { date: shortDay(-3), mood: '😐', text: 'Slept badly, skipped meditation. Ordered in again — noticing the pattern.' },
+  { date: shortDay(-3), mood: '😐', text: 'Slept badly, skipped meditation. Ordered in again. Noticing the pattern.' },
   { date: shortDay(-4), mood: '😕', text: 'Low-energy day. Called Arjun though, which helped.' },
   { date: shortDay(-5), mood: '😄', text: 'Long ride in the morning, kirana run, movie night. A properly balanced day.' },
   { date: shortDay(-6), mood: '🙂', text: 'Shipped the sprint demo. Team seemed happy. PB on bench!' },
 ]
 
 export const txDays = [
-  { label: 'Yesterday · ' + shortDay(-1), items: [{ p: 'Zomato', i: '🥡', c: 'Food', a: 450 }, { p: 'Kirana Store', i: '🛒', c: 'Groceries', a: 610 }, { p: 'Auto fare', i: '🛺', c: 'Transport', a: 90 }] },
-  { label: shortDay(-2), items: [{ p: 'BigBasket', i: '🥬', c: 'Groceries', a: 1240 }, { p: 'Netflix', i: '🎬', c: 'Entertainment', a: 199 }, { p: 'Chai Point', i: '☕', c: 'Food', a: 60 }] },
-  { label: shortDay(-3), items: [{ p: 'Swiggy', i: '🍔', c: 'Food', a: 380 }, { p: 'Metro card', i: '🚇', c: 'Transport', a: 500 }] },
+  { label: 'Yesterday, ' + shortDay(-1), items: [{ p: 'Zomato', i: 'food', c: 'Food', a: 450 }, { p: 'Kirana Store', i: 'cart', c: 'Groceries', a: 610 }, { p: 'Auto fare', i: 'car', c: 'Transport', a: 90 }] },
+  { label: shortDay(-2), items: [{ p: 'BigBasket', i: 'veg', c: 'Groceries', a: 1240 }, { p: 'Netflix', i: 'movie', c: 'Entertainment', a: 199 }, { p: 'Chai Point', i: 'coffee', c: 'Food', a: 60 }] },
+  { label: shortDay(-3), items: [{ p: 'Swiggy', i: 'food', c: 'Food', a: 380 }, { p: 'Metro card', i: 'metro', c: 'Transport', a: 500 }] },
 ]

@@ -10,24 +10,24 @@ export const todayKey = () => new Date().toISOString().slice(0, 10)
 
 /* ───────────── presentation ───────────── */
 
-const CAT_ICON = { Food: '🍔', Transport: '🛺', Groceries: '🛒', Entertainment: '🎬', Shopping: '🛍', Health: '💊', Other: '🧾' }
+const CAT_ICON = { Food: 'food', Transport: 'car', Groceries: 'cart', Entertainment: 'movie', Shopping: 'bag', Health: 'pill', Other: 'receipt' }
 const HABIT_LABEL = { med: 'Meditate 10 min', read: 'Read 20 pages', water: 'Drink 3L water', steps: '8,000 steps', phone: 'No-phone breakfast' }
 const SLIP_LABEL = { scroll: 'Late-night scrolling', junk: 'Junk food order', late: 'Slept past 12:30 AM' }
 
 /** Human-readable preview line for one action. */
 export function describe(a) {
   switch (a.type) {
-    case 'spend': return { icon: CAT_ICON[a.category], module: 'Finance', text: `Log ₹${a.amount.toLocaleString('en-IN')} · ${a.payee} (${a.category})` }
-    case 'habit': return { icon: '✅', module: 'Habits', text: `Check off “${HABIT_LABEL[a.id]}”` }
-    case 'slip': return { icon: '📉', module: 'Habits', text: `Note a slip: ${SLIP_LABEL[a.id]}` }
-    case 'sleep': return { icon: '😴', module: 'Sleep', text: `Record ${a.hours}h of sleep` }
-    case 'water': return { icon: '💧', module: 'Health', text: `Add ${a.cups} glass${a.cups > 1 ? 'es' : ''} of water` }
-    case 'journal': return { icon: '📓', module: 'Journal', text: `Journal: “${a.text}”` }
+    case 'spend': return { icon: CAT_ICON[a.category], module: 'Finance', text: `Log ₹${a.amount.toLocaleString('en-IN')} for ${a.payee} (${a.category})` }
+    case 'habit': return { icon: 'habits', module: 'Habits', text: `Check off “${HABIT_LABEL[a.id]}”` }
+    case 'slip': return { icon: 'trend-down', module: 'Habits', text: `Note a slip: ${SLIP_LABEL[a.id]}` }
+    case 'sleep': return { icon: 'sleep', module: 'Sleep', text: `Record ${a.hours}h of sleep` }
+    case 'water': return { icon: 'water', module: 'Health', text: `Add ${a.cups} glass${a.cups > 1 ? 'es' : ''} of water` }
+    case 'journal': return { icon: 'journal', module: 'Journal', text: `Journal: “${a.text}”` }
     case 'mood': return { icon: a.mood, module: 'Journal', text: 'Set today’s mood' }
-    case 'people': return { icon: '🌱', module: 'People', text: `Check in with ${PEOPLE[a.id]}` }
-    case 'practice': return { icon: '🎸', module: 'Music', text: `Practice: ${a.minutes} min · ${a.topic}` }
-    case 'workout': return { icon: '🏋️', module: 'Gym', text: `Workout: ${a.name}` }
-    case 'priority': return { icon: '🎯', module: 'Today', text: `Tomorrow’s #1: ${a.text}` }
+    case 'people': return { icon: 'sprout', module: 'People', text: `Check in with ${PEOPLE[a.id]}` }
+    case 'practice': return { icon: 'guitar', module: 'Music', text: `Practice: ${a.minutes} min, ${a.topic}` }
+    case 'workout': return { icon: 'gym', module: 'Gym', text: `Workout: ${a.name}` }
+    case 'priority': return { icon: 'goals', module: 'Today', text: `Tomorrow’s #1: ${a.text}` }
     default: return { icon: '•', module: '', text: '' }
   }
 }

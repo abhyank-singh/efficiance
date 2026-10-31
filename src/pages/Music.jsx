@@ -7,6 +7,7 @@ import { todayKey } from '../data/actions.js'
 import { useMetronome, playTone } from '../audio.js'
 import { track } from '../track.js'
 import CountUp from '../components/CountUp.jsx'
+import Icon from '../components/Icon.jsx'
 
 /* ───────────── practice maths (shared by the panel) ───────────── */
 
@@ -21,7 +22,7 @@ function usePractice() {
   let streak = 0
   for (let i = week.length - 1; i >= 0; i--) {
     if (week[i].min > 0) streak++
-    else if (i === week.length - 1) continue // today not practised yet: don't break the streak
+    else if (i === week.length - 1) continue // today not practised yet: don’t break the streak
     else break
   }
   const addLog = (entry) => {
@@ -38,7 +39,7 @@ const Section = ({ title, hint, children, style }) => (
   <div style={{ ...card, borderRadius: 22, padding: 'clamp(18px,2.4vw,26px)', ...style }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 10, marginBottom: 14, flexWrap: 'wrap' }}>
       <div style={label}>{title}</div>
-      {hint && <div style={{ fontSize: 12, color: C.muted, fontWeight: 600 }}>{hint}</div>}
+      {hint && <div style={{ fontSize: 12, color: C.muted, fontWeight: 700 }}>{hint}</div>}
     </div>
     {children}
   </div>
@@ -85,24 +86,24 @@ function Overview({ pr }) {
     <Section title="This week" hint={`Goal: ${DAILY_GOAL_MIN} min a day`}>
       <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
         <div style={{ position: 'relative', width: 104, height: 104, flex: 'none' }}>
-          <svg width="104" height="104" viewBox="0 0 76 76">
+          <svg aria-hidden="true" width="104" height="104" viewBox="0 0 76 76">
             <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="8" />
             <circle cx="38" cy="38" r="32" fill="none" stroke="url(#eg)" strokeWidth="8" strokeLinecap="round" strokeDasharray="201" strokeDashoffset={201 * (1 - pct)} transform="rotate(-90 38 38)" style={{ transition: 'stroke-dashoffset 0.6s ease' }} />
           </svg>
           <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ fontWeight: 800, fontSize: 20, fontFeatureSettings: "'tnum'" }}>{minToday}</div>
-            <div style={{ fontSize: 10.5, color: C.sub, fontWeight: 700 }}>min today</div>
+            <div style={{ fontSize: 11.5, color: C.sub, fontWeight: 700 }}>min today</div>
           </div>
         </div>
         <div style={{ display: 'flex', gap: 26, flexWrap: 'wrap' }}>
-          <div><div style={{ fontWeight: 800, fontSize: 26 }}>🔥 <CountUp text={String(streak)} /></div><div style={{ fontSize: 12, color: C.sub, fontWeight: 600 }}>day streak</div></div>
-          <div><div style={{ fontWeight: 800, fontSize: 26, fontFeatureSettings: "'tnum'" }}><CountUp text={String(weekTotal)} /></div><div style={{ fontSize: 12, color: C.sub, fontWeight: 600 }}>minutes this week</div></div>
+          <div><div style={{ fontWeight: 800, fontSize: 26 }}><Icon name="flame" size={22} /> <CountUp text={String(streak)} /></div><div style={{ fontSize: 12, color: C.sub, fontWeight: 700 }}>day streak</div></div>
+          <div><div style={{ fontWeight: 800, fontSize: 26, fontFeatureSettings: "'tnum'" }}><CountUp text={String(weekTotal)} /></div><div style={{ fontSize: 12, color: C.sub, fontWeight: 700 }}>minutes this week</div></div>
         </div>
         <div role="img" style={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'flex-end', gap: 8, height: 92 }} aria-label="Minutes practised per day">
           {week.map((d, i) => (
             <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
               <div title={`${d.min} min`} style={{ width: '100%', height: Math.max(4, (d.min / max) * 62), borderRadius: '6px 6px 3px 3px', background: d.min >= DAILY_GOAL_MIN ? 'linear-gradient(180deg,var(--a1),var(--a2))' : d.min > 0 ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(148,163,184,0.3)', transition: 'height 0.4s ease' }} />
-              <div style={{ fontSize: 10.5, color: C.muted, fontWeight: 700 }}>{d.label}</div>
+              <div style={{ fontSize: 11.5, color: C.muted, fontWeight: 700 }}>{d.label}</div>
             </div>
           ))}
         </div>
@@ -132,9 +133,9 @@ function Plan({ pr }) {
             display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left', borderRadius: 16, padding: '13px 15px',
             background: done[b.id] ? 'rgba(var(--a2-rgb),0.08)' : 'rgba(0,0,0,0.03)', border: '1px solid ' + (done[b.id] ? 'rgba(var(--a2-rgb),0.35)' : 'rgba(0,0,0,0.07)'), color: C.text,
           }}>
-            <span style={{ width: 26, height: 26, borderRadius: 9, flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', background: done[b.id] ? grad : 'rgba(0,0,0,0.05)', border: done[b.id] ? 'none' : '1.5px solid rgba(0,0,0,0.13)', color: '#fff', fontWeight: 800, fontSize: 13 }}>{done[b.id] ? '✓' : ''}</span>
+            <span style={{ width: 26, height: 26, borderRadius: 9, flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', background: done[b.id] ? grad : 'rgba(0,0,0,0.05)', border: done[b.id] ? 'none' : '1.5px solid rgba(0,0,0,0.13)', color: 'var(--on-accent)', fontWeight: 800, fontSize: 13 }}>{done[b.id] ? <Icon name="check" size={14} stroke={3} /> : null}</span>
             <span style={{ flex: 1, minWidth: 0 }}>
-              <span style={{ display: 'block', fontWeight: 700, fontSize: 14 }}>{b.icon} {b.title}</span>
+              <span style={{ display: 'block', fontWeight: 700, fontSize: 14 }}><Icon name={b.icon} size={16} /> {b.title}</span>
               <span style={{ display: 'block', fontSize: 12.5, color: C.sub, marginTop: 2 }}>{b.tip}</span>
             </span>
             <span style={{ fontWeight: 800, fontSize: 13, color: C.sub, flex: 'none' }}>{b.min} min</span>
@@ -166,8 +167,8 @@ function SessionTimer({ pr }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
         <div style={{ fontWeight: 800, fontSize: 40, letterSpacing: -1, fontFeatureSettings: "'tnum'" }} aria-live="off">{mm}:{ss}</div>
         {start
-          ? <button onClick={stop} className="lift" style={{ background: 'var(--text)', border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>Stop &amp; log</button>
-          : <button onClick={() => { setStart(Date.now()); setNow(Date.now()) }} className="lift" style={{ ...glassPrimary, padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>▶ Start session</button>}
+          ? <button onClick={stop} className="lift" style={{ background: 'var(--text)', border: 'none', color: 'var(--on-accent)', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>Stop &amp; log</button>
+          : <button onClick={() => { setStart(Date.now()); setNow(Date.now()) }} className="lift" style={{ ...glassPrimary, padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}><Icon name="play" size={14} /> Start session</button>}
       </div>
     </Section>
   )
@@ -197,12 +198,12 @@ function Metronome() {
         <button style={btn} aria-label="Slower" onClick={() => setBpm((b) => clamp(b - 1))}>−</button>
         <div style={{ textAlign: 'center', minWidth: 96 }}>
           <div style={{ fontWeight: 800, fontSize: 40, lineHeight: 1, fontFeatureSettings: "'tnum'" }}>{bpm}</div>
-          <div style={{ fontSize: 11.5, color: C.sub, fontWeight: 700 }}>BPM · {tempoName(bpm)}</div>
+          <div style={{ fontSize: 11.5, color: C.sub, fontWeight: 700 }}>BPM, {tempoName(bpm)}</div>
         </div>
         <button style={btn} aria-label="Faster" onClick={() => setBpm((b) => clamp(b + 1))}>+</button>
         <button onClick={tap} className="lift" style={{ ...pill(false), padding: '11px 16px' }}>Tap tempo</button>
-        <button onClick={() => { m.toggle(); track('music_metronome') }} className="lift" aria-pressed={m.running} style={{ background: m.running ? 'var(--text)' : grad, border: 'none', color: '#fff', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>
-          {m.running ? '■ Stop' : '▶ Start'}
+        <button onClick={() => { m.toggle(); track('music_metronome') }} className="lift" aria-pressed={m.running} style={{ background: m.running ? 'var(--text)' : grad, border: 'none', color: 'var(--on-accent)', padding: '12px 22px', borderRadius: 14, fontWeight: 800 }}>
+          {m.running ? <><Icon name="stop" size={14} /> Stop</> : <><Icon name="play" size={14} /> Start</>}
         </button>
       </div>
       <input type="range" min="40" max="220" value={bpm} onChange={(e) => setBpm(Number(e.target.value))} aria-label="Tempo" style={{ width: '100%', accentColor: 'var(--a1)' }} />
@@ -265,11 +266,11 @@ function ChordLab({ pr }) {
             <ChordDiagram chord={a} /><span style={{ fontSize: 20, color: C.muted }}>⇄</span><ChordDiagram chord={b} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
-            <div style={{ fontWeight: 800, fontSize: 30, fontFeatureSettings: "'tnum'" }}>{secs === null ? '60' : Math.max(0, secs)}s · <span style={{ color: C.greenDeep }}>{count}</span> changes</div>
+            <div style={{ fontWeight: 800, fontSize: 30, fontFeatureSettings: "'tnum'" }}>{secs === null ? '60' : Math.max(0, secs)}s, <span style={{ color: C.greenDeep }}>{count}</span> changes</div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {!running && <button onClick={() => { setCount(0); setSecs(60) }} className="lift" style={{ ...glassPrimary, padding: '11px 18px', borderRadius: 14, fontWeight: 800 }}>{secs === 0 ? '↻ Again' : '▶ Start 60s'}</button>}
-              {running && <button onClick={() => setCount((n) => n + 1)} className="lift" style={{ background: 'var(--text)', border: 'none', color: '#fff', padding: '14px 26px', borderRadius: 14, fontWeight: 800, fontSize: 16 }}>Changed! +1</button>}
-              <button onClick={shuffle} style={pill(false)}>🔀 New pair</button>
+              {!running && <button onClick={() => { setCount(0); setSecs(60) }} className="lift" style={{ ...glassPrimary, padding: '11px 18px', borderRadius: 14, fontWeight: 800 }}>{secs === 0 ? <><Icon name="reset" size={14} /> Again</> : <><Icon name="play" size={14} /> Start 60s</>}</button>}
+              {running && <button onClick={() => setCount((n) => n + 1)} className="lift" style={{ background: 'var(--text)', border: 'none', color: 'var(--on-accent)', padding: '14px 26px', borderRadius: 14, fontWeight: 800, fontSize: 16 }}>Changed! +1</button>}
+              <button onClick={shuffle} style={pill(false)}><Icon name="shuffle" size={14} /> New pair</button>
             </div>
           </div>
         </div>
@@ -286,7 +287,7 @@ function Tuning() {
         {tuning.map((t) => (
           <button key={t.s + t.oct} onClick={() => { playTone(t.hz); setLast(t.s + t.oct) }} className="lift" style={{ ...pill(last === t.s + t.oct), padding: '12px 0', width: 62, textAlign: 'center' }}>
             <div style={{ fontWeight: 800, fontSize: 18 }}>{t.s}</div>
-            <div style={{ fontSize: 10.5, color: C.sub, fontWeight: 700 }}>{t.hz} Hz</div>
+            <div style={{ fontSize: 11.5, color: C.sub, fontWeight: 700 }}>{t.hz} Hz</div>
           </button>
         ))}
       </div>
@@ -307,9 +308,9 @@ function Songs({ pr }) {
               <div style={{ flex: 1, minWidth: 200 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 14, fontWeight: 700 }}><span>{sg.title}</span><span style={{ color: C.sub, fontFeatureSettings: "'tnum'" }}>{pct}%</span></div>
                 <div style={{ height: 7, borderRadius: 4, background: 'rgba(0,0,0,0.07)', margin: '7px 0 5px', overflow: 'hidden' }}><div style={{ width: pct + '%', height: '100%', background: grad, borderRadius: 4, transition: 'width 0.5s ease' }} /></div>
-                <div style={{ fontSize: 12, color: C.sub }}>{sg.level} · Next: {sg.next}</div>
+                <div style={{ fontSize: 12, color: C.sub }}>{sg.level}. Next: {sg.next}</div>
               </div>
-              <button onClick={() => bump(sg.id)} disabled={pct >= 100} style={{ ...pill(false), opacity: pct >= 100 ? 0.45 : 1 }}>+10% ✓</button>
+              <button onClick={() => bump(sg.id)} disabled={pct >= 100} style={{ ...pill(false), opacity: pct >= 100 ? 0.45 : 1 }}>+10%</button>
             </div>
           )
         })}
@@ -347,7 +348,7 @@ function ComingNext({ focusId }) {
   return (
     <div style={{ border: '2px dashed rgba(var(--a1-rgb),0.35)', background: 'rgba(var(--a1-rgb),0.04)', borderRadius: 22, padding: 'clamp(18px,2.4vw,26px)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.8, textTransform: 'uppercase', color: '#fff', background: C.blue, borderRadius: 999, padding: '4px 10px' }}>Coming next</span>
+        <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--on-accent)', background: C.blue, borderRadius: 999, padding: '4px 10px' }}>Coming next</span>
         <div style={{ fontWeight: 800, fontSize: 16 }}>More instruments are on the way</div>
       </div>
       <p style={{ color: C.sub, fontSize: 13.5, lineHeight: 1.6, margin: '0 0 14px', maxWidth: 640 }}>
@@ -355,10 +356,10 @@ function ComingNext({ focusId }) {
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 12 }}>
         {upcoming.map((i) => (
-          <div key={i.id} style={{ background: '#fff', border: '1px solid ' + (focusId === i.id ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(0,0,0,0.08)'), borderRadius: 16, padding: 16 }}>
-            <div style={{ fontWeight: 800, fontSize: 15 }}>{i.icon} {i.name}</div>
+          <div key={i.id} style={{ background: 'var(--surface)', border: '1px solid ' + (focusId === i.id ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(0,0,0,0.08)'), borderRadius: 16, padding: 16 }}>
+            <div style={{ fontWeight: 800, fontSize: 15 }}><Icon name={i.icon} size={16} /> {i.name}</div>
             <div style={{ fontSize: 12.5, color: C.sub, margin: '6px 0 12px', lineHeight: 1.5 }}>{i.blurb}</div>
-            <button onClick={() => vote(i.id)} aria-pressed={!!votes[i.id]} style={pill(!!votes[i.id])}>{votes[i.id] ? '✓ Requested' : '🔔 I want this'}</button>
+            <button onClick={() => vote(i.id)} aria-pressed={!!votes[i.id]} style={pill(!!votes[i.id])}>{votes[i.id] ? <><Icon name="check" size={14} stroke={3} /> Requested</> : <><Icon name="bell" size={14} /> I want this</>}</button>
           </div>
         ))}
       </div>
@@ -378,14 +379,14 @@ export default function Music() {
       <div role="tablist" aria-label="Instrument" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
         {instruments.map((i) => (
           <button key={i.id} role="tab" aria-selected={tab === i.id} onClick={() => setTab(i.id)} style={{ ...pill(tab === i.id), padding: '10px 16px', opacity: i.ready ? 1 : 0.85 }}>
-            {i.icon} {i.name}{!i.ready && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 800, letterSpacing: 0.6, color: C.blue, background: 'rgba(var(--a1-rgb),0.1)', borderRadius: 999, padding: '2px 7px' }}>SOON</span>}
+            <Icon name={i.icon} size={16} /> {i.name}{!i.ready && <span style={{ marginLeft: 8, fontSize: 11.5, fontWeight: 800, letterSpacing: 0.6, color: C.blue, background: 'rgba(var(--a1-rgb),0.1)', borderRadius: 999, padding: '2px 7px' }}>Soon</span>}
           </button>
         ))}
       </div>
 
       {Panel ? <Panel /> : (
         <div style={{ ...card, borderRadius: 22, padding: 28, textAlign: 'center' }}>
-          <div style={{ fontSize: 44, marginBottom: 8 }}>{sel.icon}</div>
+          <div style={{ marginBottom: 8 }}><Icon name={sel.icon} size={44} /></div>
           <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>{sel.name} is coming soon</div>
           <div style={{ color: C.sub, fontSize: 14 }}>{sel.blurb}</div>
         </div>

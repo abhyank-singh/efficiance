@@ -7,11 +7,12 @@ import { DEFAULT_NAME } from '../config.js'
 import { packs } from '../data/packs.js'
 import { understand, applyActions, describe } from '../data/actions.js'
 import { track } from '../track.js'
+import Icon from '../components/Icon.jsx'
 
 const gradText = { background: 'linear-gradient(135deg,var(--a1),var(--ok))', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
 const calDefs = [
-  { k: 'google', name: 'Google Calendar', icon: '🗓' },
-  { k: 'outlook', name: 'Outlook', icon: '📧' },
+  { k: 'google', name: 'Google Calendar', icon: 'calendar' },
+  { k: 'outlook', name: 'Outlook', icon: 'mail' },
 ]
 
 export default function Onboarding() {
@@ -60,7 +61,7 @@ export default function Onboarding() {
               <div key={i} style={{ width: 26, height: 5, borderRadius: 3, background: i <= step ? grad : 'rgba(0,0,0,0.09)' }} />
             ))}
           </div>
-          <button onClick={finish} className="muted-hover" style={{ background: 'none', border: 'none', color: C.muted, fontSize: 13, fontWeight: 600 }}>Skip →</button>
+          <button onClick={finish} className="muted-hover" style={{ background: 'none', border: 'none', color: C.muted, fontSize: 13, fontWeight: 700 }}>Skip</button>
         </div>
 
         {step === 1 && (
@@ -72,11 +73,11 @@ export default function Onboarding() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Your first name"
               autoFocus
-              style={{ width: '100%', background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 14, padding: '15px 18px', color: C.text, fontSize: 16, fontWeight: 600 }}
+              style={{ width: '100%', background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 14, padding: '15px 18px', color: C.text, fontSize: 16, fontWeight: 700 }}
             />
             <div style={{ marginTop: 22, background: 'rgba(0,0,0,0.035)', border: '1px dashed rgba(0,0,0,0.09)', borderRadius: 16, padding: 18 }}>
               <div style={{ ...label, marginBottom: 8 }}>Preview</div>
-              <div style={{ fontWeight: 600, fontSize: 17 }}>Good morning, <span style={gradText}>{preview}</span> ☀️</div>
+              <div style={{ fontWeight: 700, fontSize: 17 }}>Good morning, <span style={gradText}>{preview}</span></div>
             </div>
           </>
         )}
@@ -92,7 +93,7 @@ export default function Onboarding() {
                   textAlign: 'left', borderRadius: 16, padding: '13px 14px', color: C.text,
                   background: pack === p.id ? gradTab : 'rgba(0,0,0,0.04)', border: '1px solid ' + (pack === p.id ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'),
                 }}>
-                  <div style={{ fontSize: 20 }}>{p.icon}</div>
+                  <div><Icon name={p.icon} size={20} /></div>
                   <div style={{ fontWeight: 800, fontSize: 14, marginTop: 4 }}>{p.title}</div>
                   <div style={{ fontSize: 12, color: C.sub, marginTop: 2 }}>{p.desc}</div>
                 </button>
@@ -108,7 +109,7 @@ export default function Onboarding() {
                     border: '1px solid ' + (sel ? 'rgba(var(--a1-rgb),0.6)' : 'rgba(0,0,0,0.09)'),
                     color: C.text, padding: '12px 18px', borderRadius: 999, fontSize: 14, fontWeight: 700, transition: 'all 0.15s ease',
                   }}>
-                    {f.icon} {f.name}
+                    <Icon name={f.icon} size={16} /> {f.name}
                   </button>
                 )
               })}
@@ -119,7 +120,7 @@ export default function Onboarding() {
         {step === 3 && (
           <>
             <div style={label}>Step 3 of 3</div>
-            <h2 style={{ fontWeight: 700, fontSize: 26, letterSpacing: -0.5, margin: '12px 0 6px' }}>Your first win ✨</h2>
+            <h2 style={{ fontWeight: 700, fontSize: 26, letterSpacing: -0.5, margin: '12px 0 6px' }}>Your first win</h2>
             <p style={{ color: C.sub, fontSize: 14, margin: '0 0 16px' }}>Just type what you did today, the way you’d text a friend. No forms.</p>
             <textarea
               value={first} rows={3} maxLength={500} aria-label="Tell Efficiance what you did today"
@@ -129,16 +130,16 @@ export default function Onboarding() {
             />
             {!firstRes && (
               <button onClick={tryIt} disabled={!first.trim() || trying} className="lift" style={{ marginTop: 12, background: 'rgba(var(--a1-rgb),0.1)', border: '1px solid rgba(var(--a1-rgb),0.3)', color: C.blue, padding: '10px 16px', borderRadius: 12, fontWeight: 800, fontSize: 13.5, opacity: first.trim() ? 1 : 0.5 }}>
-                {trying ? 'Reading…' : 'See what I understand →'}
+                {trying ? 'Reading…' : 'See what I understand'}
               </button>
             )}
             {firstRes && (
               <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease-out' }}>
                 {firstRes.actions.length ? firstRes.actions.map((a, i) => {
                   const d = describe(a)
-                  return <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.3)', borderRadius: 12, padding: '10px 12px', fontSize: 13.5, fontWeight: 600 }}><span>{d.icon}</span><span style={{ flex: 1 }}>{d.text}</span><span style={{ color: C.greenDeep, fontWeight: 800 }}>✓</span></div>
+                  return <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.3)', borderRadius: 12, padding: '10px 12px', fontSize: 13.5, fontWeight: 700 }}><span>{d.icon}</span><span style={{ flex: 1 }}>{d.text}</span><span style={{ color: C.greenDeep, fontWeight: 800 }}><Icon name="check" size={16} stroke={3} /></span></div>
                 }) : <div style={{ fontSize: 13.5, color: C.sub }}>I couldn’t map that. You can skip, or try “spent 100 on chai”.</div>}
-                {firstRes.actions.length > 0 && <div style={{ fontSize: 12, color: C.muted, fontWeight: 600 }}>These will be added when you enter. Your sample calendar loads automatically.</div>}
+                {firstRes.actions.length > 0 && <div style={{ fontSize: 12, color: C.muted, fontWeight: 700 }}>These will be added when you enter. Your sample calendar loads automatically.</div>}
               </div>
             )}
           </>
@@ -149,7 +150,7 @@ export default function Onboarding() {
             ← Back
           </button>
           <button onClick={next} className="lift" style={{ ...glassPrimary, padding: '13px 28px', borderRadius: 14, fontWeight: 800, fontSize: 15, boxShadow: '0 6px 24px rgba(var(--a2-rgb),0.35)' }}>
-            {step === 3 ? 'Enter Efficiance →' : 'Continue →'}
+            {step === 3 ? 'Enter Efficiance' : 'Continue'}
           </button>
         </div>
 

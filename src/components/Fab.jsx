@@ -4,6 +4,7 @@ import { useApp } from '../store.jsx'
 import { C, grad, label, glassPrimary } from '../theme.js'
 import { payees } from '../data/seed.js'
 import { openQuickAdd } from './QuickAdd.jsx'
+import Icon from './Icon.jsx'
 
 // Global quick-actions FAB + "Log a spend" modal (amount → payee → auto category → done).
 
@@ -19,12 +20,12 @@ export default function Fab({ mobile }) {
   const picked = payeeIdx >= 0 ? payees[payeeIdx] : null
 
   const items = [
-    { icon: '✨', label: 'Quick Add (type or speak)', go: () => { setOpen(false); openQuickAdd() } },
-    { icon: '₹', label: 'Log expense', go: () => { setOpen(false); setQaOpen(true) } },
-    { icon: '✅', label: 'Check a habit', go: () => { setOpen(false); nav('/habits') } },
-    { icon: '🏋️', label: 'Log a set', go: () => { setOpen(false); patch({ workoutOn: true }); nav('/gym') } },
-    { icon: '🌱', label: 'Log a connection', go: () => { setOpen(false); nav('/people') } },
-    { icon: '📓', label: 'Journal line', go: () => { setOpen(false); patch({ evening: true }); nav('/today') } },
+    { icon: 'spark', label: 'Quick Add (type or speak)', go: () => { setOpen(false); openQuickAdd() } },
+    { icon: 'rupee', label: 'Log expense', go: () => { setOpen(false); setQaOpen(true) } },
+    { icon: 'habits', label: 'Check a habit', go: () => { setOpen(false); nav('/habits') } },
+    { icon: 'gym', label: 'Log a set', go: () => { setOpen(false); patch({ workoutOn: true }); nav('/gym') } },
+    { icon: 'sprout', label: 'Log a connection', go: () => { setOpen(false); nav('/people') } },
+    { icon: 'journal', label: 'Journal line', go: () => { setOpen(false); patch({ evening: true }); nav('/today') } },
   ]
 
   const addTx = () => {
@@ -43,18 +44,18 @@ export default function Fab({ mobile }) {
         borderRadius: '50%', ...glassPrimary, fontSize: 26, fontWeight: 400,
         boxShadow: '0 8px 32px rgba(var(--a2-rgb),0.45)',
       }}>
-        {open ? '✕' : '+'}
+        {open ? <Icon name="close" size={22} /> : '+'}
       </button>
 
       {open && (
         <div style={{ position: 'fixed', bottom: mobile ? 'calc(160px + env(safe-area-inset-bottom))' : 92, right: 22, zIndex: 45, display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease-out' }}>
           {items.map((f) => (
             <button key={f.label} onClick={f.go} className="bd-hover-teal" style={{
-              background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 14, padding: '12px 16px',
+              background: 'var(--surface)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 14, padding: '12px 16px',
               color: C.text, fontSize: 13.5, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10,
               boxShadow: '0 6px 22px rgba(16,24,40,0.14)', textAlign: 'left',
             }}>
-              <span>{f.icon}</span>{f.label}
+              <Icon name={f.icon} size={16} />{f.label}
             </button>
           ))}
         </div>
@@ -65,13 +66,13 @@ export default function Fab({ mobile }) {
           <div onClick={() => setQaOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'rgba(17,24,39,0.34)', backdropFilter: 'blur(6px)' }} />
           <div style={{
             position: 'fixed', zIndex: 51, left: '50%', top: '50%', transform: 'translate(-50%,-50%)',
-            width: 'min(440px,92vw)', background: '#FFFFFF', backdropFilter: 'blur(28px) saturate(140%)',
+            width: 'min(440px,92vw)', background: 'var(--surface)', backdropFilter: 'blur(28px) saturate(140%)',
             border: '1px solid rgba(0,0,0,0.09)', borderTopColor: 'rgba(0,0,0,0.05)', borderRadius: 24,
             boxShadow: '0 24px 60px rgba(16,24,40,0.2)', padding: 26, animation: 'rise 0.2s ease-out',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
               <div style={{ fontWeight: 700, fontSize: 18 }}>Log a spend</div>
-              <button aria-label="Close" onClick={() => setQaOpen(false)} style={{ background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: 10, color: C.sub, width: 30, height: 30, fontSize: 14 }}>✕</button>
+              <button aria-label="Close" onClick={() => setQaOpen(false)} style={{ background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: 10, color: C.sub, width: 30, height: 30, fontSize: 14 }}><Icon name="close" size={14} /></button>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 14, padding: '4px 16px' }}>
               <span style={{ fontSize: 22, fontWeight: 800, color: C.sub }}>₹</span>
@@ -92,7 +93,7 @@ export default function Fab({ mobile }) {
                   border: '1px solid ' + (i === payeeIdx ? 'rgba(var(--a1-rgb),0.5)' : 'rgba(0,0,0,0.08)'),
                   borderRadius: 999, padding: '8px 14px', color: C.text, fontSize: 13, fontWeight: 700,
                 }}>
-                  {p.icon} {p.name}
+                  <Icon name={p.icon} size={16} /> {p.name}
                 </button>
               ))}
             </div>
@@ -103,7 +104,7 @@ export default function Fab({ mobile }) {
               </div>
             )}
             <button onClick={addTx} className="lift" style={{ marginTop: 20, width: '100%', ...glassPrimary, padding: 14, borderRadius: 14, fontWeight: 800, fontSize: 15 }}>
-              Done ✓
+              Done
             </button>
           </div>
         </>

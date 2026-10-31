@@ -2,6 +2,7 @@ import { useApp } from '../store.jsx'
 import { C, grad, card, label } from '../theme.js'
 import { openQuickAdd } from './QuickAdd.jsx'
 import { useNavigate } from 'react-router-dom'
+import Icon from './Icon.jsx'
 
 // "Getting started": four quick wins that get a new user to their first real value.
 // Completion is derived from the activity log, so it can't drift out of sync.
@@ -21,7 +22,7 @@ export default function Checklist() {
   return (
     <div style={{ ...card, borderRadius: 22, padding: '18px 20px', marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-        <div style={label}>{all ? '🎉 You’re all set' : `Getting started · ${n}/${tasks.length}`}</div>
+        <div style={label}>{all ? 'You’re all set' : `Getting started: ${n} of ${tasks.length}`}</div>
         <button onClick={() => patch({ checklistDismissed: true })} aria-label={(all ? 'Done' : 'Hide') + ' getting started'} style={{ background: 'none', border: 'none', color: C.muted, fontSize: 13, fontWeight: 700 }}>{all ? 'Done' : 'Hide'}</button>
       </div>
       <div style={{ height: 6, borderRadius: 3, background: 'rgba(0,0,0,0.07)', marginBottom: 14, overflow: 'hidden' }}>
@@ -33,8 +34,8 @@ export default function Checklist() {
             display: 'flex', alignItems: 'center', gap: 10, textAlign: 'left', borderRadius: 14, padding: '10px 12px', color: C.text,
             background: t.done ? 'rgba(var(--a2-rgb),0.08)' : 'rgba(0,0,0,0.03)', border: '1px solid ' + (t.done ? 'rgba(var(--a2-rgb),0.3)' : 'rgba(0,0,0,0.07)'), opacity: t.done ? 0.75 : 1,
           }}>
-            <span style={{ width: 22, height: 22, borderRadius: 8, flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: '#fff', background: t.done ? grad : 'rgba(0,0,0,0.06)', border: t.done ? 'none' : '1.5px solid rgba(0,0,0,0.13)' }}>{t.done ? '✓' : ''}</span>
-            <span style={{ fontSize: 13.5, fontWeight: 600, textDecoration: t.done ? 'line-through' : 'none' }}>{t.text}</span>
+            <span style={{ width: 22, height: 22, borderRadius: 8, flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: 'var(--on-accent)', background: t.done ? grad : 'rgba(0,0,0,0.06)', border: t.done ? 'none' : '1.5px solid rgba(0,0,0,0.13)' }}>{t.done ? <Icon name="check" size={13} stroke={3} /> : null}</span>
+            <span style={{ fontSize: 13.5, fontWeight: 700, textDecoration: t.done ? 'line-through' : 'none' }}>{t.text}</span>
           </button>
         ))}
       </div>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useApp } from '../store.jsx'
 import { C, grad, card, label } from '../theme.js'
 import { monthDay } from '../data/dates.js'
+import Icon from '../components/Icon.jsx'
 
 const goalDefs = [
   { lane: 'Professional', color: 'var(--a1)', items: [
@@ -12,9 +13,9 @@ const goalDefs = [
     { id: 'g3', title: 'Run 10K under 60 min', date: monthDay(46), ms: ['5K under 30 min', '8K long run', 'Race registration'], msDone: [true, true, false], linked: 'Linked: Sunday long runs' },
     { id: 'g4', title: '₹3L emergency fund', date: monthDay(175), ms: ['₹1L saved', '₹2L saved', '₹3L saved'], msDone: [true, false, false], linked: 'Linked: SIP tracker' },
   ] },
-  { lane: 'Growth · Learning', color: 'var(--ok)', items: [
-    { id: 'g5', title: 'Deep Work — Cal Newport', date: monthDay(22), ms: ['Part I', 'Part II', 'Part III'], msDone: [true, true, false], linked: '📖 Book · 62% read', learning: true, cta: 'Continue: Ch. 7, p. 214' },
-    { id: 'g6', title: 'System Design course', date: monthDay(93), ms: ['Fundamentals', 'Case studies', 'Mock interviews'], msDone: [true, false, false], linked: '🎓 Course · 30% complete', learning: true, cta: 'Continue: Module 5' },
+  { lane: 'Growth and learning', color: 'var(--ok)', items: [
+    { id: 'g5', title: 'Deep Work by Cal Newport', date: monthDay(22), ms: ['Part I', 'Part II', 'Part III'], msDone: [true, true, false], linked: 'Book, 62% read', learning: true, cta: 'Continue: Ch. 7, p. 214' },
+    { id: 'g6', title: 'System Design course', date: monthDay(93), ms: ['Fundamentals', 'Case studies', 'Mock interviews'], msDone: [true, false, false], linked: 'Course, 30% complete', learning: true, cta: 'Continue: Module 5' },
   ] },
 ]
 
@@ -61,10 +62,10 @@ export default function Goals() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 16, lineHeight: 1.35 }}>{g.title}</div>
-                        <div style={{ color: C.muted, fontSize: 12, marginTop: 5, fontWeight: 600 }}>Target: {g.date}</div>
+                        <div style={{ color: C.muted, fontSize: 12, marginTop: 5, fontWeight: 700 }}>Target: {g.date}</div>
                       </div>
                       <div style={{ position: 'relative', width: 58, height: 58, flex: 'none' }}>
-                        <svg width="58" height="58" viewBox="0 0 76 76">
+                        <svg aria-hidden="true" width="58" height="58" viewBox="0 0 76 76">
                           <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="8" />
                           <circle cx="38" cy="38" r="32" fill="none" stroke="url(#eg)" strokeWidth="8" strokeLinecap="round" strokeDasharray="201" strokeDashoffset={dash} transform="rotate(-90 38 38)" style={{ animation: 'ringin 0.8s ease-out' }} />
                         </svg>
@@ -81,21 +82,21 @@ export default function Goals() {
                               width: 19, height: 19, borderRadius: 7,
                               background: isDone ? grad : 'rgba(0,0,0,0.05)',
                               border: '1.5px solid ' + (isDone ? 'transparent' : 'rgba(0,0,0,0.13)'),
-                              color: '#fff', fontSize: 11, fontWeight: 800,
+                              color: 'var(--on-accent)', fontSize: 11, fontWeight: 800,
                               display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 'none',
                             }}>
-                              {isDone ? '✓' : ''}
+                              {isDone ? <Icon name="check" size={14} stroke={3} /> : null}
                             </span>
-                            <span style={{ fontSize: 13, fontWeight: 600, color: isDone ? C.sub : C.text, textDecoration: isDone ? 'line-through' : 'none' }}>{m}</span>
+                            <span style={{ fontSize: 13, fontWeight: 700, color: isDone ? C.sub : C.text, textDecoration: isDone ? 'line-through' : 'none' }}>{m}</span>
                           </button>
                         )
                       })}
                     </div>
 
-                    <div style={{ fontSize: 12, color: C.muted, fontWeight: 600, paddingTop: 10, borderTop: '1px solid rgba(0,0,0,0.05)' }}>{g.linked}</div>
+                    <div style={{ fontSize: 12, color: C.muted, fontWeight: 700, paddingTop: 10, borderTop: '1px solid rgba(0,0,0,0.05)' }}>{g.linked}</div>
                     {g.learning && (
                       <button className="bd-hover-teal" style={{ marginTop: 12, width: '100%', background: 'rgba(var(--a1-rgb),0.14)', border: '1px solid rgba(var(--a1-rgb),0.4)', color: C.text, padding: 10, borderRadius: 12, fontWeight: 700, fontSize: 13 }}>
-                        ▶ {g.cta}
+                        <Icon name="play" size={13} /> {g.cta}
                       </button>
                     )}
                   </div>
@@ -106,9 +107,9 @@ export default function Goals() {
         ))}
       </div>
 
-      <div style={{ marginTop: 18, background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.085)', borderTopColor: 'rgba(0,0,0,0.05)', borderRadius: 22, padding: 22, display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+      <div style={{ marginTop: 18, background: 'var(--surface)', border: '1px solid rgba(0,0,0,0.085)', borderTopColor: 'rgba(0,0,0,0.05)', borderRadius: 22, padding: 22, display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
         <div style={{ position: 'relative', width: 64, height: 64, flex: 'none' }}>
-          <svg width="64" height="64" viewBox="0 0 76 76">
+          <svg aria-hidden="true" width="64" height="64" viewBox="0 0 76 76">
             <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="8" />
             <circle cx="38" cy="38" r="32" fill="none" stroke="url(#eg)" strokeWidth="8" strokeLinecap="round" strokeDasharray="201" strokeDashoffset="50" transform="rotate(-90 38 38)" style={{ animation: 'ringin 0.8s ease-out' }} />
           </svg>
@@ -116,7 +117,7 @@ export default function Goals() {
         </div>
         <div>
           <div style={{ fontWeight: 800, fontSize: 16, fontFeatureSettings: "'tnum'" }}>4.5h of 6h weekly learning target</div>
-          <div style={{ color: C.sub, fontSize: 13, marginTop: 3 }}>You learn most consistently in Tuesday free blocks — 1.5h to go this week.</div>
+          <div style={{ color: C.sub, fontSize: 13, marginTop: 3 }}>You learn most consistently in Tuesday free blocks, 1.5h to go this week.</div>
         </div>
       </div>
 
@@ -126,8 +127,8 @@ export default function Goals() {
             <div key={i} style={{ position: 'fixed', zIndex: 60, top: -20, left: c.left, width: c.width, height: c.height, borderRadius: 2, background: c.background, animation: c.animation, pointerEvents: 'none' }} />
           ))}
           <div onClick={() => setParty(false)} style={{ position: 'fixed', inset: 0, zIndex: 59, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(17,24,39,0.3)', backdropFilter: 'blur(6px)', cursor: 'pointer' }}>
-            <div style={{ background: '#FFFFFF', border: '1px solid rgba(255,90,95,0.4)', borderRadius: 26, padding: '44px 54px', textAlign: 'center', boxShadow: '0 20px 60px rgba(255,90,95,0.18),0 2px 8px rgba(16,24,40,0.08)', animation: 'glowpulse 2s ease-in-out infinite' }}>
-              <div style={{ fontSize: 44, marginBottom: 12 }}>🎉</div>
+            <div style={{ background: 'var(--surface)', border: '1px solid rgba(255,90,95,0.4)', borderRadius: 26, padding: '44px 54px', textAlign: 'center', boxShadow: '0 20px 60px rgba(255,90,95,0.18),0 2px 8px rgba(16,24,40,0.08)', animation: 'glowpulse 2s ease-in-out infinite' }}>
+              <div style={{ marginBottom: 12 }}><Icon name="party" size={44} stroke={1.5} /></div>
               <div style={{ fontWeight: 800, fontSize: 24 }}>Goal completed!</div>
               <div style={{ color: C.sub, fontSize: 14, marginTop: 8 }}>Every milestone checked. This is what one life, well-run, looks like.</div>
               <div style={{ marginTop: 18, color: C.greenDeep, fontWeight: 700, fontSize: 13 }}>Tap anywhere to continue</div>

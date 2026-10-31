@@ -4,6 +4,7 @@ import { useApp, useMobile } from '../store.jsx'
 import { C, grad, label, glassPrimary } from '../theme.js'
 import { understand, applyActions, describe, MODULE_ROUTE, EXAMPLES } from '../data/actions.js'
 import { track } from '../track.js'
+import Icon from './Icon.jsx'
 
 // In-app assistant: type or say what you did → see exactly what will change → confirm → undo if wrong.
 
@@ -18,11 +19,11 @@ export function QuickBar({ compact }) {
   return (
     <button onClick={() => openQuickAdd()} className="lift" style={{
       width: '100%', display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left',
-      background: '#fff', border: '1px solid rgba(var(--a1-rgb),0.28)', borderRadius: compact ? 12 : 16,
-      padding: compact ? '10px 12px' : '14px 18px', color: C.sub, fontSize: compact ? 12.5 : 14.5, fontWeight: 600,
+      background: 'var(--surface)', border: '1px solid rgba(var(--a1-rgb),0.28)', borderRadius: compact ? 12 : 16,
+      padding: compact ? '10px 12px' : '14px 18px', color: C.sub, fontSize: compact ? 12.5 : 14.5, fontWeight: 700,
       boxShadow: compact ? 'none' : '0 4px 18px rgba(var(--a1-rgb),0.10)',
     }}>
-      <span style={{ fontSize: compact ? 15 : 18 }}>✨</span>
+      <Icon name="spark" size={compact ? 15 : 18} />
       <span style={{ flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {compact ? 'Quick Add' : 'Tell me what you did… “spent 450 on swiggy, slept 6.5h, called mom”'}
       </span>
@@ -111,10 +112,10 @@ export default function QuickAdd() {
   }
 
   const srcBadge = res && ({
-    instant: ['⚡ Understood instantly', C.greenDeep, 'rgba(var(--a2-rgb),0.12)'],
-    ai: ['✨ Understood by AI', C.blue, 'rgba(var(--a1-rgb),0.10)'],
-    none: ['🤔 Not sure', C.amber, 'rgba(245,158,11,0.12)'],
-    down: ['⚠️ AI unavailable', C.amber, 'rgba(245,158,11,0.12)'],
+    instant: ['Understood instantly', C.greenDeep, 'rgba(var(--a2-rgb),0.12)', 'zap'],
+    ai: ['Understood by AI', C.blue, 'rgba(var(--a1-rgb),0.10)', 'spark'],
+    none: ['Not sure', C.amber, 'rgba(245,158,11,0.12)', 'help'],
+    down: ['AI unavailable', C.amber, 'rgba(245,158,11,0.12)', 'alert'],
   })[res.source === 'none' && (res.ai === 'down' || res.ai === 'offline') ? 'down' : res.source]
 
   return (
@@ -125,14 +126,14 @@ export default function QuickAdd() {
           display: 'flex', alignItems: mobile ? 'flex-end' : 'flex-start', justifyContent: 'center', padding: mobile ? 0 : '12vh 16px 0',
         }}>
           <div onClick={(e) => e.stopPropagation()} style={{
-            width: '100%', maxWidth: 580, background: '#fff', border: '1px solid rgba(0,0,0,0.08)',
+            width: '100%', maxWidth: 580, background: 'var(--surface)', border: '1px solid rgba(0,0,0,0.08)',
             borderRadius: mobile ? '24px 24px 0 0' : 24, boxShadow: '0 30px 80px rgba(16,24,40,0.28)',
             padding: 'clamp(18px,3vw,26px)', paddingBottom: mobile ? 'calc(22px + env(safe-area-inset-bottom))' : undefined,
             animation: 'rise 0.2s ease-out', maxHeight: mobile ? '90vh' : '76vh', overflowY: 'auto',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <div style={{ fontWeight: 800, fontSize: 17 }}>✨ Quick Add</div>
-              <button aria-label="Close" onClick={close} style={{ background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: 10, width: 30, height: 30, color: C.sub }}>✕</button>
+              <div style={{ fontWeight: 800, fontSize: 17 }}><Icon name="spark" size={18} /> Quick Add</div>
+              <button aria-label="Close" onClick={close} style={{ background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: 10, width: 30, height: 30, color: C.sub }}><Icon name="close" size={14} /></button>
             </div>
 
             <div style={{ position: 'relative' }}>
@@ -147,29 +148,29 @@ export default function QuickAdd() {
               {SR && (
                 <button onClick={toggleVoice} aria-label={listening ? 'Stop listening' : 'Speak'} style={{
                   position: 'absolute', right: 10, top: 10, width: 36, height: 36, borderRadius: '50%', border: 'none',
-                  background: listening ? '#EF4444' : 'rgba(var(--a1-rgb),0.1)', color: listening ? '#fff' : C.blue, fontSize: 16,
+                  background: listening ? 'var(--rec)' : 'rgba(var(--a1-rgb),0.1)', color: listening ? 'var(--on-accent)' : C.blue, fontSize: 16,
                   animation: listening ? 'glowpulse 1.2s ease-in-out infinite' : 'none',
-                }}>🎙</button>
+                }}><Icon name="mic" size={16} /></button>
               )}
             </div>
 
             {phase === 'idle' && (
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12 }}>
                 {EXAMPLES.slice(0, 4).map((ex) => (
-                  <button key={ex} onClick={() => { setText(ex); submit(ex) }} className="bd-hover" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 999, padding: '7px 12px', fontSize: 12, color: C.sub, fontWeight: 600, textAlign: 'left' }}>
+                  <button key={ex} onClick={() => { setText(ex); submit(ex) }} className="bd-hover" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 999, padding: '7px 12px', fontSize: 12, color: C.sub, fontWeight: 700, textAlign: 'left' }}>
                     {ex}
                   </button>
                 ))}
               </div>
             )}
 
-            {phase === 'thinking' && <div style={{ marginTop: 16, color: C.sub, fontSize: 13.5, fontWeight: 600 }}>Reading that…</div>}
+            {phase === 'thinking' && <div style={{ marginTop: 16, color: C.sub, fontSize: 13.5, fontWeight: 700 }}>Reading that…</div>}
 
             {phase === 'review' && res && (
               <div style={{ marginTop: 16, animation: 'rise 0.2s ease-out' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
                   <span style={{ ...label, color: C.sub }}>Here’s what I’ll do</span>
-                  <span style={{ fontSize: 11.5, fontWeight: 800, color: srcBadge[1], background: srcBadge[2], borderRadius: 999, padding: '3px 10px' }}>{srcBadge[0]}</span>
+                  <span style={{ fontSize: 11.5, fontWeight: 800, color: srcBadge[1], background: srcBadge[2], borderRadius: 999, padding: '3px 10px' }}><Icon name={srcBadge[3]} size={13} /> {srcBadge[0]}</span>
                 </div>
 
                 {res.actions.length > 0 ? (
@@ -180,9 +181,9 @@ export default function QuickAdd() {
                       return (
                         <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, background: on ? 'rgba(var(--a2-rgb),0.07)' : 'rgba(0,0,0,0.03)', border: '1px solid ' + (on ? 'rgba(var(--a2-rgb),0.3)' : 'rgba(0,0,0,0.07)'), borderRadius: 14, padding: '11px 14px', cursor: 'pointer', opacity: on ? 1 : 0.55 }}>
                           <input type="checkbox" checked={on} onChange={() => setOff((o) => { const n = new Set(o); n.has(i) ? n.delete(i) : n.add(i); return n })} style={{ width: 17, height: 17, accentColor: 'var(--ok)' }} />
-                          <span style={{ fontSize: 20 }}>{d.icon}</span>
-                          <span style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>{d.text}</span>
-                          <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 0.6, textTransform: 'uppercase', color: C.muted }}>{d.module}</span>
+                          <Icon name={d.icon} size={20} />
+                          <span style={{ flex: 1, fontSize: 14, fontWeight: 700 }}>{d.text}</span>
+                          <span style={{ fontSize: 11.5, fontWeight: 700, color: C.muted }}>{d.module}</span>
                         </label>
                       )
                     })}
@@ -216,9 +217,9 @@ export default function QuickAdd() {
 
             {phase !== 'review' && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
-                <span style={{ fontSize: 12, color: C.muted, fontWeight: 600 }}>Nothing changes until you confirm.</span>
+                <span style={{ fontSize: 12, color: C.muted, fontWeight: 700 }}>Nothing changes until you confirm.</span>
                 <button onClick={() => submit()} disabled={!text.trim() || phase === 'thinking'} className="lift" style={{ ...glassPrimary, padding: '11px 20px', borderRadius: 14, fontWeight: 800, fontSize: 14, opacity: text.trim() ? 1 : 0.5 }}>
-                  Understand →
+                  Understand
                 </button>
               </div>
             )}
@@ -229,12 +230,12 @@ export default function QuickAdd() {
       {toast && (
         <div role="status" style={{
           position: 'fixed', left: '50%', transform: 'translateX(-50%)', bottom: mobile ? 'calc(96px + env(safe-area-inset-bottom))' : 28, zIndex: 90,
-          background: 'var(--text)', color: '#fff', borderRadius: 16, padding: '12px 14px 12px 18px', display: 'flex', alignItems: 'center', gap: 14,
-          boxShadow: '0 12px 40px rgba(0,0,0,0.3)', fontSize: 13.5, fontWeight: 600, animation: 'rise 0.25s ease-out', maxWidth: 'calc(100vw - 24px)',
+          background: 'var(--text)', color: 'var(--on-accent)', borderRadius: 16, padding: '12px 14px 12px 18px', display: 'flex', alignItems: 'center', gap: 14,
+          boxShadow: '0 12px 40px rgba(0,0,0,0.3)', fontSize: 13.5, fontWeight: 700, animation: 'rise 0.25s ease-out', maxWidth: 'calc(100vw - 24px)',
         }}>
-          <span>✓ Updated {toast.modules.join(', ')}</span>
-          <button onClick={() => { nav(MODULE_ROUTE[toast.modules[0]] || '/today'); setToast(null) }} style={{ background: 'none', border: 'none', color: '#86EFAC', fontWeight: 800, fontSize: 13 }}>View</button>
-          <button onClick={undo} style={{ background: 'rgba(255,255,255,0.14)', border: 'none', color: '#fff', fontWeight: 800, fontSize: 13, borderRadius: 10, padding: '7px 12px' }}>Undo</button>
+          <span><Icon name="check" size={14} stroke={3} /> Updated {toast.modules.join(', ')}</span>
+          <button onClick={() => { nav(MODULE_ROUTE[toast.modules[0]] || '/today'); setToast(null) }} style={{ background: 'none', border: 'none', color: 'var(--toast-link)', fontWeight: 800, fontSize: 13 }}>View</button>
+          <button onClick={undo} style={{ background: 'rgba(255,255,255,0.14)', border: 'none', color: 'var(--on-accent)', fontWeight: 800, fontSize: 13, borderRadius: 10, padding: '7px 12px' }}>Undo</button>
         </div>
       )}
     </>

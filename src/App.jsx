@@ -23,7 +23,7 @@ export default function App() {
   const { s } = useApp()
   return (
     <>
-    <svg width="0" height="0" style={{ position: 'absolute' }}>
+    <svg aria-hidden="true" width="0" height="0" style={{ position: 'absolute' }}>
       <defs>
         <linearGradient id="eg" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="var(--a1)" />

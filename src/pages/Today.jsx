@@ -8,19 +8,22 @@ import { DEFAULT_NAME } from '../config.js'
 import { QuickBar } from '../components/QuickAdd.jsx'
 import Checklist from '../components/Checklist.jsx'
 import CountUp from '../components/CountUp.jsx'
+import Icon, { Mood } from '../components/Icon.jsx'
 
 const summaryCard = { ...card, padding: 22 }
 
 function CardHeader({ title, action, onAction }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
       <div style={label}>{title}</div>
       {action && (
-        <button onClick={onAction} style={{ background: 'none', border: 'none', color: C.blue, fontSize: 12, fontWeight: 700 }}>{action}</button>
+        <button onClick={onAction} style={{ background: 'none', border: 'none', color: C.blue, fontSize: 12.5, fontWeight: 700, padding: '0 4px' }}>{action}</button>
       )}
     </div>
   )
 }
+
+const MOOD_NAME = { '\u{1F604}': 'Great', '\u{1F642}': 'Good', '\u{1F610}': 'Okay', '\u{1F615}': 'Low', '\u{1F61E}': 'Awful' }
 
 export default function Today() {
   const { s, patch } = useApp()
@@ -52,7 +55,7 @@ export default function Today() {
       return {
         sealed: true,
         journalEntries: line
-          ? [{ date: shortDay(0), mood: st.mood || '🙂', text: line }, ...entries.filter((e) => e.date !== shortDay(0))]
+          ? [{ date: shortDay(0), mood: st.mood || '\u{1F642}', text: line }, ...entries.filter((e) => e.date !== shortDay(0))]
           : entries,
       }
     })
@@ -67,8 +70,8 @@ export default function Today() {
             {evening ? 'Good evening' : 'Good morning'}, {userName}
           </h1>
         </div>
-        <button onClick={() => patch({ evening: !evening })} className="bd-hover text-hover-dark" style={{ background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', color: C.sub, padding: '10px 16px', borderRadius: 12, fontWeight: 700, fontSize: 13 }}>
-          {evening ? '☀️ Back to morning' : '🌙 Preview Day Close'}
+        <button onClick={() => patch({ evening: !evening })} className="bd-hover text-hover-dark" style={{ background: 'rgba(0,0,0,0.045)', border: '1px solid rgba(0,0,0,0.09)', color: C.sub, padding: '10px 16px', borderRadius: 12, fontWeight: 700, whiteSpace: 'nowrap', fontSize: 13 }}>
+          {evening ? <><Icon name="sun" size={14} /> Back to morning</> : <><Icon name="moon" size={14} /> Preview Day Close</>}
         </button>
       </div>
 
@@ -77,15 +80,15 @@ export default function Today() {
 
       {!evening && (
         <div style={{ ...card, borderRadius: 24, padding: 'clamp(22px,3vw,32px)', marginBottom: 20 }}>
-          <div style={{ ...label, marginBottom: 12 }}>☀️ Morning Briefing</div>
-          <div style={{ fontSize: 'clamp(17px,2.4vw,22px)', fontWeight: 600, lineHeight: 1.55 }}>
-            Good morning, {userName}. <span style={{ color: C.blue }}>3 meetings</span> today with a <span style={{ color: C.greenDeep }}>2-hour free block at 3 PM</span> — perfect for your scheduled Leg Day. Mom's birthday is <span style={{ color: C.greenDeep }}>in 2 days 🎂</span>. You're <span style={{ color: C.amber }}>₹800 over</span> your food budget this week. You slept <span style={{ color: C.sub }}>{sleepLabel}</span>{sleepHrs < 7 ? ' — consider an earlier night.' : ' — nicely rested.'}
+          <div style={{ ...label, marginBottom: 12 }}><Icon name="sun" size={14} /> Morning briefing</div>
+          <div style={{ fontSize: 'clamp(17px,2.4vw,22px)', fontWeight: 700, lineHeight: 1.55 }}>
+            Good morning, {userName}. <span style={{ color: C.blue }}>3 meetings</span> today with a <span style={{ color: C.greenDeep }}>2-hour free block at 3 PM</span>, perfect for your scheduled Leg Day. Mom’s birthday is <span style={{ color: C.greenDeep }}>in 2 days</span>. You’re <span style={{ color: C.amber }}>₹800 over</span> your food budget this week. You slept <span style={{ color: C.sub }}>{sleepLabel}</span>{sleepHrs < 7 ? ', consider an earlier night.' : ', nicely rested.'}
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
             <button onClick={claimBlock} className="lift" style={{ ...glassPrimary, padding: '10px 18px', borderRadius: 999, fontWeight: 800, fontSize: 13 }}>
-              🏋️ Claim 3 PM for Leg Day
+              <Icon name="gym" size={15} /> Claim 3 PM for Leg Day
             </button>
-            <button onClick={() => nav('/people')} className="bd-hover" style={pillBtn}>🎂 Plan Mom's gift</button>
+            <button onClick={() => nav('/people')} className="bd-hover" style={pillBtn}><Icon name="cake" size={15} /> Plan Mom’s gift</button>
             <button onClick={() => nav('/finance')} style={{ ...pillBtn, border: '1px solid rgba(245,158,11,0.4)', color: C.amber }}>₹ Review food budget</button>
           </div>
         </div>
@@ -98,8 +101,8 @@ export default function Today() {
           animation: s.sealed ? 'glowpulse 2.4s ease-in-out infinite' : 'none',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <div style={label}>🌙 Day Close · 60-second ritual</div>
-            {s.sealed && <div style={{ color: C.greenDeep, fontWeight: 800, fontSize: 13 }}>Day sealed ✨</div>}
+            <div style={label}><Icon name="moon" size={14} /> Day Close: a 60-second ritual</div>
+            {s.sealed && <div style={{ color: C.greenDeep, fontWeight: 800, fontSize: 13 }}>Day sealed</div>}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 18 }}>
             <div>
@@ -109,13 +112,13 @@ export default function Today() {
                   <button key={h.id} onClick={() => toggleHabit(h.id)} className="bd-hover-teal" style={{
                     display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(0,0,0,0.035)',
                     border: '1px solid rgba(0,0,0,0.07)', borderRadius: 12, padding: '10px 12px',
-                    color: C.text, fontSize: 13, fontWeight: 600, textAlign: 'left',
+                    color: C.text, fontSize: 13, fontWeight: 700, textAlign: 'left',
                   }}>
                     <span style={{ width: 20, height: 20, borderRadius: 7, border: '1.5px solid rgba(0,0,0,0.2)', flex: 'none' }} />
                     {h.name}
                   </button>
                 ))}
-                {remaining.length === 0 && <div style={{ color: C.greenDeep, fontSize: 13, fontWeight: 700 }}>All habits done 🎉</div>}
+                {remaining.length === 0 && <div style={{ color: C.greenDeep, fontSize: 13, fontWeight: 700 }}>All habits done</div>}
               </div>
             </div>
             <div>
@@ -128,17 +131,17 @@ export default function Today() {
               />
               <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
                 {MOODS.map((e) => (
-                  <button key={e} onClick={() => patch({ mood: e })} className="scale-hover-lg" style={{
+                  <button key={e} onClick={() => patch({ mood: e })} className="scale-hover-lg" aria-label={MOOD_NAME[e]} aria-pressed={s.mood === e} style={{
                     background: s.mood === e ? 'linear-gradient(135deg,rgba(var(--a1-rgb),0.4),rgba(var(--a2-rgb),0.4))' : 'rgba(0,0,0,0.04)',
                     border: '1px solid rgba(0,0,0,0.08)', borderRadius: 12, padding: '8px 10px', fontSize: 18,
                   }}>
-                    {e}
+                    <Mood value={e} size={22} />
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 10, color: C.sub }}>Tomorrow's #1 priority</div>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 10, color: C.sub }}>Tomorrow’s #1 priority</div>
               <input
                 value={s.priority}
                 onChange={(e) => patch({ priority: e.target.value })}
@@ -146,7 +149,7 @@ export default function Today() {
                 style={{ width: '100%', background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 12, padding: 12, color: C.text, fontSize: 13.5 }}
               />
               <button onClick={seal} className="lift" style={{ marginTop: 12, width: '100%', ...glassPrimary, padding: 12, borderRadius: 12, fontWeight: 800, fontSize: 14 }}>
-                Seal the day ✨
+                Seal the day
               </button>
             </div>
           </div>
@@ -156,52 +159,52 @@ export default function Today() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 18 }}>
 
         <div className="card-hover" style={summaryCard}>
-          <CardHeader title="Today's schedule" action="Open →" onAction={() => nav('/calendar')} />
+          <CardHeader title="Today’s schedule" action="Open" onAction={() => nav('/calendar')} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {todayEvents.map((e) => (
               <div key={e.time + e.title} style={{ display: 'flex', alignItems: 'center', gap: 10, background: e.bg, borderLeft: '3px solid ' + e.col, borderRadius: 10, padding: '9px 12px' }}>
                 <span style={{ fontFeatureSettings: "'tnum'", fontWeight: 800, fontSize: 12.5, color: e.col, width: 44, flex: 'none' }}>{e.time}</span>
-                <span style={{ fontSize: 13, fontWeight: 600 }}>{e.title}</span>
+                <span style={{ fontSize: 13, fontWeight: 700 }}>{e.title}</span>
               </div>
             ))}
           </div>
         </div>
 
         <div className="card-hover" style={summaryCard}>
-          <CardHeader title="Top goals" action="All →" onAction={() => nav('/goals')} />
+          <CardHeader title="Top goals" action="All" onAction={() => nav('/goals')} />
           <div style={{ display: 'flex', justifyContent: 'space-around', gap: 8 }}>
             {topGoals.map((g) => (
               <div key={g.name} style={{ textAlign: 'center' }}>
                 <div style={{ position: 'relative', width: 72, height: 72, margin: '0 auto' }}>
-                  <svg width="72" height="72" viewBox="0 0 76 76">
+                  <svg aria-hidden="true" width="72" height="72" viewBox="0 0 76 76">
                     <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="7" />
                     <circle cx="38" cy="38" r="32" fill="none" stroke="url(#eg)" strokeWidth="7" strokeLinecap="round" strokeDasharray="201" strokeDashoffset={g.dash} transform="rotate(-90 38 38)" style={{ animation: 'ringin 0.8s ease-out' }} />
                   </svg>
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, fontFeatureSettings: "'tnum'" }}>{g.pct}</div>
                 </div>
-                <div style={{ fontSize: 11.5, color: C.sub, fontWeight: 600, marginTop: 8 }}>{g.name}</div>
+                <div style={{ fontSize: 11.5, color: C.sub, fontWeight: 700, marginTop: 8 }}>{g.name}</div>
               </div>
             ))}
           </div>
         </div>
 
         <div className="card-hover" style={summaryCard}>
-          <CardHeader title="Habits" action="All →" onAction={() => nav('/habits')} />
+          <CardHeader title="Habits" action="All" onAction={() => nav('/habits')} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {habits.map((h) => (
               <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
                 <button role="checkbox" aria-checked={h.done} aria-label={h.name} onClick={() => toggleHabit(h.id)} style={{
-                  width: 26, height: 26, borderRadius: 9,
+                  width: 32, height: 32, borderRadius: 10,
                   background: h.done ? grad : 'rgba(0,0,0,0.045)',
                   border: '1.5px solid ' + (h.done ? 'transparent' : 'rgba(0,0,0,0.13)'),
-                  color: '#fff', fontSize: 13, fontWeight: 800, flex: 'none',
+                  color: 'var(--on-accent)', fontSize: 13, fontWeight: 800, flex: 'none',
                   animation: h.done ? 'pop 0.3s ease-out' : 'none',
                 }}>
-                  {h.done ? '✓' : ''}
+                  {h.done ? <Icon name="check" size={14} stroke={3} /> : null}
                 </button>
-                <span style={{ flex: 1, fontSize: 13.5, fontWeight: 600 }}>{h.name}</span>
+                <span style={{ flex: 1, fontSize: 13.5, fontWeight: 700 }}>{h.name}</span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 12.5, fontWeight: 800, color: C.sub }}>
-                  <span style={{ animation: 'flame 1.6s ease-in-out infinite', display: 'inline-block', fontSize: 13 }}>🔥</span>{h.streak}
+                  <Icon name="flame" size={14} style={{ animation: 'flame 1.6s ease-in-out infinite' }} />{h.streak}
                 </span>
               </div>
             ))}
@@ -209,7 +212,7 @@ export default function Today() {
         </div>
 
         <div className="card-hover" style={summaryCard}>
-          <CardHeader title="This week's spend" action="Open →" onAction={() => nav('/finance')} />
+          <CardHeader title="This week’s spend" action="Open" onAction={() => nav('/finance')} />
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
             <span style={{ fontWeight: 800, fontSize: 26, fontFeatureSettings: "'tnum'" }}><CountUp text="₹14,250" /></span>
             <span style={{ color: C.sub, fontSize: 13 }}>of ₹27,000</span>
@@ -229,26 +232,26 @@ export default function Today() {
 
         <div className="card-hover" style={summaryCard}>
           <div style={{ ...label, marginBottom: 14 }}>Next workout</div>
-          <div style={{ fontWeight: 700, fontSize: 19 }}>🦵 Leg Day</div>
-          <div style={{ color: C.sub, fontSize: 13, margin: '6px 0 16px' }}>5 exercises · ~65 min · fits your 3 PM free block</div>
+          <div style={{ fontWeight: 700, fontSize: 19 }}><Icon name="activity" size={19} /> Leg Day</div>
+          <div style={{ color: C.sub, fontSize: 13, margin: '6px 0 16px' }}>5 exercises, about 65 min, fits your 3 PM free block</div>
           <button onClick={startWorkout} className="lift" style={{ width: '100%', ...glassPrimary, padding: 12, borderRadius: 12, fontWeight: 800, fontSize: 14 }}>
-            Start workout →
+            Start workout
           </button>
         </div>
 
         <div className="card-hover" style={summaryCard}>
-          <CardHeader title="People" action="Open →" onAction={() => nav('/people')} />
-          <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10 }}>{dueList.length} check-ins due 🌱</div>
+          <CardHeader title="People" action="Open" onAction={() => nav('/people')} />
+          <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10 }}>{dueList.length} check-ins due</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
             {dueList.map((p) => (
               <div key={p.name} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
-                <span style={{ fontWeight: 600 }}>{p.name}</span>
+                <span style={{ fontWeight: 700 }}>{p.name}</span>
                 <span style={{ color: C.muted, fontSize: 12 }}>{p.group}</span>
               </div>
             ))}
           </div>
           <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid rgba(0,0,0,0.07)', fontSize: 13, color: C.greenDeep, fontWeight: 700 }}>
-            🎂 Mom's birthday in 2 days
+            <Icon name="cake" size={15} /> Mom’s birthday in 2 days
           </div>
         </div>
 
@@ -259,14 +262,14 @@ export default function Today() {
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <span style={{ fontSize: 22 }}>🧠</span>
+            <Icon name="brain" size={22} />
             <div>
               <div style={{ ...label, marginBottom: 4 }}>Insight of the day</div>
               <div style={{ fontWeight: 700, fontSize: 15 }}>Your workout completion is 2× higher when scheduled before 8 AM.</div>
             </div>
           </div>
           <button onClick={() => nav('/insights')} className="bd-hover-dark" style={{ background: 'rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.1)', color: C.text, padding: '10px 18px', borderRadius: 12, fontWeight: 700, fontSize: 13, flex: 'none' }}>
-            All insights →
+            All insights
           </button>
         </div>
 

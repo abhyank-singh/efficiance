@@ -3,6 +3,7 @@ import { useApp, fmtINR } from '../store.jsx'
 import { C, grad, gradTab, card, label, glassPrimary } from '../theme.js'
 import { txDays as seedTxDays, budgets as budgetDefs, subs, sips, wishlist } from '../data/seed.js'
 import { shortDay } from '../data/dates.js'
+import Icon from '../components/Icon.jsx'
 
 const gradText = { background: 'linear-gradient(135deg,var(--a1),var(--ok))', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
 
@@ -23,7 +24,7 @@ export default function Finance() {
   const [imported, setImported] = useState(false)
 
   const todaySpent = fmtINR(s.txToday.reduce((a, t) => a + t.a, 0))
-  const txDays = [{ label: 'Today · ' + shortDay(0), items: s.txToday.slice().reverse() }, ...seedTxDays].map((d) => ({
+  const txDays = [{ label: 'Today, ' + shortDay(0), items: s.txToday.slice().reverse() }, ...seedTxDays].map((d) => ({
     label: d.label,
     total: fmtINR(d.items.reduce((a, t) => a + t.a, 0)),
     items: d.items.map((t) => ({ ...t, amt: fmtINR(t.a) })),
@@ -64,7 +65,7 @@ export default function Finance() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ ...card, padding: 22 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <div style={label}>Quick log · UPI-speed</div>
+                <div style={label}>Quick log, UPI speed</div>
                 <span style={{ fontSize: 11, color: C.greenDeep, fontWeight: 700 }}>≤3 taps</span>
               </div>
               <div style={{ color: C.sub, fontSize: 13, marginBottom: 14 }}>
@@ -82,18 +83,18 @@ export default function Finance() {
                   width: '100%', background: 'rgba(0,0,0,0.04)', border: '1.5px dashed rgba(0,0,0,0.13)',
                   color: C.sub, padding: 18, borderRadius: 14, fontWeight: 700, fontSize: 13,
                 }}>
-                  ⬆ Try a sample statement import (demo)
+                  <Icon name="upload" size={15} /> Try a sample import
                 </button>
               ) : (
                 <div style={{ background: 'rgba(var(--a2-rgb),0.08)', border: '1px solid rgba(var(--a2-rgb),0.35)', borderRadius: 14, padding: 16, animation: 'rise 0.2s ease-out' }}>
-                  <div style={{ fontWeight: 800, fontSize: 13.5, color: C.greenDeep, marginBottom: 8 }}>Sample statement parsed ✓ (demo output; real import is planned)</div>
+                  <div style={{ fontWeight: 800, fontSize: 13.5, color: C.greenDeep, marginBottom: 8 }}><Icon name="check" size={15} stroke={3} /> Sample statement parsed (demo output; real import is planned)</div>
                   <div style={{ fontSize: 12.5, color: C.sub, lineHeight: 1.7 }}>
-                    142 transactions found · 131 auto-categorized<br />🍔 Food ₹6,120 · 🛒 Groceries ₹4,890 · 🛺 Transport ₹1,980
+                    142 transactions found, 131 auto-categorized<br />Food ₹6,120, Groceries ₹4,890, Transport ₹1,980
                   </div>
                 </div>
               )}
               <div style={{ marginTop: 12, fontSize: 11.5, color: C.muted, lineHeight: 1.6 }}>
-                Coming soon: UPI notification auto-capture · RBI Account Aggregator
+                Coming soon: UPI notification auto-capture and RBI Account Aggregator
               </div>
             </div>
           </div>
@@ -110,10 +111,10 @@ export default function Finance() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                     {d.items.map((t, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 11, background: 'rgba(0,0,0,0.03)', borderRadius: 12, padding: '10px 13px' }}>
-                        <span style={{ fontSize: 17 }}>{t.i}</span>
+                        <Icon name={t.i} size={17} />
                         <div style={{ flex: 1 }}>
                           <div style={{ fontWeight: 700, fontSize: 13.5 }}>{t.p}</div>
-                          <div style={{ color: C.muted, fontSize: 11, fontWeight: 600 }}>{t.c}</div>
+                          <div style={{ color: C.muted, fontSize: 11, fontWeight: 700 }}>{t.c}</div>
                         </div>
                         <span style={{ fontWeight: 800, fontSize: 14, fontFeatureSettings: "'tnum'" }}>{t.amt}</span>
                       </div>
@@ -130,9 +131,9 @@ export default function Finance() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 18, alignItems: 'start' }}>
           <div style={{ display: 'grid', gap: 14 }}>
             {budgets.map((b) => (
-              <div key={b.cat} style={{ background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.085)', borderTopColor: 'rgba(0,0,0,0.05)', borderRadius: 18, padding: '18px 20px' }}>
+              <div key={b.cat} style={{ background: 'var(--surface)', border: '1px solid rgba(0,0,0,0.085)', borderTopColor: 'rgba(0,0,0,0.05)', borderRadius: 18, padding: '18px 20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-                  <span style={{ fontWeight: 700, fontSize: 14 }}>{b.icon} {b.cat}</span>
+                  <span style={{ fontWeight: 700, fontSize: 14 }}><Icon name={b.icon} size={16} /> {b.cat}</span>
                   <span style={{ fontSize: 12.5, color: C.sub }}>
                     <b style={{ color: C.text, fontFeatureSettings: "'tnum'" }}>{b.spentFmt}</b> / {b.capFmt}
                   </span>
@@ -155,14 +156,14 @@ export default function Finance() {
                 <div key={sub.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.03)', borderRadius: 12, padding: '12px 14px' }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 13.5 }}>{sub.name}</div>
-                    <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 600 }}>{sub.renews}</div>
+                    <div style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>{sub.renews}</div>
                   </div>
                   <span style={{ fontWeight: 800, fontSize: 14, fontFeatureSettings: "'tnum'" }}>{sub.amt}/mo</span>
                 </div>
               ))}
             </div>
-            <div style={{ marginTop: 14, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 12, padding: '11px 13px', fontSize: 12.5, color: C.amber, fontWeight: 600 }}>
-              Subscriptions grew ₹450/mo this quarter — review?
+            <div style={{ marginTop: 14, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 12, padding: '11px 13px', fontSize: 12.5, color: C.amber, fontWeight: 700 }}>
+              Subscriptions grew ₹450/mo this quarter. Review them?
             </div>
           </div>
         </div>
@@ -184,7 +185,7 @@ export default function Finance() {
                 </div>
                 {sip.goal && (
                   <div style={{ marginTop: 11, display: 'inline-block', background: 'linear-gradient(135deg,rgba(var(--a1-rgb),0.22),rgba(var(--a2-rgb),0.22))', border: '1px solid rgba(var(--a1-rgb),0.4)', borderRadius: 999, padding: '5px 13px', fontSize: 11.5, fontWeight: 700 }}>
-                    🎯 {sip.goal}
+                    <Icon name="goals" size={14} /> {sip.goal}
                   </div>
                 )}
               </div>
@@ -194,7 +195,7 @@ export default function Finance() {
               <div key={w.fund} style={{ background: 'rgba(0,0,0,0.028)', border: '1.5px dashed rgba(0,0,0,0.1)', borderRadius: 18, padding: 18, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 14 }}>{w.fund}</div>
-                  <div style={{ color: C.muted, fontSize: 12, fontWeight: 600 }}>{w.start}</div>
+                  <div style={{ color: C.muted, fontSize: 12, fontWeight: 700 }}>{w.start}</div>
                 </div>
                 <span style={{ fontWeight: 800, fontSize: 14, color: C.sub, fontFeatureSettings: "'tnum'" }}>{w.amt}</span>
               </div>
@@ -205,7 +206,7 @@ export default function Finance() {
             <div style={{ ...label, marginBottom: 18 }}>Allocation</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
               <div style={{ position: 'relative', width: 130, height: 130 }}>
-                <svg width="130" height="130" viewBox="0 0 76 76">
+                <svg aria-hidden="true" width="130" height="130" viewBox="0 0 76 76">
                   <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(0,0,0,0.045)" strokeWidth="9" />
                   {allocSegs.map((seg) => (
                     <circle key={seg.color} cx="38" cy="38" r="32" fill="none" stroke={seg.color} strokeWidth="9" strokeDasharray={seg.dash} strokeDashoffset={seg.off} transform="rotate(-90 38 38)" strokeLinecap="butt" />
@@ -213,21 +214,21 @@ export default function Finance() {
                 </svg>
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontWeight: 800, fontSize: 17, fontFeatureSettings: "'tnum'" }}>₹2.04L</span>
-                  <span style={{ color: C.muted, fontSize: 10.5, fontWeight: 700 }}>TOTAL</span>
+                  <span style={{ color: C.muted, fontSize: 11.5, fontWeight: 700 }}>TOTAL</span>
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {allocLegend.map((l) => (
                   <div key={l.name} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                     <span style={{ width: 10, height: 10, borderRadius: 3, background: l.color }} />
-                    <span style={{ fontSize: 13, fontWeight: 600, width: 52 }}>{l.name}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, width: 52 }}>{l.name}</span>
                     <span style={{ fontWeight: 800, fontSize: 13, fontFeatureSettings: "'tnum'" }}>{l.pct}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div style={{ marginTop: 18, fontSize: 12, color: C.muted, lineHeight: 1.6, borderTop: '1px solid rgba(0,0,0,0.07)', paddingTop: 14 }}>
-              A discipline & planning tool — no live market data, no returns advice. Just you, showing up every month.
+              A discipline & planning tool, no live market data, no returns advice. Just you, showing up every month.
             </div>
           </div>
         </div>
